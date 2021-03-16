@@ -3,28 +3,31 @@ import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
-const getPaths = (active_document:vscode.TextDocument) => {
-	const related_path = active_document.uri.path;
-	const parent_path = related_path.split('/lib/')[1];
-	return {
-		parent_path: parent_path,
-		related_path: related_path
-	}
+const getRelatedPath = (active_document:vscode.TextDocument) => {
+	return active_document.uri.path;
+};
+
+const getParentPath = (active_document:vscode.TextDocument) => {
+	return getRelatedPath(active_document).split('/lib/')[1];
 }
+
+const getPaths = (active_document:vscode.TextDocument) => {
+	return {
+		related_path: getRelatedPath(active_document),
+		parent_path: getParentPath(active_document)
+	}
+};
 
 const getParentFileName = (active_document:vscode.TextDocument) => {
 	const {related_path} = getPaths(active_document);
-	const m = related_path.match(/[\w,\s]+\.html.leex$/);
-	const parent_filename = m ? m[0] : null;
-	return parent_filename
-}
+	const m = related_path.match(/[\w,\s]+\.html\.(eex|leex)$/);
+	return m ? m[0] : null;
+};
 
 const getDirectory = (active_document:vscode.TextDocument) => {
 	const {parent_path} = getPaths(active_document);
 	const name = getParentFileName(active_document);
-	if (name) { 
-		return parent_path.split(name)[0];
-	} else { return null; }
+	return name ? parent_path.split(name)[0] : null;
 };
 
 const getWorkingPaths = (wsf:readonly vscode.WorkspaceFolder[], active_document:vscode.TextDocument) => {
@@ -37,6 +40,56 @@ const getWorkingPaths = (wsf:readonly vscode.WorkspaceFolder[], active_document:
 	return Object.assign({}, new_paths, paths)
 };
 
+const createCSSFiles = (wsf:readonly vscode.WorkspaceFolder[], active_document:vscode.TextDocument) => {
+	const {assets_path, parent_path, related_path, css_path} = getWorkingPaths(wsf, active_document);
+	let msg = `Creating directory ${css_path}`;
+	vscode.window.showInformationMessage(msg);
+	const css_uri = vscode.Uri.parse(css_path);
+	vscode.workspace.fs.createDirectory(css_uri).then(_ => {
+		const parent_filename = getParentFileName(active_document);
+		const new_css_path = `${css_uri.toString()}${parent_filename}.css`;
+		msg = `Creating ${new_css_path}`;
+		let uri = vscode.Uri.parse(new_css_path);
+		vscode.window.showInformationMessage(msg);
+		const css_import = `@import "./${parent_path}.css";`;
+		let buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
+		vscode.workspace.fs.writeFile(uri, buff).then(_ => {
+			uri = vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
+			vscode.workspace.fs.readFile(uri)
+				.then((data) => {
+					const read_string = new TextDecoder('utf-8').decode(data);
+					const cache = new Map();
+					let existing_imports = '';
+					read_string.split("\n").forEach(x => {
+						x = x.trim();
+						if (!cache.has(x)) {
+							cache.set(x, x) 
+							existing_imports += x + "\n";
+						}
+					});
+					existing_imports += css_import;
+					msg = `Adding ${css_import}`;
+					vscode.window.showInformationMessage(msg);
+					buff = Buffer.from(existing_imports, 'utf-8');
+					vscode.workspace.fs.writeFile(uri, buff);
+				});
+		});
+	});
+}
+
+const showImproperFileError = (active_document:vscode.TextDocument) => {
+	const related_path = getRelatedPath(active_document);
+	const msg = `
+	Command must be executed in a file ending with \`html.leex\` or \`html.eex\`. : ${related_path}
+	`;
+	vscode.window.showErrorMessage(msg);
+};
+
+const showInvalidPathError = (active_document:vscode.TextDocument) => {
+	const invalid_path = getRelatedPath(active_document);
+	vscode.window.showErrorMessage(`Invalid path: ${invalid_path}`);
+};
+
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
 		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
@@ -44,50 +97,14 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage('Command bust be executed within a Workspace.');
 		} else {
 			const active_document = vscode.window.activeTextEditor?.document;
-			if (active_document) {
-				const {assets_path, parent_path, related_path, css_path} = getWorkingPaths(wsf, active_document);			
-				if (!parent_path) {
-					vscode.window.showErrorMessage(`Invalid path: ${related_path}`);
-				} else {
-					const parent_filename = getParentFileName(active_document);
-					if (parent_filename) {
-						let msg = `Creating directory ${css_path}`;
-						vscode.window.showInformationMessage(msg);
-						const css_uri = vscode.Uri.parse(css_path);
-						vscode.workspace.fs.createDirectory(css_uri).then(_ => {
-							const new_css_path = `${css_uri.toString()}${parent_filename}.css`;
-							msg = `Creating ${new_css_path}`;
-							let uri = vscode.Uri.parse(new_css_path);
-							vscode.window.showInformationMessage(msg);
-							const css_import = `@import "./${parent_path}.css";`;
-							let buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
-							vscode.workspace.fs.writeFile(uri, buff).then(_ => {
-								uri = vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
-								vscode.workspace.fs.readFile(uri)
-									.then((data) => {
-										const read_string = new TextDecoder('utf-8').decode(data);
-										const cache = new Map();
-										let existing_imports = '';
-										read_string.split("\n").forEach(x => {
-											x = x.trim();
-											if (!cache.has(x)) {
-												cache.set(x, x) 
-												existing_imports += x + "\n";
-											}
-										});
-										existing_imports += css_import;
-										msg = `Adding ${css_import}`;
-										vscode.window.showInformationMessage(msg);
-										buff = Buffer.from(existing_imports, 'utf-8');
-										vscode.workspace.fs.writeFile(uri, buff);
-									});
-							});
-						});
+			if (active_document) {	
+				if (!getParentPath(active_document)) {
+					showInvalidPathError(active_document);
+				} else {					
+					if (!getParentFileName(active_document)) {
+						showImproperFileError(active_document);
 					} else {
-						const msg = `
-						Command must be executed in a file ending with \`html.leex\`. : ${related_path}
-						`;
-						vscode.window.showErrorMessage(msg);
+						createCSSFiles(wsf, active_document);
 					}
 				}
 			}
