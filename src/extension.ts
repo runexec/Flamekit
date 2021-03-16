@@ -3,6 +3,33 @@ import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
+export function activate(context: vscode.ExtensionContext) {
+	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
+		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
+		if (!wsf) {
+			vscode.window.showErrorMessage('Command bust be executed within a Workspace.');
+		} else {
+			const active_document = vscode.window.activeTextEditor?.document;
+			if (active_document) {	
+				if (!getParentPath(active_document)) {
+					showInvalidPathError(active_document);
+				} else {					
+					if (!getParentFileName(active_document)) {
+						showImproperFileError(active_document);
+					} else {
+						createCSSFiles(wsf, active_document);
+					}
+				}
+			}
+		}
+	});
+
+	context.subscriptions.push(disposable);
+}
+
+// this method is called when your extension is deactivated
+export function deactivate() { }
+
 const getRelatedPath = (active_document:vscode.TextDocument) => {
 	return active_document.uri.path;
 };
@@ -19,15 +46,13 @@ const getPaths = (active_document:vscode.TextDocument) => {
 };
 
 const getParentFileName = (active_document:vscode.TextDocument) => {
-	const {related_path} = getPaths(active_document);
-	const m = related_path.match(/[\w,\s]+\.html\.(eex|leex)$/);
+	const m = getRelatedPath(active_document).match(/[\w,\s]+\.html\.(eex|leex)$/);
 	return m ? m[0] : null;
 };
 
 const getDirectory = (active_document:vscode.TextDocument) => {
-	const {parent_path} = getPaths(active_document);
 	const name = getParentFileName(active_document);
-	return name ? parent_path.split(name)[0] : null;
+	return name ? getParentPath(active_document).split(name)[0] : null;
 };
 
 const getWorkingPaths = (wsf:readonly vscode.WorkspaceFolder[], active_document:vscode.TextDocument) => {
@@ -41,7 +66,7 @@ const getWorkingPaths = (wsf:readonly vscode.WorkspaceFolder[], active_document:
 };
 
 const createCSSFiles = (wsf:readonly vscode.WorkspaceFolder[], active_document:vscode.TextDocument) => {
-	const {assets_path, parent_path, related_path, css_path} = getWorkingPaths(wsf, active_document);
+	const {assets_path, parent_path, css_path} = getWorkingPaths(wsf, active_document);
 	let msg = `Creating directory ${css_path}`;
 	vscode.window.showInformationMessage(msg);
 	const css_uri = vscode.Uri.parse(css_path);
@@ -89,30 +114,3 @@ const showInvalidPathError = (active_document:vscode.TextDocument) => {
 	const invalid_path = getRelatedPath(active_document);
 	vscode.window.showErrorMessage(`Invalid path: ${invalid_path}`);
 };
-
-export function activate(context: vscode.ExtensionContext) {
-	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
-		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
-		if (!wsf) {
-			vscode.window.showErrorMessage('Command bust be executed within a Workspace.');
-		} else {
-			const active_document = vscode.window.activeTextEditor?.document;
-			if (active_document) {	
-				if (!getParentPath(active_document)) {
-					showInvalidPathError(active_document);
-				} else {					
-					if (!getParentFileName(active_document)) {
-						showImproperFileError(active_document);
-					} else {
-						createCSSFiles(wsf, active_document);
-					}
-				}
-			}
-		}
-	});
-
-	context.subscriptions.push(disposable);
-}
-
-// this method is called when your extension is deactivated
-export function deactivate() { }
