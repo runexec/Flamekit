@@ -3,6 +3,40 @@ import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
+const getPaths = (active_document:vscode.TextDocument) => {
+	const related_path = active_document.uri.path;
+	const parent_path = related_path.split('/lib/')[1];
+	return {
+		parent_path: parent_path,
+		related_path: related_path
+	}
+}
+
+const getParentFileName = (active_document:vscode.TextDocument) => {
+	const {related_path} = getPaths(active_document);
+	const m = related_path.match(/[\w,\s]+\.html.leex$/);
+	const parent_filename = m ? m[0] : null;
+	return parent_filename
+}
+
+const getDirectory = (active_document:vscode.TextDocument) => {
+	const {parent_path} = getPaths(active_document);
+	const name = getParentFileName(active_document);
+	if (name) { 
+		return parent_path.split(name)[0];
+	} else { return null; }
+};
+
+const getWorkingPaths = (wsf:readonly vscode.WorkspaceFolder[], active_document:vscode.TextDocument) => {
+	const root_uri = wsf[0].uri;
+	const assets_path = `${root_uri.toString()}/assets`
+	const directory = getDirectory(active_document);
+	const css_path = `${assets_path}/css/${directory}`;
+	const paths = getPaths(active_document);
+	const new_paths = {assets_path:assets_path, css_path:css_path};
+	return Object.assign({}, new_paths, paths)
+};
+
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
 		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
@@ -11,24 +45,18 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			const active_document = vscode.window.activeTextEditor?.document;
 			if (active_document) {
-				const related_path = active_document.uri.path;
-				const parent_path = related_path.split('/lib/')[1];
+				const {assets_path, parent_path, related_path, css_path} = getWorkingPaths(wsf, active_document);			
 				if (!parent_path) {
 					vscode.window.showErrorMessage(`Invalid path: ${related_path}`);
 				} else {
-					const m = related_path.match(/[\w,\s]+\.html.leex$/);
-					const parent_filename = m ? m[0] : m;
+					const parent_filename = getParentFileName(active_document);
 					if (parent_filename) {
-						const directory = parent_path.split(parent_filename)[0];
-						const root_uri = wsf[0].uri;
-						const assets_path = `${root_uri.toString()}/assets`
-						const css_path = `${assets_path}/css/${directory}`;
-						const msg_attempt = `Creating directory ${css_path}`;
-						vscode.window.showInformationMessage(msg_attempt);
+						let msg = `Creating directory ${css_path}`;
+						vscode.window.showInformationMessage(msg);
 						const css_uri = vscode.Uri.parse(css_path);
 						vscode.workspace.fs.createDirectory(css_uri).then(_ => {
 							const new_css_path = `${css_uri.toString()}${parent_filename}.css`;
-							let msg = `Creating ${new_css_path}`;
+							msg = `Creating ${new_css_path}`;
 							let uri = vscode.Uri.parse(new_css_path);
 							vscode.window.showInformationMessage(msg);
 							const css_import = `@import "./${parent_path}.css";`;
