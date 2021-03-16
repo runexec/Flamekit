@@ -6,12 +6,8 @@ const FLAMEKIT_INDEX = 'flamekit.index.css';
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
 		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
-		if (wsf === undefined) {
-			vscode.window.showErrorMessage('Command bust be executed within a Workspace.');
-			return
-		}
 		const active_document = vscode.window.activeTextEditor?.document;
-		if (active_document !== undefined) {
+		if (active_document !== undefined)
 			switch (true) {
 				case !getParentPath(active_document):
 					showInvalidPathError(active_document);
@@ -20,9 +16,10 @@ export function activate(context: vscode.ExtensionContext) {
 					showImproperFileError(active_document);
 					break;
 				default:
-					createCSSFiles(wsf, active_document);
+					wsf !== undefined
+						? createCSSFiles(wsf, active_document)
+						: showNoWorkspaceError();
 			}
-		}
 	});
 
 	context.subscriptions.push(disposable);
@@ -66,40 +63,49 @@ const getWorkingPaths = (wsf: readonly vscode.WorkspaceFolder[], active_document
 	return Object.assign({}, new_paths, paths)
 };
 
+const getFlamekitCSSIndex = (assets_path: string) => {
+	return vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
+};
+
 const createCSSFiles = (wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument) => {
 	const { assets_path, parent_path, css_path } = getWorkingPaths(wsf, active_document);
+	const flamekit_uri = getFlamekitCSSIndex(assets_path);
 	let msg = `Creating directory ${css_path}`;
 	vscode.window.showInformationMessage(msg);
 	const css_uri = vscode.Uri.parse(css_path);
-	vscode.workspace.fs.createDirectory(css_uri).then(_ => {
-		const parent_filename = getParentFileName(active_document);
-		const new_css_path = `${css_uri.toString()}${parent_filename}.css`;
-		msg = `Creating ${new_css_path}`;
-		let uri = vscode.Uri.parse(new_css_path);
-		vscode.window.showInformationMessage(msg);
-		const css_import = `@import "./${parent_path}.css";`;
-		let buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
-		vscode.workspace.fs.writeFile(uri, buff).then(_ => {
-			uri = vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
-			vscode.workspace.fs.readFile(uri)
-				.then((data) => {
-					const read_string = new TextDecoder('utf-8').decode(data);
-					const cache = new Map();
-					let existing_imports = '';
-					read_string.split("\n").forEach(x => {
-						x = x.trim();
-						if (!cache.has(x)) {
-							cache.set(x, x)
-							existing_imports += x + "\n";
-						}
-					});
-					existing_imports += css_import;
-					msg = `Adding ${css_import}`;
-					vscode.window.showInformationMessage(msg);
-					buff = Buffer.from(existing_imports, 'utf-8');
-					vscode.workspace.fs.writeFile(uri, buff);
-				});
+	vscode.workspace.fs.createDirectory(css_uri);
+	const parent_filename = getParentFileName(active_document);
+	const new_css_path = `${css_uri.toString()}${parent_filename}.css`;
+	msg = `Creating ${new_css_path}`;
+	vscode.window.showInformationMessage(msg);
+	const css_import = `@import "./${parent_path}.css";`;
+	const new_css_uri = vscode.Uri.parse(new_css_path);
+	let buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
+	vscode.workspace.fs.writeFile(new_css_uri, buff);
+	const createImports = () => {
+		vscode.workspace.fs
+		.readFile(flamekit_uri)
+		.then(data => {
+			const read_string = data ? new TextDecoder('utf-8').decode(data) : "";
+			const cache = new Map();
+			const existing_imports: any[] = [];
+			read_string.split("\n").forEach(x => {
+				x = x.trim();
+				if (x != '' && x.search(css_import) === -1 && !cache.has(x)) {
+					cache.set(x, true)
+					existing_imports.push(x);
+				}
+			});
+			existing_imports.push(css_import + "\n");
+			msg = `Adding ${css_import}`;
+			vscode.window.showInformationMessage(msg);
+			buff = Buffer.from(existing_imports.join("\n"), 'utf-8');
+			vscode.workspace.fs.writeFile(flamekit_uri, buff);
 		});
+	}
+	vscode.workspace.fs.stat(flamekit_uri).then(_ => { createImports(); }, _ => {
+		vscode.window.showInformationMessage(`Creating ${flamekit_uri.toString()}`);
+		vscode.workspace.fs.writeFile(flamekit_uri, Buffer.from(css_import + "\n", 'utf-8'));
 	});
 }
 
@@ -114,4 +120,8 @@ const showImproperFileError = (active_document: vscode.TextDocument) => {
 const showInvalidPathError = (active_document: vscode.TextDocument) => {
 	const invalid_path = getRelatedPath(active_document);
 	vscode.window.showErrorMessage(`Invalid path: ${invalid_path}`);
+};
+
+const showNoWorkspaceError = () => {
+	vscode.window.showErrorMessage('Command must be executed within a Workspace.');
 };
