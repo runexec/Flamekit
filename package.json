@@ -18,6 +18,10 @@
 			{
 				"command": "runexecFlamekit.createCSS",
 				"title": "Phoenix CSS Create"
+			},
+			{
+				"command": "runexecFlamekit.createFragment",
+				"title": "Phoenix Fragment Create"
 			}
 		]
 	},

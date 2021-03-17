@@ -2,9 +2,9 @@
 
 Phoenix Framework Utilities for VS Code / Codium
 
-Developed and tested on Linux.
-
 Video demo file is `demo.webm`.
+
+Developed and tested on Linux.
 
 ### Commands
 
@@ -38,6 +38,45 @@ Video demo file is `demo.webm`.
                     <br />
                     New/Updated file: /tmp/project/assets/css/flamekit.css
                 </p>
+            </td>
+        </tr>
+        <tr>
+            <td>Phoenix Fragment Create</td>
+            <td>
+                <b>Input trigger:</b> `{fragment_name}::eex`<br />
+                On event, triggered by document input, a view fragment file is created,
+                and the triggering input is replaced with `<%= render _input.html.eex %>`.
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Text editor input: `... chart::eex ...`
+                <br />
+                <b>Output:</b>
+                <br />
+                New file: "/lib/example_web/hello/_chart.html.eex"
+                <br />
+                Input replaced: `<%= render _chart.html.eex %>`
+            </td>
+        </tr>
+        <tr>
+            <td>Phoenix Live Fragment Create</td>
+            <td>
+                <b>Input trigger:</b> `{fragment_name}::leex`<br />
+                On event, triggered by document input, a view fragment file is created,
+                and the triggering input is replaced with `<%= live_component @socket, InputNS.Input %>`.
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Text editor input: `... hello::leex ...`
+                <br />
+                <b>Output:</b>
+                <br />
+                New file: "/lib/example_web/hello/hello_live.html.leex"
+                <br />
+                If Missing, New file: "/lib/example_web/hello/hello_live.ex"
+                <br />
+                Input replaced: `<%= live_component @socket, HelloLive %>`
+            </td>
             </td>
         </tr>
     </tbody>
