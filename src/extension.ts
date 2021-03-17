@@ -107,7 +107,8 @@ interface IWorkpingPaths extends IPaths {
 }
 
 const getWorkingPaths = ({ wsf, active_document }: {
-	wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument
+	wsf: readonly vscode.WorkspaceFolder[], 
+	active_document: vscode.TextDocument
 }): IWorkpingPaths => {
 	const root_uri = wsf[0].uri;
 	const assets_path = `${root_uri.toString()}/assets`
@@ -115,7 +116,7 @@ const getWorkingPaths = ({ wsf, active_document }: {
 	const css_path = `${assets_path}/css/${directory}`;
 	const paths = getPaths({ active_document: active_document });
 	const new_paths = { assets_path: assets_path, css_path: css_path };
-	return Object.assign({}, new_paths, paths)
+	return Object.assign({}, new_paths, paths);
 };
 
 const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
@@ -154,7 +155,7 @@ const createFlamekitCSS = ({ data, flamekit_uri, css_import }: {
 	read_string.split("\n").forEach(x => {
 		x = x.trim();
 		if (x != '' && x.search(css_import) === -1 && !cache.has(x)) {
-			cache.set(x, true)
+			cache.set(x, 0);
 			existing_imports.push(x);
 		}
 	});
