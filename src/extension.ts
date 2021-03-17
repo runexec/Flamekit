@@ -28,10 +28,28 @@ export function activate(context: vscode.ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
+
+/*
+* @param active_document - 
+* Current document in focus. Must end with or`html.eex` or `html.leex`
+*
+* @returns Absolute path of document in focus
+*/
 const getCallingPath = (active_document: vscode.TextDocument): string => {
 	return active_document.uri.path;
 };
 
+/*
+* Assuming the standard project layout, returning a relative child path of `/lib/`.
+*
+* Example:
+* # file:///tmp/project/lib/my_web/xyz/index.html.leex
+* parent_path = "/my_web/xyz/index.html.leex"
+* 
+* @param active_document - Current document in focus. Must end with or`html.eex` or `html.leex`
+*
+* @returns A relative child file path of `/lib/`
+*/
 const getParentPath = (active_document: vscode.TextDocument): string | undefined => {
 	return getCallingPath(active_document).split('/lib/')[1];
 };
@@ -53,6 +71,17 @@ const getParentFileName = (active_document: vscode.TextDocument): string | null 
 	return m ? m[0] : null;
 };
 
+/*
+* Assuming the standard project layout, returning a relative child path of `/lib/`.
+*
+* Example:
+* # file:///tmp/project/lib/my_web/xyz/index.html.leex
+* directory = "/my_web/xyz/"
+* 
+* @param active_document - Current document in focus. Must end with or`html.eex` or `html.leex`
+*
+* @returns A relative child folder path of `/lib/`
+*/
 const getDirectory = (active_document: vscode.TextDocument): string | null => {
 	const pp = getParentPath(active_document);
 	if (pp !== undefined) {
