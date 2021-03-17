@@ -28,32 +28,46 @@ export function activate(context: vscode.ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
-const getRelatedPath = (active_document: vscode.TextDocument) => {
+const getCallingPath = (active_document: vscode.TextDocument): string => {
 	return active_document.uri.path;
 };
 
-const getParentPath = (active_document: vscode.TextDocument) => {
-	return getRelatedPath(active_document).split('/lib/')[1];
+const getParentPath = (active_document: vscode.TextDocument): string | undefined => {
+	return getCallingPath(active_document).split('/lib/')[1];
+};
+
+interface IPaths {
+	calling_path: string;
+	parent_path: string | undefined;
 }
 
-const getPaths = (active_document: vscode.TextDocument) => {
+const getPaths = (active_document: vscode.TextDocument): IPaths => {
 	return {
-		related_path: getRelatedPath(active_document),
+		calling_path: getCallingPath(active_document),
 		parent_path: getParentPath(active_document)
 	}
 };
 
-const getParentFileName = (active_document: vscode.TextDocument) => {
-	const m = getRelatedPath(active_document).match(/[\w,\s]+\.html\.(eex|leex)$/);
+const getParentFileName = (active_document: vscode.TextDocument): string | null => {
+	const m = getCallingPath(active_document).match(/[\w,\s]+\.html\.(eex|leex)$/);
 	return m ? m[0] : null;
 };
 
-const getDirectory = (active_document: vscode.TextDocument) => {
-	const name = getParentFileName(active_document);
-	return name ? getParentPath(active_document).split(name)[0] : null;
+const getDirectory = (active_document: vscode.TextDocument): string | null => {
+	const pp = getParentPath(active_document);
+	if (pp !== undefined) {
+		const name = getParentFileName(active_document);
+		return name ? pp.split(name)[0] : null;
+	}
+	return null;
 };
 
-const getWorkingPaths = (wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument) => {
+interface IWorkpingPaths extends IPaths {
+	assets_path: string;
+	css_path: string;
+}
+
+const getWorkingPaths = (wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument): IWorkpingPaths => {
 	const root_uri = wsf[0].uri;
 	const assets_path = `${root_uri.toString()}/assets`
 	const directory = getDirectory(active_document);
@@ -67,7 +81,7 @@ const getFlamekitCSSIndex = (assets_path: string) => {
 	return vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
 };
 
-const createCSSFiles = (wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument) => {
+const createCSSFiles = (wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument): void => {
 	const { assets_path, parent_path, css_path } = getWorkingPaths(wsf, active_document);
 	const flamekit_uri = getFlamekitCSSIndex(assets_path);
 	let msg = `Creating directory ${css_path}`;
@@ -84,44 +98,44 @@ const createCSSFiles = (wsf: readonly vscode.WorkspaceFolder[], active_document:
 	vscode.workspace.fs.writeFile(new_css_uri, buff);
 	const createImports = () => {
 		vscode.workspace.fs
-		.readFile(flamekit_uri)
-		.then(data => {
-			const read_string = data ? new TextDecoder('utf-8').decode(data) : "";
-			const cache = new Map();
-			const existing_imports: any[] = [];
-			read_string.split("\n").forEach(x => {
-				x = x.trim();
-				if (x != '' && x.search(css_import) === -1 && !cache.has(x)) {
-					cache.set(x, true)
-					existing_imports.push(x);
-				}
+			.readFile(flamekit_uri)
+			.then(data => {
+				const read_string = data ? new TextDecoder('utf-8').decode(data) : "";
+				const cache = new Map();
+				const existing_imports: string[] = [];
+				read_string.split("\n").forEach(x => {
+					x = x.trim();
+					if (x != '' && x.search(css_import) === -1 && !cache.has(x)) {
+						cache.set(x, true)
+						existing_imports.push(x);
+					}
+				});
+				existing_imports.push(css_import + "\n");
+				msg = `Adding ${css_import}`;
+				vscode.window.showInformationMessage(msg);
+				buff = Buffer.from(existing_imports.join("\n"), 'utf-8');
+				vscode.workspace.fs.writeFile(flamekit_uri, buff);
 			});
-			existing_imports.push(css_import + "\n");
-			msg = `Adding ${css_import}`;
-			vscode.window.showInformationMessage(msg);
-			buff = Buffer.from(existing_imports.join("\n"), 'utf-8');
-			vscode.workspace.fs.writeFile(flamekit_uri, buff);
-		});
 	}
 	vscode.workspace.fs.stat(flamekit_uri).then(_ => { createImports(); }, _ => {
 		vscode.window.showInformationMessage(`Creating ${flamekit_uri.toString()}`);
 		vscode.workspace.fs.writeFile(flamekit_uri, Buffer.from(css_import + "\n", 'utf-8'));
 	});
-}
+};
 
-const showImproperFileError = (active_document: vscode.TextDocument) => {
-	const related_path = getRelatedPath(active_document);
+const showImproperFileError = (active_document: vscode.TextDocument): void => {
+	const calling_path = getCallingPath(active_document);
 	const msg = `
-	Command must be executed in a file ending with \`html.leex\` or \`html.eex\`. : ${related_path}
+	Command must be executed in a file ending with \`html.leex\` or \`html.eex\`. : ${calling_path}
 	`;
 	vscode.window.showErrorMessage(msg);
 };
 
-const showInvalidPathError = (active_document: vscode.TextDocument) => {
-	const invalid_path = getRelatedPath(active_document);
+const showInvalidPathError = (active_document: vscode.TextDocument): void => {
+	const invalid_path = getCallingPath(active_document);
 	vscode.window.showErrorMessage(`Invalid path: ${invalid_path}`);
 };
 
-const showNoWorkspaceError = () => {
+const showNoWorkspaceError = (): void => {
 	vscode.window.showErrorMessage('Command must be executed within a Workspace.');
 };
