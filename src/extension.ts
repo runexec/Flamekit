@@ -4,7 +4,11 @@ import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
+const FRAGMENT_REGEX = /fragment\{\S+\}/;
+const FRAGMENT_GROUP_REGEX = /fragment\{(\S+)\}/;
+
 export function activate(context: vscode.ExtensionContext) {
+
 	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
 		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 		const active_document = vscode.window.activeTextEditor?.document;
@@ -24,7 +28,40 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	disposable = vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
+		const active_document = vscode.window.activeTextEditor?.document;
+		if (active_document) {
+			const content = active_document.getText().toString();
+			let line_number = 0,
+				display_number = 0;
+			const [line] = content
+				.split("\n")
+				.filter((line, idx) => isFragment(line) && ((line_number = idx) === idx));
+			if (line) {
+				display_number = line_number + 1;
+				vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
+				const startLine = line_number;
+				const startChar = line.search(fragmentTag(line));
+				const startPosition = new vscode.Position(startLine, startChar);
+				const endLine = line_number;
+				const endChar = startChar + fragmentTagLength(line);
+				const endPosition = new vscode.Position(endLine, endChar);
+				const replace_range = new vscode.Range(startPosition, endPosition);
+				const new_fragment = createFragmentString(line);
+				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
+					edit.replace(replace_range, new_fragment);
+					const directory = getDirectory({ active_document: active_document });
+					const path = `${directory}${fragmentFile(fragmentGroup(line))}`;
+					vscode.window.showInformationMessage(`Creating file: ${path}`);
+				});
+			}
+		}
+	});
+
+	context.subscriptions.push(disposable);
 }
+// get active texteditor
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
@@ -107,7 +144,7 @@ interface IWorkpingPaths extends IPaths {
 }
 
 const getWorkingPaths = ({ wsf, active_document }: {
-	wsf: readonly vscode.WorkspaceFolder[], 
+	wsf: readonly vscode.WorkspaceFolder[],
 	active_document: vscode.TextDocument
 }): IWorkpingPaths => {
 	const root_uri = wsf[0].uri;
@@ -213,3 +250,12 @@ const showInvalidPathError = ({ active_document }: {
 const showNoWorkspaceError = (): void => {
 	vscode.window.showErrorMessage('Command must be executed within a Workspace.');
 };
+
+const matchFragment = (x: string): string | null => (x.match(FRAGMENT_REGEX) || [null])[0];
+const isFragment = (x: string) => matchFragment(x) !== null;
+const fragmentFile = (x: string) => `_${x}.html`;
+const fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`;
+const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1];
+const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [])[0];
+const fragmentTagLength = (x: string) => fragmentTag(x).length;
+const createFragmentString = (line: string) => fragmentTemplate(fragmentGroup(line));
