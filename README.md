@@ -98,8 +98,13 @@ VSCode Marketplace
                 After: `<%= render "_green.html" %>`
             </td>
             <td>                
-                <b>Note:</b> 
+                <b>Note:</b>
+                <br />
                 <i>Video demo file is `demo2.webm`.</i>
+                <br />
+                <b>Note:</b>
+                <br /> 
+                <i>Video demo file is `demo3.webm`.</i>
             </td>
         </tr>
         <td>Phoenix Live Fragment Create</td>

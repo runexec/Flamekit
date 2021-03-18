@@ -1,73 +1,28 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { eventNames } from 'node:process';
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
-const FRAGMENT_REGEX = /fragment\{\S+\}/;
-const FRAGMENT_GROUP_REGEX = /fragment\{(\S+)\}/;
-
 const EXTENSION_EEX = "eex";
+const EXTENSION_EEX_REGEX = /\S+\.eex/;
 const EXTENSION_LEEX = "leex";
+const EXTENSION_LEEX_REGEX = /\S+\.leex/;
+const EXTENSION_REGEX = /\S+\.(eex|leex)/;
 
 export function activate(context: vscode.ExtensionContext) {
-
-	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
-		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
-		const active_document = vscode.window.activeTextEditor?.document;
-		if (active_document !== undefined)
-			switch (true) {
-				case !getActivePath({ active_document: active_document }):
-					showInvalidPathError({ active_document: active_document });
-					break;
-				case !getActiveFileName({ active_document: active_document }):
-					showImproperFileError({ active_document: active_document });
-					break;
-				default:
-					wsf !== undefined
-						? createCSSFiles({ wsf: wsf, active_document: active_document })
-						: showNoWorkspaceError();
-			}
-	});
-
+	let disposable = newCreateCSSDisposable(context);
 	context.subscriptions.push(disposable);
-
-	disposable = vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
+	disposable = newCreateFragmentDisposable(context);
+	context.subscriptions.push(disposable);
+	disposable = vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
+		const m = d.fileName.match(EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
-		if (active_document) {
-			const content = active_document.getText().toString();
-			let line_number = 0,
-				display_number = 0;
-			const [line] = content
-				.split("\n")
-				.filter((line, idx) => isFragment(line) && ((line_number = idx) === idx));
-			if (line) {
-				display_number = line_number + 1;
-				vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
-				const startLine = line_number;
-				const startChar = line.search(fragmentTag(line));
-				const startPosition = new vscode.Position(startLine, startChar);
-				const endLine = line_number;
-				const endChar = startChar + fragmentTagLength(line);
-				const endPosition = new vscode.Position(endLine, endChar);
-				const replace_range = new vscode.Range(startPosition, endPosition);
-				const new_fragment = createFragmentString(line);
-				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
-					edit.replace(replace_range, new_fragment);
-					const directory = getDirectory({ active_document: active_document });
-					const new_file = fragmentFile(fragmentGroup(line));
-					const path = `${directory}${new_file}`;
-					const fs_path = getDirectory({ active_document: active_document, fs: true});
-					const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
-					vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
-						vscode.window.showInformationMessage(`Creating file: ${path}`);
-						vscode.workspace.fs.writeFile(uri, Buffer.from('','utf-8'));
-					});
-				});
-			}
+		if (m && active_document) {
+			createFragment(active_document);
 		}
 	});
-
 	context.subscriptions.push(disposable);
 }
 // get active texteditor
@@ -86,7 +41,7 @@ const getCallingPath = ({ active_document, fs = false }: {
 	fs?: boolean
 }): string => {
 	const x = fs ? 'fspath' : 'path';
-	return fs && active_document.uri.fsPath || active_document.uri.path;
+	return fs ? active_document.uri.fsPath : active_document.uri.path;
 };
 
 /*
@@ -106,8 +61,8 @@ const getActivePath = ({ active_document, fs = false }: {
 }): string | undefined => {
 	return (
 		fs
-		? getFullActivePath({ active_document: active_document })
-		: getCallingPath({ active_document: active_document, fs: fs }).split('/lib/')[1]
+			? getFullActivePath({ active_document: active_document })
+			: getCallingPath({ active_document: active_document, fs: fs }).split('/lib/')[1]
 	);
 };
 
@@ -131,7 +86,7 @@ const getPaths = ({ active_document }: {
 	}
 };
 
-const getActiveFileName = ({ active_document, fs=false }: {
+const getActiveFileName = ({ active_document, fs = false }: {
 	active_document: vscode.TextDocument
 	fs?: boolean
 }): string | null => {
@@ -275,11 +230,74 @@ const showNoWorkspaceError = (): void => {
 	vscode.window.showErrorMessage('Command must be executed within a Workspace.');
 };
 
+
+const newCreateCSSDisposable = (context: vscode.ExtensionContext) => {
+	return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
+		const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
+		const active_document = vscode.window.activeTextEditor?.document;
+		if (active_document !== undefined)
+			switch (true) {
+				case !getActivePath({ active_document: active_document }):
+					showInvalidPathError({ active_document: active_document });
+					break;
+				case !getActiveFileName({ active_document: active_document }):
+					showImproperFileError({ active_document: active_document });
+					break;
+				default:
+					wsf !== undefined
+						? createCSSFiles({ wsf: wsf, active_document: active_document })
+						: showNoWorkspaceError();
+			}
+	});
+};
+
+
+const FRAGMENT_REGEX = /fragment\{\S+\}/;
+const FRAGMENT_GROUP_REGEX = /fragment\{(\S+)\}/;
 const matchFragment = (x: string): string | null => (x.match(FRAGMENT_REGEX) || [null])[0];
 const isFragment = (x: string) => matchFragment(x) !== null;
 const fragmentFile = (x: string) => `_${x}.html`;
 const fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`;
 const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1];
-const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [])[0];
+const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [''])[0];
 const fragmentTagLength = (x: string) => fragmentTag(x).length;
 const createFragmentString = (line: string) => fragmentTemplate(fragmentGroup(line));
+const createFragment = (active_document: vscode.TextDocument) => {
+	const content = active_document.getText().toString();
+	let line_number = 0,
+		display_number = 0;
+	const [line] = content
+		.split("\n")
+		.filter((line, idx) => isFragment(line) && ((line_number = idx) === idx));
+	if (line) {
+		display_number = line_number + 1;
+		vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
+		const startLine = line_number;
+		const startChar = line.search(fragmentTag(line));
+		const startPosition = new vscode.Position(startLine, startChar);
+		const endLine = line_number;
+		const endChar = startChar + fragmentTagLength(line);
+		const endPosition = new vscode.Position(endLine, endChar);
+		const replace_range = new vscode.Range(startPosition, endPosition);
+		const new_fragment = createFragmentString(line);
+		vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
+			edit.replace(replace_range, new_fragment);
+			const directory = getDirectory({ active_document: active_document });
+			const new_file = fragmentFile(fragmentGroup(line));
+			const path = `${directory}${new_file}`;
+			const fs_path = getDirectory({ active_document: active_document, fs: true });
+			const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
+			vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
+				vscode.window.showInformationMessage(`Creating file: ${path}`);
+				vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+			});
+		});
+	}
+};
+
+const newCreateFragmentDisposable = (context: vscode.ExtensionContext) => {
+	return vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
+		const active_document = vscode.window.activeTextEditor?.document;
+		if (active_document) createFragment(active_document);
+	});
+};
