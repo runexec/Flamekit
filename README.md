@@ -2,8 +2,6 @@
 
 Phoenix Framework Utilities for VS Code / Codium
 
-Video demo file is `demo.webm`.
-
 Developed and tested on Linux.
 
 ### Commands
@@ -40,7 +38,10 @@ Developed and tested on Linux.
                     New/Updated file: /tmp/project/assets/css/flamekit.css
                 </p>
             </td>
-            <td></td>
+            <td>
+                <b>Note:</b> 
+                <i>Video demo file is `demo.webm`.</i>
+            </td>
         </tr>
         <tr>
             <td>Phoenix Fragment Create</td>
@@ -65,9 +66,8 @@ Developed and tested on Linux.
                 Input replaced: `<%= render "_chart.html" %>`
             </td>
             <td>                
-                <b>Note:</b> <i>All trigger scans are performed `onkeyup` to RegEx focus line.</i>
-                <br />
-                <b>Note:</b> <i>Input is detected anywhere within the document.</i>
+                <b>Note:</b> 
+                <i>Video demo file is `demo2.webm`.</i>
             </td>
         </tr>
         <td>Phoenix Live Fragment Create</td>

@@ -7,6 +7,9 @@ const FLAMEKIT_INDEX = 'flamekit.index.css';
 const FRAGMENT_REGEX = /fragment\{\S+\}/;
 const FRAGMENT_GROUP_REGEX = /fragment\{(\S+)\}/;
 
+const EXTENSION_EEX = "eex";
+const EXTENSION_LEEX = "leex";
+
 export function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerCommand('runexecFlamekit.createCSS', () => {
@@ -52,8 +55,14 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 					edit.replace(replace_range, new_fragment);
 					const directory = getDirectory({ active_document: active_document });
-					const path = `${directory}${fragmentFile(fragmentGroup(line))}`;
-					vscode.window.showInformationMessage(`Creating file: ${path}`);
+					const new_file = fragmentFile(fragmentGroup(line));
+					const path = `${directory}${new_file}`;
+					const fs_path = getDirectory({ active_document: active_document, fs: true});
+					const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
+					vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
+						vscode.window.showInformationMessage(`Creating file: ${path}`);
+						vscode.workspace.fs.writeFile(uri, Buffer.from('','utf-8'));
+					});
 				});
 			}
 		}
@@ -72,10 +81,12 @@ export function deactivate() { }
 *
 * @returns Absolute path of document in focus
 */
-const getCallingPath = ({ active_document }: {
-	active_document: vscode.TextDocument
+const getCallingPath = ({ active_document, fs = false }: {
+	active_document: vscode.TextDocument,
+	fs?: boolean
 }): string => {
-	return active_document.uri.path;
+	const x = fs ? 'fspath' : 'path';
+	return fs && active_document.uri.fsPath || active_document.uri.path;
 };
 
 /*
@@ -89,10 +100,21 @@ const getCallingPath = ({ active_document }: {
 *
 * @returns A relative child file path of `/lib/`
 */
-const getActivePath = ({ active_document }: {
-	active_document: vscode.TextDocument
+const getActivePath = ({ active_document, fs = false }: {
+	active_document: vscode.TextDocument,
+	fs?: boolean
 }): string | undefined => {
-	return getCallingPath({ active_document: active_document }).split('/lib/')[1];
+	return (
+		fs
+		? getFullActivePath({ active_document: active_document })
+		: getCallingPath({ active_document: active_document, fs: fs }).split('/lib/')[1]
+	);
+};
+
+const getFullActivePath = ({ active_document }: {
+	active_document: vscode.TextDocument
+}) => {
+	return getCallingPath({ active_document: active_document, fs: true });
 };
 
 interface IPaths {
@@ -109,10 +131,11 @@ const getPaths = ({ active_document }: {
 	}
 };
 
-const getActiveFileName = ({ active_document }: {
+const getActiveFileName = ({ active_document, fs=false }: {
 	active_document: vscode.TextDocument
+	fs?: boolean
 }): string | null => {
-	const m = getCallingPath({ active_document: active_document }).match(/[\w,\s]+\.html\.(eex|leex)$/);
+	const m = getCallingPath({ active_document: active_document, fs: fs }).match(/[\w,\s]+\.html\.(eex|leex)$/);
 	return m ? m[0] : null;
 };
 
@@ -127,12 +150,13 @@ const getActiveFileName = ({ active_document }: {
 *
 * @returns A relative child folder path of `/lib/`
 */
-const getDirectory = ({ active_document }: {
-	active_document: vscode.TextDocument
+const getDirectory = ({ active_document, fs = false }: {
+	active_document: vscode.TextDocument,
+	fs?: boolean
 }): string | null => {
-	const pp = getActivePath({ active_document: active_document });
+	const pp = getActivePath({ active_document: active_document, fs: fs });
 	if (pp !== undefined) {
-		const name = getActiveFileName({ active_document: active_document });
+		const name = getActiveFileName({ active_document: active_document, fs: fs });
 		return name ? pp.split(name)[0] : null;
 	}
 	return null;
