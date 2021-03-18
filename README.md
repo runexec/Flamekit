@@ -4,6 +4,12 @@ Phoenix Framework Utilities for VS Code / Codium
 
 Developed and tested on Linux.
 
+### Install
+
+Github
+
+VSCode Marketplace
+
 ### Commands
 
 <table>
@@ -20,7 +26,7 @@ Developed and tested on Linux.
                 standard and LiveView Phoenix projects. If this
                 command is called while working on a file ending
                 with `.html.eex` or `.html.leex`, a corresponding
-                css file will be created in `assets/css/`. All
+                CSS file will be created in `assets/css/`. All
                 imports are automatically deduplicated and stored
                 in `assets/css/flamekit.css`
                 <br>
@@ -46,9 +52,9 @@ Developed and tested on Linux.
         <tr>
             <td>Phoenix Fragment Create</td>
             <td>
-                <b>Input trigger:</b> `fragment{fragment_name}`
+                <b>Save Trigger:</b> `fragment{fragment_name}`
                 <br />
-                On event, triggered by document input, a view fragment file is created,
+                On event, triggered after document save, a view fragment file is created,
                 and the triggering input is replaced with `<%= render _input.html.eex %>`.
                 <br />
                 <b>Example:</b>
@@ -57,13 +63,39 @@ Developed and tested on Linux.
                 <br />
                 2. Text editor input: `fragment{chart}`
                 <br />
+                3. <i>save document</i>
+                <br />
                 <b>Output:</b>
                 <br />
                 If Missing, New file: `/lib/example_web/example/_chart.html.eex`
                 <br />
                 If Missing, New file: `/lib/example_web/example/chart.ex`
                 <br />
-                Input replaced: `<%= render "_chart.html" %>`
+                Before: `fragment{chart}`
+                <br />
+                After: `<%= render "_chart.html" %>`
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Active Document: `/lib/example_web/example/example.html.eex`
+                <br />
+                2. Text editor input: `fragment{[red, blue, green]}`
+                <br />
+                3. <i>save document</i>
+                <br />
+                <b>Output:</b>
+                <br />
+                If Missing, New file: `/lib/example_web/example/_red.html.eex`
+                <br />
+                If Missing, New file: `/lib/example_web/example/_blue.html.eex`
+                <br />
+                If Missing, New file: `/lib/example_web/example/_green.html.eex`
+                <br />
+                Before: `fragment{[red, blue, green]}`
+                <br />
+                After: `<%= render "_red.html" %>` <br />
+                After: `<%= render "_blue.html" %>` <br />
+                After: `<%= render "_green.html" %>`
             </td>
             <td>                
                 <b>Note:</b> 
@@ -72,9 +104,9 @@ Developed and tested on Linux.
         </tr>
         <td>Phoenix Live Fragment Create</td>
             <td>
-                <b>Input trigger:</b> `live_fragment{live_fragment_name}`
+                <b>Save Trigger:</b> `live_fragment{live_fragment_name}`
                 <br />
-                On event, triggered by document input, a view fragment file is created,
+                On event, triggered after document save, a view fragment file is created,
                 and the triggering input is replaced with `<%= live_render @conn, InputNS.Input, session: %{} %>`.
                 <br />
                 <b>Example:</b>
@@ -91,18 +123,15 @@ Developed and tested on Linux.
                 <br />
                 Input replaced: `<%= live_render @conn, ChartLive, session: %{} %>`
             </td>
-            <td>                
-                <b>Note:</b> <i>All trigger scans are performed `onkeyup` to RegEx focus line.</i>
-                <br />
-                <b>Note:</b> <i>Input is detected anywhere within the document.</i>
+            <td>
             </td>
         </tr>
         <tr>
             <td>Phoenix Live Component Create</td>
             <td>
-                <b>Input trigger:</b> `live_component{component_name}`
+                <b>Save Trigger:</b> `live_component{component_name}`
                 <br />
-                On event, triggered by document input, a view component file is created,
+                On event, triggered after document save, a view component file is created,
                 and the triggering input is replaced with `<%= live_component @socket, InputNS.Input %>`.
                 <br />
                 <b>Example:</b>
@@ -118,9 +147,6 @@ Developed and tested on Linux.
                 Input replaced: `<%= live_component @socket, HelloComponentLive %>`
             </td>
             <td>                
-                <b>Note:</b> <i>All trigger scans are performed `onkeyup` to RegEx focus line.</i>
-                <br />
-                <b>Note:</b> <i>Input is detected anywhere within the document.</i>
             </td>
         </tr>
     </tbody>
