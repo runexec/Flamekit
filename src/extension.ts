@@ -253,7 +253,7 @@ const newCreateCSSDisposable = (context: vscode.ExtensionContext) => {
 
 enum LineType {
 	Fragment,
-	FragmentArray
+	FragmentArray,
 }
 
 const FRAGMENT_REGEX = /fragment\{\S+\}/;
@@ -261,15 +261,10 @@ const FRAGMENT_GROUP_REGEX = /fragment\{(\S+)\}/;
 const FRAGMENT_ARRAY_REGEX = /fragment\{\[.*\]\}/;
 const FRAGMENT_ARRAY_GROUP_REGEX = /fragment\{\[(.*)\]\}/;
 const matchFragment = (x: string): string | null => (x.match(FRAGMENT_REGEX) || [null])[0];
-const isFragment = (x: string) => matchFragment(x) !== null;
 const matchFragmentArray = (x: string): string | null => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [null, null])[1];
+const isFragment = (x: string) => matchFragment(x) !== null;
 const isFragmentArray = (x: string) => matchFragmentArray(x) !== null;
 const fragmentFile = (x: string) => `_${x}.html`;
-const fragmentArrayFiles = (x: string): string[] => {
-	const group = fragmentArrayGroup(x);
-	const fragments = group ? group.replace(', ', ',').split(',') : false;
-	return fragments ? fragments.map(x => fragmentFile(x)) : [];
-};
 const fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`;
 const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1];
 const fragmentArrayGroup = (x: string) => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [])[1];
@@ -278,26 +273,77 @@ const fragmentArrayTag = (x: string) => (x.match(FRAGMENT_ARRAY_REGEX) || [''])[
 const fragmentTagLength = (x: string) => fragmentTag(x).length;
 const fragmentArrayTagLength = (x: string) => fragmentArrayTag(x).length;
 const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x));
+const fragmentArrayFiles = (x: string): string[] => {
+	const group = fragmentArrayGroup(x);
+	const fragments = group ? group.replace(', ', ',').split(',') : false;
+	return fragments ? fragments.map(x => fragmentFile(x)) : [];
+};
 const fragmentArrayString = (x: string) => {
 	const group = fragmentArrayGroup(x);
 	const fragments = group ? group.replace(', ', ',').split(',') : false;
 	return fragments ? fragments.map(x => fragmentTemplate(x)).join("\n") : "";
 };
+
+const fragmentData = (content: string[]): {
+	line: string | undefined,
+	line_number: number,
+	line_type: LineType | undefined
+} => {
+	let line, line_type, line_number = 0;
+	const [fragment_line] = content.filter((line, idx) => isFragment(line) && ((line_number = idx) === idx));
+	const [fragment_array_line] = content.filter((line, idx) => isFragmentArray(line) && ((line_number = idx) === idx));
+	line = fragment_line || fragment_array_line;
+	line_type = fragment_line ? LineType.Fragment : LineType.FragmentArray;
+	line_type = (line === undefined) ? undefined : line_type;
+	return { line: line, line_number: line_number, line_type: line_type };
+};
+
+const _createFragment = (directory: string, fs_path: string, line: string) => {
+	const new_file = fragmentFile(fragmentGroup(line));
+	const path = `${directory}${new_file}`;
+	const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
+	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
+		vscode.window.showInformationMessage(`Creating file: ${path}`);
+		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+	});
+};
+
+const _createFragmentArray = (directory: string, fs_path: string, line: string) => {
+	const new_files = fragmentArrayFiles(line);
+	const paths = new_files.map(x => `${directory}${x}`);
+	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
+	uris.forEach((uri, idx) => {
+		const fp = paths[idx];
+		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
+			vscode.window.showInformationMessage(`Creating file: ${fp}`);
+			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+		});
+	});
+};
+
+interface ILineTypeFragmentCalls {
+	getTag: Function,
+	getTagLength: Function,
+	getNewFragment: Function,
+	save: Function,
+}
+
+const fragmentLineTypeData = (line_type: LineType): ILineTypeFragmentCalls => {
+	return {
+		getTag: line_type === LineType.Fragment ? fragmentTag : fragmentArrayTag,
+		getTagLength: line_type === LineType.Fragment ? fragmentTagLength : fragmentArrayTagLength,
+		getNewFragment: line_type === LineType.Fragment ? fragmentString : fragmentArrayString,
+		save: line_type === LineType.Fragment ? _createFragment : _createFragmentArray,
+	};
+};
+
 const createFragment = (active_document: vscode.TextDocument) => {
-	const content = active_document.getText().toString();
-	let line: string | undefined,
-		line_type: LineType | undefined,
-		line_number = 0,
-		display_number = 0;
-	const [fragment_line] = content.split("\n").filter((line, idx) => isFragment(line) && ((line_number = idx) === idx));
-	const [fragment_array_line] = content.split("\n").filter((line, idx) => isFragmentArray(line) && ((line_number = idx) === idx));
-	if ((line = fragment_line || fragment_array_line)) {
-		display_number = line_number + 1;
+	const content = active_document.getText().toString().split("\n");
+	const { line, line_number, line_type } = fragmentData(content);
+	if (line && line_type) {
+		const display_number = line_number + 1;
 		vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
-		line_type = fragment_line ? LineType.Fragment : LineType.FragmentArray;
-		const getTag = line_type === LineType.Fragment ? fragmentTag : fragmentArrayTag,
-			getTagLength = line_type === LineType.Fragment ? fragmentTagLength : fragmentArrayTagLength,
-			getNewFragment = line_type === LineType.Fragment ? fragmentString : fragmentArrayString;
+		const { save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type);
 		const tag = getTag(line);
 		const start_line = line_number,
 			start_char = line.indexOf(tag),
@@ -311,30 +357,7 @@ const createFragment = (active_document: vscode.TextDocument) => {
 			edit.replace(replace_range, new_fragment);
 			const directory = getDirectory({ active_document: active_document });
 			const fs_path = getDirectory({ active_document: active_document, fs: true });
-			line = line || ''; // shut up compiler => line || ''
-			switch (line_type) {
-				case LineType.Fragment:
-					const new_file = fragmentFile(fragmentGroup(line));
-					const path = `${directory}${new_file}`;
-					const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
-					vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
-						vscode.window.showInformationMessage(`Creating file: ${path}`);
-						vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-					});
-					break;
-				case LineType.FragmentArray:
-					const new_files = fragmentArrayFiles(line);
-					const paths = new_files.map(x => `${directory}${x}`);
-					const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
-					uris.forEach((uri, idx) => {
-						const fp = paths[idx];
-						vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
-							vscode.window.showInformationMessage(`Creating file: ${fp}`);
-							vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-						});
-					});
-					break;
-			}
+			save(directory, fs_path, line);
 		});
 	}
 };

@@ -69,8 +69,6 @@ VSCode Marketplace
                 <br />
                 If Missing, New file: `/lib/example_web/example/_chart.html.eex`
                 <br />
-                If Missing, New file: `/lib/example_web/example/chart.ex`
-                <br />
                 Before: `fragment{chart}`
                 <br />
                 After: `<%= render "_chart.html" %>`
