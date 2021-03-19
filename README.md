@@ -105,6 +105,10 @@ VSCode Marketplace
                 <b>Note:</b>
                 <br /> 
                 <i>Video demo file is `demo3.webm`.</i>
+                <br />
+                <b>Note:</b>
+                <br /> 
+                <i>Video demo file is `demo4.webm`.</i>
             </td>
         </tr>
         <td>Phoenix Live Fragment Create</td>
