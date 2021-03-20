@@ -106,7 +106,7 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/example/example.html.eex`
                 <br />
-                2. Text editor input: `&lt;tag&gt;=f{[red, blue, green]}&lt;/tag&gt;`
+                2. Text editor input: `&lt;tag attr='xyz'&gt;=f{[red, blue, green]}&lt;/tag&gt;`
                 <br />
                 <br />
                 <b>Output:</b>
@@ -118,11 +118,11 @@ VSCode Marketplace
                 If Missing, New file: `/lib/example_web/example/_green.html.eex`
                 <br />
                 <br />
-                Before: `&lt;tag&gt;=f{[red, blue, green]}&lt;/tag&gt;`
+                Before: `&lt;tag attr='xyz'&gt;=f{[red, blue, green]}&lt;/tag&gt;`
                 <br />
-                After: `&lt;tag&gt;&lt;%= render "_red.html" %&gt;&lt;/tag&gt;`<br />
-                After: `&lt;tag&gt;&lt;%= render "_blue.html" %&gt;&lt;/tag&gt;`<br />
-                After: `&lt;tag&gt;&lt;%= render "_green.html" %&gt;&lt;/tag&gt;`
+                After: `&lt;tag attr='xyz' &gt;&lt;%= render "_red.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= render "_blue.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= render "_green.html" %&gt;&lt;/tag&gt;`
                 <br />
                 <br />
             </td>
