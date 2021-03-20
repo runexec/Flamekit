@@ -52,7 +52,7 @@ VSCode Marketplace
         <tr>
             <td>Phoenix Fragment Create</td>
             <td>
-                <b>Save Trigger:</b> `fragment{fragment_name}`
+                <b>Save Trigger:</b> `=f{fragment_name}`
                 <br />
                 On event, triggered after document save, a view fragment file is created,
                 and the triggering input is replaced with `<%= render _input.html.eex %>`.
@@ -61,7 +61,7 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/example/example.html.eex`
                 <br />
-                2. Text editor input: `fragment{chart}`
+                2. Text editor input: `=f{chart}`
                 <br />
                 3. <i>save document</i>
                 <br />
@@ -69,7 +69,7 @@ VSCode Marketplace
                 <br />
                 If Missing, New file: `/lib/example_web/example/_chart.html.eex`
                 <br />
-                Before: `fragment{chart}`
+                Before: `=f{chart}`
                 <br />
                 After: `<%= render "_chart.html" %>`
                 <br />
@@ -77,7 +77,7 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/example/example.html.eex`
                 <br />
-                2. Text editor input: `fragment{[red, blue, green]}`
+                2. Text editor input: `=f{[red, blue, green]}`
                 <br />
                 3. <i>save document</i>
                 <br />
@@ -89,7 +89,7 @@ VSCode Marketplace
                 <br />
                 If Missing, New file: `/lib/example_web/example/_green.html.eex`
                 <br />
-                Before: `fragment{[red, blue, green]}`
+                Before: `=f{[red, blue, green]}`
                 <br />
                 After: `<%= render "_red.html" %>` <br />
                 After: `<%= render "_blue.html" %>` <br />
@@ -111,7 +111,7 @@ VSCode Marketplace
         </tr>
         <td>Phoenix Live Fragment Create</td>
             <td>
-                <b>Save Trigger:</b> `live_fragment{live_fragment_name}`
+                <b>Save Trigger:</b> `=fl{live_fragment_name}`
                 <br />
                 On event, triggered after document save, a view fragment file is created,
                 and the triggering input is replaced with `<%= live_render @conn, InputNS.Input, session: %{} %>`.
@@ -120,15 +120,17 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/live/example/example_live.html.leex`
                 <br />
-                2. Text editor input: `... live_fragment{chart} ...`
+                2. Text editor input: `... =fl{chart} ...`
                 <br />
                 <b>Output:</b>
                 <br />
-                If Missing, New file: `/lib/example_web/live/example/_chart_live.html.leex`
+                If Missing, New directory: `/lib/example_web/live/example/chart/`
                 <br />
-                If Missing, New file: `/lib/example_web/live/example/chart_live.ex`
+                If Missing, New file: `/lib/example_web/live/example/chart/_chart_live.html.leex`
                 <br />
-                Input replaced: `<%= live_render @conn, ChartLive, session: %{} %>`
+                If Missing, New file: `/lib/example_web/live/example/chart/chart_live.ex`
+                <br />
+                Input replaced: `<%= live_render @conn, Namespace.ChartLive, session: %{} %>`
             </td>
             <td>
             </td>
