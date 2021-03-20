@@ -55,7 +55,8 @@ VSCode Marketplace
                 <b>Save Trigger:</b> `=f{fragment_name}`
                 <br />
                 On event, triggered after document save, a view fragment file is created,
-                and the triggering input is replaced with `<%= render _input.html.eex %>`.
+                and the triggering input is replaced with `&lt;%= render _input.html.eex %&gt;`.
+                <br />
                 <br />
                 <b>Example:</b>
                 <br />
@@ -65,13 +66,16 @@ VSCode Marketplace
                 <br />
                 3. <i>save document</i>
                 <br />
+                <br />
                 <b>Output:</b>
                 <br />
                 If Missing, New file: `/lib/example_web/example/_chart.html.eex`
                 <br />
+                <br />
                 Before: `=f{chart}`
                 <br />
                 After: `<%= render "_chart.html" %>`
+                <br />
                 <br />
                 <b>Example:</b>
                 <br />
@@ -81,6 +85,7 @@ VSCode Marketplace
                 <br />
                 3. <i>save document</i>
                 <br />
+                <br />
                 <b>Output:</b>
                 <br />
                 If Missing, New file: `/lib/example_web/example/_red.html.eex`
@@ -89,11 +94,37 @@ VSCode Marketplace
                 <br />
                 If Missing, New file: `/lib/example_web/example/_green.html.eex`
                 <br />
+                <br />
                 Before: `=f{[red, blue, green]}`
                 <br />
-                After: `<%= render "_red.html" %>` <br />
-                After: `<%= render "_blue.html" %>` <br />
+                After: `<%= render "_red.html" %>`<br />
+                After: `<%= render "_blue.html" %>`<br />
                 After: `<%= render "_green.html" %>`
+                <br />
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Active Document: `/lib/example_web/example/example.html.eex`
+                <br />
+                2. Text editor input: `<tag>=f{[red, blue, green]}</tag>`
+                <br />
+                <br />
+                <b>Output:</b>
+                <br />
+                If Missing, New file: `/lib/example_web/example/_red.html.eex`
+                <br />
+                If Missing, New file: `/lib/example_web/example/_blue.html.eex`
+                <br />
+                If Missing, New file: `/lib/example_web/example/_green.html.eex`
+                <br />
+                <br />
+                Before: `=f{[red, blue, green]}`
+                <br />
+                After: `&lt;tag&gt;&lt;%= render "_red.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag&gt;&lt;%= render "_blue.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag&gt;&lt;%= render "_green.html" %&gt;&lt;/tag&gt;`
+                <br />
+                <br />
             </td>
             <td>                
                 <b>Note:</b>
