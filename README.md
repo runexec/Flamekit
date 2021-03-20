@@ -106,7 +106,7 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/example/example.html.eex`
                 <br />
-                2. Text editor input: `<tag>=f{[red, blue, green]}</tag>`
+                2. Text editor input: `&lt;tag&gt;=f{[red, blue, green]}&lt;/tag&gt;`
                 <br />
                 <br />
                 <b>Output:</b>
@@ -118,7 +118,7 @@ VSCode Marketplace
                 If Missing, New file: `/lib/example_web/example/_green.html.eex`
                 <br />
                 <br />
-                Before: `=f{[red, blue, green]}`
+                Before: `&lt;tag&gt;=f{[red, blue, green]}&lt;/tag&gt;`
                 <br />
                 After: `&lt;tag&gt;&lt;%= render "_red.html" %&gt;&lt;/tag&gt;`<br />
                 After: `&lt;tag&gt;&lt;%= render "_blue.html" %&gt;&lt;/tag&gt;`<br />
