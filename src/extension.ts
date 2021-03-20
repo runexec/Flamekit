@@ -276,13 +276,15 @@ const isFragment = (x: string) => matchFragment(x) !== null,
 	isFragmentArray = (x: string) => matchFragmentArray(x) !== null,
 	isFragmentLiveArray = (x: string) => matchFragmentLiveArray(x) !== null;
 
-const fragmentFile = (x: string) => `_${x.trimLeft()}.html`;
-const fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`;
+const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
+	fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`,
+	fragmentLiveFile = (x: string) => `_${x.trimLeft()}_live.html`,
+	fragmentLiveTemplate = (x: string) => `<%= render "${fragmentLiveFile(x)}" %>`;
 
-const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1];
-const fragmentLiveGroup = (x: string) => (x.match(FRAGMENT_LIVE_GROUP_REGEX) || [])[1];
-const fragmentArrayGroup = (x: string) => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [])[1];
-const fragmentLiveArrayGroup = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1];
+const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1],
+	fragmentLiveGroup = (x: string) => (x.match(FRAGMENT_LIVE_GROUP_REGEX) || [])[1],
+	fragmentArrayGroup = (x: string) => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [])[1],
+	fragmentLiveArrayGroup = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1];
 
 const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [''])[0];
 const fragmentLiveTag = (x: string) => (x.match(FRAGMENT_LIVE_REGEX) || [''])[0];
@@ -295,7 +297,7 @@ const fragmentArrayTagLength = (x: string) => fragmentArrayTag(x).length;
 const fragmentLiveArrayTagLength = (x: string) => fragmentLiveArrayTag(x).length;
 
 const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x));
-const fragmentLiveString = (x: string) => fragmentTemplate(fragmentLiveGroup(x));
+const fragmentLiveString = (x: string) => fragmentLiveTemplate(fragmentLiveGroup(x));
 const fragmentArrayString = (x: string) => {
 	const group = fragmentArrayGroup(x);
 	const fragments = group ? group.split(', ') : false;
@@ -305,7 +307,7 @@ const fragmentArrayString = (x: string) => {
 const fragmentLiveArrayString = (x: string) => {
 	const group = fragmentLiveArrayGroup(x);
 	const fragments = group ? group.split(', ') : false;
-	return fragments ? fragments.map(x => fragmentTemplate(x)).join("\n") : "";
+	return fragments ? fragments.map(x => fragmentLiveTemplate(x)).join("\n") : "";
 };
 
 const fragmentArrayFiles = (x: string): string[] => {
@@ -318,7 +320,7 @@ const fragmentArrayFiles = (x: string): string[] => {
 const fragmentLiveArrayFiles = (x: string): string[] => {
 	const group = fragmentLiveArrayGroup(x);
 	const fragments = group ? group.split(', ') : false;
-	return fragments ? fragments.map(x => fragmentFile(x)) : [];
+	return fragments ? fragments.map(x => fragmentLiveFile(x)) : [];
 };
 
 const fragmentData = (content: string[]): {
@@ -328,7 +330,7 @@ const fragmentData = (content: string[]): {
 } => {
 	let line_type = LineType.Unknown,
 		line_number = 0;
-	const isValid = (x: string) => isFragment(x) || isFragmentLive(x) || isFragmentArray(x),
+	const isValid = (x: string) => isFragment(x) || isFragmentLive(x) || isFragmentArray(x) || isFragmentLiveArray(x),
 		lines = content.filter((line, idx) => isValid(line) && ((line_number = idx) === idx)),
 		line = lines.filter(x => x !== undefined)[0];
 	if (line !== undefined) {
@@ -336,6 +338,7 @@ const fragmentData = (content: string[]): {
 			case isFragment(line): line_type = LineType.Fragment; break;
 			case isFragmentLive(line): line_type = LineType.FragmentLive; break;
 			case isFragmentArray(line): line_type = LineType.FragmentArray; break;
+			case isFragmentLiveArray(line): line_type = LineType.FragmentLiveArray; break;
 			default: line_type = LineType.Unknown;
 		}
 	}
@@ -376,8 +379,8 @@ const _createFragmentArray = (directory: string, fs_path: string, line: string) 
 };
 
 const _createFragmentLiveArray = (directory: string, fs_path: string, line: string) => {
-	const new_files = fragmentArrayFiles(line);
-	const paths = new_files.map(x => `${directory}${x}`.replace(/\.html/, '_live.html'));
+	const new_files = fragmentLiveArrayFiles(line);
+	const paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`);
 	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
@@ -418,7 +421,7 @@ const fragment_data = {
 		getTag: fragmentLiveArrayTag,
 		getTagLength: fragmentLiveArrayTagLength,
 		getNewFragment: fragmentLiveArrayString,
-		save: _createFragmentLive
+		save: _createFragmentLiveArray
 	},
 	fragment_unknown_data = {
 		getTag: (x: string) => { },
@@ -455,7 +458,6 @@ const createFragment = (active_document: vscode.TextDocument) => {
 			end_position = new vscode.Position(end_line, end_char),
 			replace_range = new vscode.Range(start_position, end_position),
 			new_fragment = getNewFragment(line);
-		vscode.window.showInformationMessage(`${new_fragment}`);
 		vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 			edit.replace(replace_range, new_fragment);
 			const directory = getDirectory({ active_document: active_document });

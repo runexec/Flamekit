@@ -1,4 +1,4 @@
-# Flamekit
+# lfamekit
 
 Phoenix Framework Utilities for VS Code / Codium
 
@@ -28,7 +28,7 @@ VSCode Marketplace
                 with `.html.eex` or `.html.leex`, a corresponding
                 CSS file will be created in `assets/css/`. All
                 imports are automatically deduplicated and stored
-                in `assets/css/flamekit.css`
+                in `assets/css/lfamekit.css`
                 <br>
                 <p>
                     <b>Example:</b>
@@ -41,7 +41,7 @@ VSCode Marketplace
                     <br />
                     New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
                     <br />
-                    New/Updated file: /tmp/project/assets/css/flamekit.css
+                    New/Updated file: /tmp/project/assets/css/lfamekit.css
                 </p>
             </td>
             <td>
@@ -111,7 +111,7 @@ VSCode Marketplace
         </tr>
         <td>Phoenix Live Fragment Create</td>
             <td>
-                <b>Save Trigger:</b> `=fl{live_fragment_name}`
+                <b>Save Trigger:</b> `=lf{live_fragment_name}`
                 <br />
                 On event, triggered after document save, a view fragment file is created,
                 and the triggering input is replaced with `<%= live_render @conn, InputNS.Input, session: %{} %>`.
@@ -120,7 +120,7 @@ VSCode Marketplace
                 <br />
                 1. Active Document: `/lib/example_web/live/example/example_live.html.leex`
                 <br />
-                2. Text editor input: `... =fl{chart} ...`
+                2. Text editor input: `... =lf{chart} ...`
                 <br />
                 <b>Output:</b>
                 <br />
