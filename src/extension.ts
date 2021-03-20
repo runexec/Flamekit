@@ -5,11 +5,11 @@ import * as vscode from 'vscode';
 
 const FLAMEKIT_INDEX = 'flamekit.index.css';
 
-const EXTENSION_EEX = "eex";
-const EXTENSION_EEX_REGEX = /\S+\.eex/;
-const EXTENSION_LEEX = "leex";
-const EXTENSION_LEEX_REGEX = /\S+\.leex/;
-const EXTENSION_REGEX = /\S+\.(eex|leex)/;
+const EXTENSION_EEX = "eex",
+	EXTENSION_EEX_REGEX = /\S+\.eex/,
+	EXTENSION_LEEX = "leex",
+	EXTENSION_LEEX_REGEX = /\S+\.leex/,
+	EXTENSION_REGEX = /\S+\.(eex|leex)/;
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
@@ -125,12 +125,12 @@ const getWorkingPaths = ({ wsf, active_document }: {
 	wsf: readonly vscode.WorkspaceFolder[],
 	active_document: vscode.TextDocument
 }): IWorkpingPaths => {
-	const root_uri = wsf[0].uri;
-	const assets_path = `${root_uri.toString()}/assets`;
-	const directory = getDirectory({ active_document: active_document });
-	const css_path = `${assets_path}/css/${directory}`;
-	const paths = getPaths({ active_document: active_document });
-	const new_paths = { assets_path: assets_path, css_path: css_path };
+	const root_uri = wsf[0].uri,
+		assets_path = `${root_uri.toString()}/assets`,
+		directory = getDirectory({ active_document: active_document }),
+		css_path = `${assets_path}/css/${directory}`,
+		paths = getPaths({ active_document: active_document }),
+		new_paths = { assets_path: assets_path, css_path: css_path };
 	return Object.assign({}, new_paths, paths);
 };
 
@@ -141,8 +141,8 @@ const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.U
 const createCSSPath = ({ css_path }: {
 	css_path: string
 }): void => {
-	const css_uri = vscode.Uri.parse(css_path);
-	let msg = `Creating directory ${css_path}`;
+	const css_uri = vscode.Uri.parse(css_path),
+		msg = `Creating directory ${css_path}`;
 	vscode.window.showInformationMessage(msg);
 	vscode.workspace.fs.createDirectory(css_uri);
 };
@@ -152,9 +152,9 @@ const createNewCSS = ({ active_path, new_css_path }: {
 	new_css_path: string
 }): string => {
 	vscode.window.showInformationMessage(`Creating ${new_css_path}`);
-	const css_import = `@import "./${active_path}.css";`;
-	const new_css_uri = vscode.Uri.parse(new_css_path);
-	const buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
+	const css_import = `@import "./${active_path}.css";`,
+		new_css_uri = vscode.Uri.parse(new_css_path),
+		buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
 	vscode.workspace.fs.writeFile(new_css_uri, buff);
 	return css_import;
 };
@@ -164,9 +164,9 @@ const createFlamekitCSS = ({ data, flamekit_uri, css_import }: {
 	flamekit_uri: vscode.Uri,
 	css_import: string
 }) => {
-	const read_string = data ? new TextDecoder('utf-8').decode(data) : '';
-	const cache = new Map();
-	const existing_imports: string[] = [];
+	const read_string = data ? new TextDecoder('utf-8').decode(data) : '',
+		cache = new Map(),
+		existing_imports: string[] = [];
 	read_string.split("\n").forEach(x => {
 		x = x.trim();
 		if (x !== '' && x.search(css_import) === -1 && !cache.has(x)) {
@@ -195,12 +195,12 @@ const createCSSFiles = ({ wsf, active_document }: {
 }): void => {
 	const { assets_path, active_path, css_path } = getWorkingPaths({ wsf: wsf, active_document: active_document });
 	if (active_path) {
-		const flamekit_uri = getFlamekitCSSIndex({ assets_path: assets_path });
 		createCSSPath({ css_path: css_path });
-		const active_filename = getActiveFileName({ active_document: active_document });
-		const new_css_path = `${vscode.Uri.parse(css_path).toString()}${active_filename}.css`;
-		const css_import = createNewCSS({ active_path: active_path, new_css_path: new_css_path });
-		const call = () => createImports({ flamekit_uri: flamekit_uri, css_import: css_import });
+		const flamekit_uri = getFlamekitCSSIndex({ assets_path: assets_path }),
+			active_filename = getActiveFileName({ active_document: active_document }),
+			new_css_path = `${vscode.Uri.parse(css_path).toString()}${active_filename}.css`,
+			css_import = createNewCSS({ active_path: active_path, new_css_path: new_css_path }),
+			call = () => createImports({ flamekit_uri: flamekit_uri, css_import: css_import });
 		vscode.workspace.fs.stat(flamekit_uri).then(_ => { call(); }, _ => {
 			vscode.window.showInformationMessage(`Creating ${flamekit_uri.toString()}`);
 			vscode.workspace.fs.writeFile(flamekit_uri, Buffer.from(css_import + "\n", 'utf-8'));
@@ -211,8 +211,8 @@ const createCSSFiles = ({ wsf, active_document }: {
 const showImproperFileError = ({ active_document }: {
 	active_document: vscode.TextDocument
 }): void => {
-	const calling_path = getCallingPath({ active_document: active_document });
-	const msg = `
+	const calling_path = getCallingPath({ active_document: active_document }),
+		msg = `
 	Command must be executed in a file ending with \`html.leex\` or \`html.eex\`. : ${calling_path}
 	`;
 	vscode.window.showErrorMessage(msg);
@@ -286,40 +286,38 @@ const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1],
 	fragmentArrayGroup = (x: string) => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [])[1],
 	fragmentLiveArrayGroup = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1];
 
-const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [''])[0];
-const fragmentLiveTag = (x: string) => (x.match(FRAGMENT_LIVE_REGEX) || [''])[0];
-const fragmentArrayTag = (x: string) => (x.match(FRAGMENT_ARRAY_REGEX) || [''])[0];
-const fragmentLiveArrayTag = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_REGEX) || [''])[0];
+const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [''])[0],
+	fragmentLiveTag = (x: string) => (x.match(FRAGMENT_LIVE_REGEX) || [''])[0],
+	fragmentArrayTag = (x: string) => (x.match(FRAGMENT_ARRAY_REGEX) || [''])[0],
+	fragmentLiveArrayTag = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_REGEX) || [''])[0];
 
-const fragmentTagLength = (x: string) => fragmentTag(x).length;
-const fragmentLiveTagLength = (x: string) => fragmentLiveTag(x).length;
-const fragmentArrayTagLength = (x: string) => fragmentArrayTag(x).length;
-const fragmentLiveArrayTagLength = (x: string) => fragmentLiveArrayTag(x).length;
+const fragmentTagLength = (x: string) => fragmentTag(x).length,
+	fragmentLiveTagLength = (x: string) => fragmentLiveTag(x).length,
+	fragmentArrayTagLength = (x: string) => fragmentArrayTag(x).length,
+	fragmentLiveArrayTagLength = (x: string) => fragmentLiveArrayTag(x).length;
 
-const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x));
-const fragmentLiveString = (x: string) => fragmentLiveTemplate(fragmentLiveGroup(x));
-const fragmentArrayString = (x: string) => {
-	const group = fragmentArrayGroup(x);
-	const fragments = group ? group.split(', ') : false;
-	return fragments ? fragments.map(x => fragmentTemplate(x)).join("\n") : "";
-};
-
-const fragmentLiveArrayString = (x: string) => {
-	const group = fragmentLiveArrayGroup(x);
-	const fragments = group ? group.split(', ') : false;
-	return fragments ? fragments.map(x => fragmentLiveTemplate(x)).join("\n") : "";
-};
+const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x)),
+	fragmentLiveString = (x: string) => fragmentLiveTemplate(fragmentLiveGroup(x)),
+	fragmentArrayString = (x: string) => {
+		const group = fragmentArrayGroup(x);
+		const fragments = group ? group.split(', ') : false;
+		return fragments ? fragments.map(x => fragmentTemplate(x)).join("\n") : "";
+	},
+	fragmentLiveArrayString = (x: string) => {
+		const group = fragmentLiveArrayGroup(x);
+		const fragments = group ? group.split(', ') : false;
+		return fragments ? fragments.map(x => fragmentLiveTemplate(x)).join("\n") : "";
+	};
 
 const fragmentArrayFiles = (x: string): string[] => {
-	const group = fragmentArrayGroup(x);
-	const fragments = group ? group.split(', ') : false;
-	console.error(fragments);
+	const group = fragmentArrayGroup(x),
+		fragments = group ? group.split(', ') : false;
 	return fragments ? fragments.map(x => fragmentFile(x)) : [];
 };
 
 const fragmentLiveArrayFiles = (x: string): string[] => {
-	const group = fragmentLiveArrayGroup(x);
-	const fragments = group ? group.split(', ') : false;
+	const group = fragmentLiveArrayGroup(x),
+		fragments = group ? group.split(', ') : false;
 	return fragments ? fragments.map(x => fragmentLiveFile(x)) : [];
 };
 
@@ -346,9 +344,9 @@ const fragmentData = (content: string[]): {
 };
 
 const _createFragment = (directory: string, fs_path: string, line: string) => {
-	const new_file = fragmentFile(fragmentGroup(line));
-	const path = `${directory}${new_file}`;
-	const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
+	const new_file = fragmentFile(fragmentGroup(line)),
+		path = `${directory}${new_file}`,
+		uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
@@ -356,9 +354,9 @@ const _createFragment = (directory: string, fs_path: string, line: string) => {
 };
 
 const _createFragmentLive = (directory: string, fs_path: string, line: string) => {
-	const new_file = fragmentFile(fragmentLiveGroup(line)).replace(/\.html/, '_live.html');
-	const path = `${directory}${new_file}`;
-	const uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_LEEX);
+	const new_file = fragmentFile(fragmentLiveGroup(line)).replace(/\.html/, '_live.html'),
+		path = `${directory}${new_file}`,
+		uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_LEEX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
@@ -366,9 +364,9 @@ const _createFragmentLive = (directory: string, fs_path: string, line: string) =
 };
 
 const _createFragmentArray = (directory: string, fs_path: string, line: string) => {
-	const new_files = fragmentArrayFiles(line);
-	const paths = new_files.map(x => `${directory}${x}`);
-	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
+	const new_files = fragmentArrayFiles(line),
+		paths = new_files.map(x => `${directory}${x}`),
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
@@ -379,9 +377,9 @@ const _createFragmentArray = (directory: string, fs_path: string, line: string) 
 };
 
 const _createFragmentLiveArray = (directory: string, fs_path: string, line: string) => {
-	const new_files = fragmentLiveArrayFiles(line);
-	const paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`);
-	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
+	const new_files = fragmentLiveArrayFiles(line),
+		paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`),
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
@@ -460,8 +458,8 @@ const createFragment = (active_document: vscode.TextDocument) => {
 			new_fragment = getNewFragment(line);
 		vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 			edit.replace(replace_range, new_fragment);
-			const directory = getDirectory({ active_document: active_document });
-			const fs_path = getDirectory({ active_document: active_document, fs: true });
+			const directory = getDirectory({ active_document: active_document }),
+				fs_path = getDirectory({ active_document: active_document, fs: true });
 			save(directory, fs_path, line);
 		});
 	}
