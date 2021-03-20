@@ -381,7 +381,7 @@ const _createFragmentArray = (directory: string, fs_path: string, line: string) 
 const _createFragmentLiveArray = (directory: string, fs_path: string, line: string) => {
 	const new_files = fragmentLiveArrayFiles(line);
 	const paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`);
-	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
+	const uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
