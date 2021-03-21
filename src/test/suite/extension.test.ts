@@ -10,7 +10,7 @@ import * as __C from '../../constants';
 vscode.window.showInformationMessage('Start all tests.');
 
 describe('Constants', () => {
-	describe('EXTENSION', () => {
+	describe('Extension Patterns', () => {
 		it('EXTENSION_EEX', () => assert.strictEqual(__C.EXTENSION_EEX, 'eex'));
 		it('EXTENSION_EEX != leex', () => assert.notStrictEqual(__C.EXTENSION_EEX, 'leex'));
 		it('EXTENSION_LEEX', () => assert.strictEqual(__C.EXTENSION_LEEX, 'leex'));
@@ -18,6 +18,7 @@ describe('Constants', () => {
 		it('EXTENSION_EEX_REGEX', () => assert.ok('file.eex'.match(__C.EXTENSION_EEX_REGEX)));
 		it('EXTENSION_EEX_REGEX != leex', () => assert.strictEqual('file.leex'.match(__C.EXTENSION_EEX_REGEX), null));
 		it('EXTENSION_LEEX_REGEX', () => assert.ok('file.leex'.match(__C.EXTENSION_LEEX_REGEX)));
-		it('EXTENSION_REGEX', () => assert.ok(['file.eex','file.leex'].some(x => x.match(__C.EXTENSION_REGEX))));
+		it('EXTENSION_LEEX_REGEX != eex', () => assert.strictEqual('file.eex'.match(__C.EXTENSION_LEEX_REGEX), null));
+		it('EXTENSION_REGEX', () => assert.ok(['file.eex','file.leex'].every(x => x.match(__C.EXTENSION_REGEX))));
 	});
 });

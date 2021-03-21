@@ -6,6 +6,7 @@ import { LineType } from '../enums';
 import * as Util from '../util/util';
 import { ICreateFragmentStack, ILineTypeFragmentCalls } from '../interfaces';
 
+// just one user, so this is okay.
 const _store_fragment_singleton: [tagStart: string, tagEnd: string][] = [];
 
 export const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
