@@ -3,13 +3,9 @@ import { eventNames } from 'node:process';
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 
-const FLAMEKIT_INDEX = 'flamekit.index.css';
+import * as __C from'./constants';
 
-const EXTENSION_EEX = "eex",
-	EXTENSION_EEX_REGEX = /\S+\.eex/,
-	EXTENSION_LEEX = "leex",
-	EXTENSION_LEEX_REGEX = /\S+\.leex/,
-	EXTENSION_REGEX = /\S+\.(eex|leex)/;
+const FLAMEKIT_INDEX = 'flamekit.index.css';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
@@ -17,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 	disposable = newCreateFragmentDisposable(context);
 	context.subscriptions.push(disposable);
 	disposable = vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
-		const m = d.fileName.match(EXTENSION_REGEX);
+		const m = d.fileName.match(__C.EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
 		if (m && active_document) {
 			createFragment(active_document);
@@ -424,7 +420,7 @@ const getFragmentData = (content: string[]): {
 const _createFragment = (directory: string, fs_path: string, line: string) => {
 	const new_file = fragmentFile(fragmentGroup(line)),
 		path = `${directory}${new_file}`,
-		uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_EEX);
+		uri = vscode.Uri.parse(fs_path + new_file + '.' + __C.EXTENSION_EEX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
@@ -434,7 +430,7 @@ const _createFragment = (directory: string, fs_path: string, line: string) => {
 const _createFragmentLive = (directory: string, fs_path: string, line: string) => {
 	const new_file = fragmentFile(fragmentLiveGroup(line)).replace(/\.html/, '_live.html'),
 		path = `${directory}${new_file}`,
-		uri = vscode.Uri.parse(fs_path + new_file + '.' + EXTENSION_LEEX);
+		uri = vscode.Uri.parse(fs_path + new_file + '.' + __C.EXTENSION_LEEX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
@@ -444,7 +440,7 @@ const _createFragmentLive = (directory: string, fs_path: string, line: string) =
 const _createFragmentArray = (directory: string, fs_path: string, line: string) => {
 	const new_files = fragmentArrayFiles(line),
 		paths = new_files.map(x => `${directory}${x}`),
-		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_EEX));
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + __C.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
@@ -457,7 +453,7 @@ const _createFragmentArray = (directory: string, fs_path: string, line: string) 
 const _createFragmentLiveArray = (directory: string, fs_path: string, line: string) => {
 	const new_files = fragmentLiveArrayFiles(line),
 		paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`),
-		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + __C.EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
@@ -470,7 +466,7 @@ const _createFragmentLiveArray = (directory: string, fs_path: string, line: stri
 const _createFragmentList = (directory: string, fs_path: string, line: string) => {
 	const new_files = fragmentListFiles(line),
 		paths = new_files.map(x => `${directory}${x})}`),
-		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + __C.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
@@ -483,7 +479,7 @@ const _createFragmentList = (directory: string, fs_path: string, line: string) =
 const _createFragmentLiveList = (directory: string, fs_path: string, line: string) => {
 	const new_files = fragmentLiveListFiles(line),
 		paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`),
-		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + EXTENSION_LEEX));
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + __C.EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
