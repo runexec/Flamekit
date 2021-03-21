@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 
 import * as __C from'./constants';
 import { LineType } from './enums';
+import { IPaths, IWorkpingPaths } from './interfaces';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
@@ -65,11 +66,6 @@ const getFullActivePath = ({ active_document }: {
 	return getCallingPath({ active_document: active_document, fs: true });
 };
 
-interface IPaths {
-	calling_path: string;
-	active_path: string | undefined;
-}
-
 const getPaths = ({ active_document }: {
 	active_document: vscode.TextDocument
 }): IPaths => {
@@ -109,11 +105,6 @@ const getDirectory = ({ active_document, fs = false }: {
 	}
 	return null;
 };
-
-interface IWorkpingPaths extends IPaths {
-	assets_path: string;
-	css_path: string;
-}
 
 const getWorkingPaths = ({ wsf, active_document }: {
 	wsf: readonly vscode.WorkspaceFolder[],
