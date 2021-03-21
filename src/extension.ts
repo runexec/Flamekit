@@ -4,8 +4,7 @@ import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 
 import * as __C from'./constants';
-
-const FLAMEKIT_INDEX = 'flamekit.index.css';
+import { LineType } from './enums';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
@@ -130,7 +129,7 @@ const getWorkingPaths = ({ wsf, active_document }: {
 };
 
 const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
-	return vscode.Uri.parse(`${assets_path}/css/${FLAMEKIT_INDEX}`);
+	return vscode.Uri.parse(`${assets_path}/css/${__C.FLAMEKIT_INDEX}`);
 };
 
 const createCSSPath = ({ css_path }: {
@@ -244,31 +243,6 @@ const newCreateCSSDisposable = (context: vscode.ExtensionContext) => {
 	});
 };
 
-enum LineType {
-	Fragment,
-	FragmentArray,
-	FragmentLive,
-	FragmentLiveArray,
-	FragmentList,
-	FragmentLiveList,
-	Unknown
-}
-
-const FRAGMENT_REGEX = /=f\{\S+\}/,
-	FRAGMENT_GROUP_REGEX = /=f\{(\S+)\}/,
-	FRAGMENT_ARRAY_REGEX = /=f\{\[.*?\]\}/,
-	FRAGMENT_ARRAY_GROUP_REGEX = /=f\{\[(.*?)\]\}/,
-	FRAGMENT_LIVE_REGEX = /=lf\{\S+\}/,
-	FRAGMENT_LIVE_GROUP_REGEX = /=lf\{(\S+)\}/,
-	FRAGMENT_LIVE_ARRAY_REGEX = /=lf\{\[.*?\]\}/,
-	FRAGMENT_LIVE_ARRAY_GROUP_REGEX = /=lf\{\[(.*?)\]\}/,
-	FRAGMENT_LIST_GROUP_REGEX = />(=l\{\[.*?)<\//,
-	FRAGMENT_LIVE_LIST_GROUP_REGEX = />(=ll\{\[.*?)<\//,
-	FRAGMENT_LISTSTRING_REGEX = /<(.*?)>=l/,
-	FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX = /((=l\{\[)|(\]\}))/g,
-	FRAGMENT_LIVE_LISTSTRING_REGEX = /<(.*?)>=ll/,
-	FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX = /((=ll\{\[)|(\]\}))/g;
-
 const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
 	fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`,
 	fragmentLiveFile = (x: string) => `_${x.trimLeft()}_live.html`,
@@ -288,12 +262,12 @@ const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
 		return `${tagStart}<%= live_render "${fragmentListFile(x).replace(/\.html/, '')}" %>${tagEnd}`;
 	};
 
-const matchFragment = (x: string): string | null => (x.match(FRAGMENT_REGEX) || [null])[0],
-	matchFragmentLive = (x: string): string | null => (x.match(FRAGMENT_LIVE_REGEX) || [null])[0],
-	matchFragmentArray = (x: string): string | null => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [null, null])[1],
-	matchFragmentLiveArray = (x: string): string | null => (x.match(FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [null, null])[1],
-	matchFragmentList = (x: string): string | null => (x.match(FRAGMENT_LIST_GROUP_REGEX) || [null, null])[1],
-	matchFragmentLiveList = (x: string): string | null => (x.match(FRAGMENT_LIVE_LIST_GROUP_REGEX) || [null, null])[1];
+const matchFragment = (x: string): string | null => (x.match(__C.FRAGMENT_REGEX) || [null])[0],
+	matchFragmentLive = (x: string): string | null => (x.match(__C.FRAGMENT_LIVE_REGEX) || [null])[0],
+	matchFragmentArray = (x: string): string | null => (x.match(__C.FRAGMENT_ARRAY_GROUP_REGEX) || [null, null])[1],
+	matchFragmentLiveArray = (x: string): string | null => (x.match(__C.FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [null, null])[1],
+	matchFragmentList = (x: string): string | null => (x.match(__C.FRAGMENT_LIST_GROUP_REGEX) || [null, null])[1],
+	matchFragmentLiveList = (x: string): string | null => (x.match(__C.FRAGMENT_LIVE_LIST_GROUP_REGEX) || [null, null])[1];
 
 const isFragment = (x: string) => matchFragment(x) !== null,
 	isFragmentLive = (x: string) => matchFragmentLive(x) !== null,
@@ -303,19 +277,19 @@ const isFragment = (x: string) => matchFragment(x) !== null,
 	isFragmentList_LineType = (x: LineType) => x === LineType.FragmentList || LineType.FragmentLiveList,
 	isFragmentLiveList = (x: string) => matchFragmentLiveList(x) !== null;
 
-const fragmentGroup = (x: string) => (x.match(FRAGMENT_GROUP_REGEX) || [])[1],
-	fragmentLiveGroup = (x: string) => (x.match(FRAGMENT_LIVE_GROUP_REGEX) || [])[1],
-	fragmentArrayGroup = (x: string) => (x.match(FRAGMENT_ARRAY_GROUP_REGEX) || [])[1],
-	fragmentLiveArrayGroup = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1],
-	fragmentListGroup = (x: string) => (x.match(FRAGMENT_LIST_GROUP_REGEX) || [])[1],
-	fragmentLiveListGroup = (x: string) => (x.match(FRAGMENT_LIVE_LIST_GROUP_REGEX) || [])[1];
+const fragmentGroup = (x: string) => (x.match(__C.FRAGMENT_GROUP_REGEX) || [])[1],
+	fragmentLiveGroup = (x: string) => (x.match(__C.FRAGMENT_LIVE_GROUP_REGEX) || [])[1],
+	fragmentArrayGroup = (x: string) => (x.match(__C.FRAGMENT_ARRAY_GROUP_REGEX) || [])[1],
+	fragmentLiveArrayGroup = (x: string) => (x.match(__C.FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1],
+	fragmentListGroup = (x: string) => (x.match(__C.FRAGMENT_LIST_GROUP_REGEX) || [])[1],
+	fragmentLiveListGroup = (x: string) => (x.match(__C.FRAGMENT_LIVE_LIST_GROUP_REGEX) || [])[1];
 
-const fragmentTag = (x: string) => (x.match(FRAGMENT_REGEX) || [''])[0],
-	fragmentLiveTag = (x: string) => (x.match(FRAGMENT_LIVE_REGEX) || [''])[0],
-	fragmentArrayTag = (x: string) => (x.match(FRAGMENT_ARRAY_REGEX) || [''])[0],
-	fragmentLiveArrayTag = (x: string) => (x.match(FRAGMENT_LIVE_ARRAY_REGEX) || [''])[0],
-	fragmentListTag = (x: string) => (x.match(FRAGMENT_LIST_GROUP_REGEX) || [''])[0],
-	fragmentLiveListTag = (x: string) => (x.match(FRAGMENT_LIVE_LIST_GROUP_REGEX) || [''])[0];
+const fragmentTag = (x: string) => (x.match(__C.FRAGMENT_REGEX) || [''])[0],
+	fragmentLiveTag = (x: string) => (x.match(__C.FRAGMENT_LIVE_REGEX) || [''])[0],
+	fragmentArrayTag = (x: string) => (x.match(__C.FRAGMENT_ARRAY_REGEX) || [''])[0],
+	fragmentLiveArrayTag = (x: string) => (x.match(__C.FRAGMENT_LIVE_ARRAY_REGEX) || [''])[0],
+	fragmentListTag = (x: string) => (x.match(__C.FRAGMENT_LIST_GROUP_REGEX) || [''])[0],
+	fragmentLiveListTag = (x: string) => (x.match(__C.FRAGMENT_LIVE_LIST_GROUP_REGEX) || [''])[0];
 
 const fragmentTagLength = (x: string) => fragmentTag(x).length,
 	fragmentLiveTagLength = (x: string) => fragmentLiveTag(x).length,
@@ -334,20 +308,20 @@ const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x)),
 
 	fragmentListString = (x: string) => {
 		const group = fragmentListGroup(x),
-			remove_brackets = (x: string) => x.replace(FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
+			remove_brackets = (x: string) => x.replace(__C.FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
 			fragments = group ? remove_brackets(group).split(', ') : false;
 		if (fragments) {
-			const tag = (x.match(FRAGMENT_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
+			const tag = (x.match(__C.FRAGMENT_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
 			return fragments.map(x => fragmentListTemplate(x, tag)).join('\n');
 		}
 		return '';
 	},
 	fragmentLiveListString = (x: string) => {
 		const group = fragmentLiveListGroup(x),
-			remove_brackets = (x: string) => x.replace(FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
+			remove_brackets = (x: string) => x.replace(__C.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
 			fragments = group ? remove_brackets(group).split(', ') : false;
 		if (fragments) {
-			const tag = (x.match(FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
+			const tag = (x.match(__C.FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
 			return fragments.map(x => fragmentLiveListTemplate(x, tag)).join('\n');
 		}
 		return '';
