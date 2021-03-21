@@ -260,14 +260,18 @@ enum LineType {
 
 const FRAGMENT_REGEX = /=f\{\S+\}/,
 	FRAGMENT_GROUP_REGEX = /=f\{(\S+)\}/,
-	FRAGMENT_ARRAY_REGEX = /=f\{\[.*\]\}/,
-	FRAGMENT_ARRAY_GROUP_REGEX = /=f\{\[(.*)\]\}/,
+	FRAGMENT_ARRAY_REGEX = /=f\{\[.*?\]\}/,
+	FRAGMENT_ARRAY_GROUP_REGEX = /=f\{\[(.*?)\]\}/,
 	FRAGMENT_LIVE_REGEX = /=lf\{\S+\}/,
 	FRAGMENT_LIVE_GROUP_REGEX = /=lf\{(\S+)\}/,
-	FRAGMENT_LIVE_ARRAY_REGEX = /=lf\{\[.*\]\}/,
-	FRAGMENT_LIVE_ARRAY_GROUP_REGEX = /=lf\{\[(.*)\]\}/,
-	FRAGMENT_LIST_GROUP_REGEX = />(=l\{\[.*)<\//,
-	FRAGMENT_LIVE_LIST_GROUP_REGEX = />(=ll\{\[.*)<\//;
+	FRAGMENT_LIVE_ARRAY_REGEX = /=lf\{\[.*?\]\}/,
+	FRAGMENT_LIVE_ARRAY_GROUP_REGEX = /=lf\{\[(.*?)\]\}/,
+	FRAGMENT_LIST_GROUP_REGEX = />(=l\{\[.*?)<\//,
+	FRAGMENT_LIVE_LIST_GROUP_REGEX = />(=ll\{\[.*?)<\//,
+	FRAGMENT_LISTSTRING_REGEX = /<(.*?)>=l/,
+	FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX = /((=l\{\[)|(\]\}))/g,
+	FRAGMENT_LIVE_LISTSTRING_REGEX = /<(.*?)>=ll/,
+	FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX = /((=ll\{\[)|(\]\}))/g;
 
 const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
 	fragmentTemplate = (x: string) => `<%= render "${fragmentFile(x)}" %>`,
@@ -280,6 +284,12 @@ const fragmentFile = (x: string) => `_${x.trimLeft()}.html`,
 			tagEnd = '</' + tagStart.split(' ')[0].split('<')[1] + '>';
 		_store_fragmentListTemplate.push([tagStart, tagEnd]);
 		return `${tagStart}<%= render "${fragmentListFile(x)}" %>${tagEnd}`;
+	},
+	fragmentLiveListTemplate = (x: string, tag: string) => {
+		const tagStart = '<' + tag + '>',
+			tagEnd = '</' + tagStart.split(' ')[0].split('<')[1] + '>';
+		_store_fragmentListTemplate.push([tagStart, tagEnd]);
+		return `${tagStart}<%= live_render "${fragmentListFile(x).replace(/\.html/, '')}" %>${tagEnd}`;
 	};
 
 const matchFragment = (x: string): string | null => (x.match(FRAGMENT_REGEX) || [null])[0],
@@ -325,24 +335,29 @@ const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x)),
 		const fragments = group ? group.split(', ') : false;
 		return fragments ? fragments.map(x => fragmentTemplate(x)).join("\n") : "";
 	},
+
 	fragmentListString = (x: string) => {
 		const group = fragmentListGroup(x),
-			remove_brackets = (x: string) => x.replace(/((=l\{\[)|(\]\}))/g, ''),
+			remove_brackets = (x: string) => x.replace(FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
 			fragments = group ? remove_brackets(group).split(', ') : false;
 		if (fragments) {
-			const tag = (x.match(/<(.*)\//) || ['', 'unknownTag'])[1].split('>')[0];
+			const tag = (x.match(FRAGMENT_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
 			return fragments.map(x => fragmentListTemplate(x, tag)).join('\n');
+		}
+		return '';
+	},
+	fragmentLiveListString = (x: string) => {
+		const group = fragmentLiveListGroup(x),
+			remove_brackets = (x: string) => x.replace(FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
+			fragments = group ? remove_brackets(group).split(', ') : false;
+		if (fragments) {
+			const tag = (x.match(FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
+			return fragments.map(x => fragmentLiveListTemplate(x, tag)).join('\n');
 		}
 		return '';
 	},
 	fragmentLiveArrayString = (x: string) => {
 		const group = fragmentLiveArrayGroup(x);
-		const fragments = group ? group.split(', ') : false;
-		return fragments ? fragments.map(x => fragmentLiveTemplate(x)).join("\n") : "";
-	},
-	fragmentLiveListString = (x: string) => {
-		const group = fragmentLiveListGroup(x);
-		console.log(group);
 		const fragments = group ? group.split(', ') : false;
 		return fragments ? fragments.map(x => fragmentLiveTemplate(x)).join("\n") : "";
 	},
@@ -362,7 +377,6 @@ const fragmentString = (x: string) => fragmentTemplate(fragmentGroup(x)),
 		if (group) {
 			const m = group.match(/\[(.*)\]/);
 			m && (fragments = m[1].split(', '));
-			console.log(fragments);
 		}
 		return fragments ? fragments.map(x => fragmentListFile(x)) : [];
 	},
@@ -383,7 +397,7 @@ const isValidFragment = (x: string) => {
 	].some((f) => f(x));
 };
 
-const fragmentData = (content: string[]): {
+const getFragmentData = (content: string[]): {
 	line: string | undefined,
 	line_number: number,
 	line_type: LineType
@@ -554,36 +568,68 @@ const isValidCreateFragment = (x: LineType) => {
 	].some(y => y === x);
 };
 
-const createFragment = (active_document: vscode.TextDocument) => {
-	const content = active_document.getText().toString().split("\n");
-	const { line, line_number, line_type } = fragmentData(content);
+const _createFragmentEntity = (
+	stack: ICreateFragmentStack[],
+	input_line: {
+		line: string | undefined, line_number: number, line_type: LineType
+	}) => {
+	const { line, line_number, line_type } = input_line;
 	if (line && isValidCreateFragment(line_type)) {
 		const display_number = line_number + 1;
 		vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
 		const { save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type),
-			new_fragment = getNewFragment(line),
-			tag = getTag(line),
-			tagStart = _store_fragmentListTemplate[0][0],
-			tagEnd = _store_fragmentListTemplate[0][1];
-		tagStart ? _store_fragmentListTemplate.pop() : null;
-		const start_line = line_number,
-			start_char = isFragmentList_LineType(line_type)
-				? line.indexOf(tagStart)
+			is_list = isFragmentList_LineType(line_type),
+			[[tag_start, tag_end]] = _store_fragmentListTemplate[0] || [['', '']];
+		_store_fragmentListTemplate.shift();
+		const tag = getTag(line),
+			start_line = line_number,
+			start_char = is_list
+				? line.indexOf(tag_start)
 				: line.indexOf(tag),
 			start_position = new vscode.Position(start_line, start_char),
 			end_line = line_number,
 			end_char = isFragmentList_LineType(line_type)
-				? start_char + tagStart.length + tagEnd.length + getTagLength(line)
+				? start_char + tag_start.length + tag_end.length + getTagLength(line)
 				: start_char + getTagLength(line),
 			end_position = new vscode.Position(end_line, end_char),
+			fragment = getNewFragment(line),
 			replace_range = new vscode.Range(start_position, end_position);
-		vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
-			edit.replace(replace_range, new_fragment);
-			const directory = getDirectory({ active_document: active_document }),
-				fs_path = getDirectory({ active_document: active_document, fs: true });
-			save(directory, fs_path, line);
+		stack.push({
+			line: line,
+			save: save,
+			is_list: is_list === true,
+			start_position: start_position,
+			fragment: fragment,
+			call: (edit: vscode.TextEditorEdit) => edit.replace(replace_range, fragment)
 		});
 	}
+};
+
+interface ICreateFragmentStack extends Object { save: Function, line: string, start_position: vscode.Position, fragment: string, is_list: boolean, call: Function };
+
+const createFragment = (active_document: vscode.TextDocument) => {
+	let current_line: string = "";
+	const content = active_document.getText().toString().split("\n").map(x => getFragmentData([x]))
+		.filter(x => x.line_type !== LineType.Unknown),
+		stack: ICreateFragmentStack[] = [];
+	content.forEach(input => _createFragmentEntity(stack, input));
+	let offset = 0, new_offset = 0, fragment = [''];
+	stack.reverse().forEach(new_edit => {
+		vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
+			if (new_edit.is_list) {
+				//TODO:
+				//fragment = new_edit.fragment.split("\n");
+				//new_offset = fragment.length;
+				//TODO:
+				new_edit.call(edit);
+			} else {
+				new_edit.call(edit);
+			}
+			const directory = getDirectory({ active_document: active_document }),
+				fs_path = getDirectory({ active_document: active_document, fs: true });
+			new_edit.save(directory, fs_path, new_edit.line);
+		});
+	});
 };
 
 const newCreateFragmentDisposable = (context: vscode.ExtensionContext) => {

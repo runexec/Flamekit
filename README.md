@@ -79,27 +79,46 @@ VSCode Marketplace
                 <br />
                 <b>Example:</b>
                 <br />
-                1. Active Document: `/lib/example_web/example/example.html.eex`
+                1. Active Document: `/lib/example_web/live/example/example_live.html.leex`
                 <br />
-                2. Text editor input: `=f{[red, blue, green]}`
+                2. Text editor input: `=lf{chart}`
                 <br />
                 3. <i>save document</i>
                 <br />
                 <br />
                 <b>Output:</b>
                 <br />
-                If Missing, New file: `/lib/example_web/example/_red.html.eex`
-                <br />
-                If Missing, New file: `/lib/example_web/example/_blue.html.eex`
-                <br />
-                If Missing, New file: `/lib/example_web/example/_green.html.eex`
+                If Missing, New file: `/lib/example_web/live/example/_chart_live.html.leex`
                 <br />
                 <br />
-                Before: `=f{[red, blue, green]}`
+                Before: `=f{chart}`
                 <br />
-                After: `<%= render "_red.html" %>`<br />
-                After: `<%= render "_blue.html" %>`<br />
-                After: `<%= render "_green.html" %>`
+                After: `<%= render "_chart.html" %>`
+                <br />
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Active Document: `/lib/example_web/example/live/example_live.html.leex`
+                <br />
+                2. Text editor input: `=lf{[red, blue, green]}`
+                <br />
+                3. <i>save document</i>
+                <br />
+                <br />
+                <b>Output:</b>
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_red_live.html.leex`
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_blue_live.html.leex`
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_green_live.html.leex`
+                <br />
+                <br />
+                Before: `=lf{[red, blue, green]}`
+                <br />
+                After: `<%= live_render "_red_live.html" %>`<br />
+                After: `<%= live_render "_blue_live.html" %>`<br />
+                After: `<%= live_render "_green_live.html" %>`
                 <br />
                 <br />
                 <b>Example:</b>
@@ -120,9 +139,32 @@ VSCode Marketplace
                 <br />
                 Before: `&lt;tag attr='xyz'&gt;=f{[red, blue, green]}&lt;/tag&gt;`
                 <br />
-                After: `&lt;tag attr='xyz' &gt;&lt;%= render "_red.html" %&gt;&lt;/tag&gt;`<br />
-                After: `&lt;tag attr='xyz'&gt;&lt;%= render "_blue.html" %&gt;&lt;/tag&gt;`<br />
-                After: `&lt;tag attr='xyz'&gt;&lt;%= render "_green.html" %&gt;&lt;/tag&gt;`
+                After: `&lt;tag attr='xyz' &gt;&lt;%= live_render "_red.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= live_render "_blue.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= live_render "_green.html" %&gt;&lt;/tag&gt;`
+                <br />
+                <br />
+                <b>Example:</b>
+                <br />
+                1. Active Document: `/lib/example_web/live/example/example_live.html.leex`
+                <br />
+                2. Text editor input: `&lt;tag attr='xyz'&gt;=lf{[red, blue, green]}&lt;/tag&gt;`
+                <br />
+                <br />
+                <b>Output:</b>
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_red_live.html.leex`
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_blue_live.html.leex`
+                <br />
+                If Missing, New file: `/lib/example_web/live/example/_green_live.html.leex`
+                <br />
+                <br />
+                Before: `&lt;tag attr='xyz'&gt;=lf{[red, blue, green]}&lt;/tag&gt;`
+                <br />
+                After: `&lt;tag attr='xyz' &gt;&lt;%= live_render "_red_live.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= live_render "_blue_live.html" %&gt;&lt;/tag&gt;`<br />
+                After: `&lt;tag attr='xyz'&gt;&lt;%= live_render "_green_live.html" %&gt;&lt;/tag&gt;`
                 <br />
                 <br />
             </td>
@@ -138,36 +180,13 @@ VSCode Marketplace
                 <b>Note:</b>
                 <br /> 
                 <i>Video demo file is `demo4.webm`.</i>
-            </td>
-        </tr>
-        <td>Phoenix Live Fragment Create</td>
-            <td>
-                <b>Save Trigger:</b> `=lf{live_fragment_name}`
+                <b>Note:</b>
                 <br />
-                On event, triggered after document save, a view fragment file is created,
-                and the triggering input is replaced with `<%= live_render @conn, InputNS.Input, session: %{} %>`.
-                <br />
-                <b>Example:</b>
-                <br />
-                1. Active Document: `/lib/example_web/live/example/example_live.html.leex`
-                <br />
-                2. Text editor input: `... =lf{chart} ...`
-                <br />
-                <b>Output:</b>
-                <br />
-                If Missing, New directory: `/lib/example_web/live/example/chart/`
-                <br />
-                If Missing, New file: `/lib/example_web/live/example/chart/_chart_live.html.leex`
-                <br />
-                If Missing, New file: `/lib/example_web/live/example/chart/chart_live.ex`
-                <br />
-                Input replaced: `<%= live_render @conn, Namespace.ChartLive, session: %{} %>`
-            </td>
-            <td>
+                Not to be confused with `Phoenix Create Component`
             </td>
         </tr>
         <tr>
-            <td>Phoenix Live Component Create</td>
+            <td>Phoenix Component Create</td>
             <td>
                 <b>Save Trigger:</b> `live_component{component_name}`
                 <br />
