@@ -18,9 +18,11 @@ export interface ILineTypeFragmentCalls {
 }
 
 export interface ICreateFragmentStack extends Object {
+    offset: number,
     save: Function,
     line: string,
     start_position: vscode.Position,
+    end_position: vscode.Position,
     fragment: string,
     is_list: boolean,
     call: Function

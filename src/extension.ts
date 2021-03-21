@@ -1,13 +1,12 @@
+/* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import { TextDecoder } from 'util';
-import * as __C from './constants';
-import { newCreateFragmentDisposable, createFragment } from './fragment/fragment';
+import * as Constant from './constant';
+import * as Fragment from './fragment/fragment';
 import {
 	getWorkingPaths,
-	createCSSPath,
 	getActiveFileName,
-	createNewCSS,
 	getActivePath,
 	showInvalidPathError,
 	showImproperFileError,
@@ -17,13 +16,13 @@ import {
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
 	context.subscriptions.push(disposable);
-	disposable = newCreateFragmentDisposable(context);
+	disposable = Fragment.newCreateFragmentDisposable(context);
 	context.subscriptions.push(disposable);
 	disposable = vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
-		const m = d.fileName.match(__C.EXTENSION_REGEX);
+		const m = d.fileName.match(Constant.EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
 		if (m && active_document) {
-			createFragment(active_document);
+			Fragment.createFragment(active_document);
 		}
 	});
 	context.subscriptions.push(disposable);
@@ -33,7 +32,28 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
-	return vscode.Uri.parse(`${assets_path}/css/${__C.FLAMEKIT_INDEX}`);
+	return vscode.Uri.parse(`${assets_path}/css/${Constant.FLAMEKIT_INDEX}`);
+};
+
+const createCSSPath = ({ css_path }: {
+	css_path: string
+}): void => {
+	const css_uri = vscode.Uri.parse(css_path),
+		msg = `Creating directory ${css_path}`;
+	vscode.window.showInformationMessage(msg);
+	vscode.workspace.fs.createDirectory(css_uri);
+};
+
+const createNewCSS = ({ active_path, new_css_path }: {
+	active_path: string,
+	new_css_path: string
+}): string => {
+	vscode.window.showInformationMessage(`Creating ${new_css_path}`);
+	const css_import = `@import "./${active_path}.css";`,
+		new_css_uri = vscode.Uri.parse(new_css_path),
+		buff = Buffer.from(`/* ${css_import} */`, 'utf-8');
+	vscode.workspace.fs.writeFile(new_css_uri, buff);
+	return css_import;
 };
 
 const createFlamekitCSS = ({ data, flamekit_uri, css_import }: {
