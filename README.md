@@ -12,6 +12,8 @@ VSCode Marketplace
 
 ### Commands
 
+Each fragment file is opened in a pane after creation; bottom or side depending on user config.
+
 <table>
     <thead>
         <th>Command</th>

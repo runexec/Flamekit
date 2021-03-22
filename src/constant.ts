@@ -16,8 +16,9 @@ export const
 	FRAGMENT_LIVE_GROUP_REGEX = /=lf\{(\S+)\}/,
 	FRAGMENT_LIVE_ARRAY_REGEX = /=lf\{\[.*?\]\}/,
 	FRAGMENT_LIVE_ARRAY_GROUP_REGEX = /=lf\{\[(.*?)\]\}/,
-	FRAGMENT_LIST_GROUP_REGEX = />(=l\{\[.*?)<\//,
-	FRAGMENT_LIVE_LIST_GROUP_REGEX = />(=ll\{\[.*?)<\//,
+	FRAGMENT_LIST_GROUP_REGEX = />(=l\{\[.*?[\]])<\//,
+		// TODO: fix add right bracket
+	FRAGMENT_LIVE_LIST_GROUP_REGEX = />(=ll\{\[.*?[\]])<\//,
 	FRAGMENT_LISTSTRING_REGEX = /<(.*?)>=l/,
 	FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX = /((=l\{\[)|(\]\}))/g,
 	FRAGMENT_LIVE_LISTSTRING_REGEX = /<(.*?)>=ll/,
