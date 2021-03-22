@@ -142,7 +142,6 @@ export const createFragmentEntity = (
 	}
 };
 
-
 export const fragmentLineTypeData = (line_type: Enums.LineType): Interface_.ILineTypeFragmentCalls => {
 	let calls = fragment_unknown_data;
 	switch (line_type) {

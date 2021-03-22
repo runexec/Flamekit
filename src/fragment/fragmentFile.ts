@@ -8,11 +8,13 @@ export const
 			fragments = group ? group.split(', ') : false;
 		return fragments ? fragments.map(x => FragmentFileName.fragmentFileName(x)) : [];
 	},
+	
 	fragmentLiveArrayFiles = (x: string): string[] => {
 		const group = FragmentGroup.fragmentLiveArrayGroup(x),
 			fragments = group ? group.split(', ') : false;
 		return fragments ? fragments.map(x => FragmentFileName.fragmentLiveFileName(x)) : [];
 	},
+
 	fragmentListFiles = (x: string): string[] => {
 		const group = FragmentTag.fragmentListTag(x);
 		let fragments: string[] | undefined;
@@ -22,6 +24,7 @@ export const
 		}
 		return fragments ? fragments.map(x => FragmentFileName.fragmentListFileName(x)) : [];
 	},
+
 	fragmentLiveListFiles = (x: string): string[] => {
 		const group = FragmentTag.fragmentLiveListTag(x),
 			fragments = group ? group.split(', ') : false;

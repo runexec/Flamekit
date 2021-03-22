@@ -4,9 +4,12 @@ import * as FragmentTemplate from './fragmentTemplate';
 import * as FragmentGroup from './fragmentGroup';
 
 export const
-    fragmentString = (x: string) => FragmentTemplate.fragmentTemplate(FragmentGroup.fragmentGroup(x)),
-    fragmentLiveString = (x: string) => FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)),
-    
+    fragmentString = (x: string) =>
+        FragmentTemplate.fragmentTemplate(FragmentGroup.fragmentGroup(x)),
+
+    fragmentLiveString = (x: string) =>
+        FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)),
+
     fragmentArrayString = (x: string) => {
         const group = FragmentGroup.fragmentArrayGroup(x);
         const fragments = group ? group.split(', ') : false;
