@@ -3,26 +3,18 @@
 import * as vscode from 'vscode';
 import { TextDecoder } from 'util';
 import * as Constant from './constant';
-import * as Fragment from './fragment/fragment';
-import {
-	getWorkingPaths,
-	getActiveFileName,
-	getActivePath,
-	showInvalidPathError,
-	showImproperFileError,
-	showNoWorkspaceError
-} from './util/util';
-
+import * as CreateFragment from './fragment/createFragment';
+import * as Util from './util/util';
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = newCreateCSSDisposable(context);
 	context.subscriptions.push(disposable);
-	disposable = Fragment.newCreateFragmentDisposable(context);
+	disposable = CreateFragment.newCreateFragmentDisposable(context);
 	context.subscriptions.push(disposable);
 	disposable = vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
 		const m = d.fileName.match(Constant.EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
 		if (m && active_document) {
-			Fragment.createFragment(active_document);
+			CreateFragment.createFragment(active_document);
 		}
 	});
 	context.subscriptions.push(disposable);
@@ -30,10 +22,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
-
-const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
-	return vscode.Uri.parse(`${assets_path}/css/${Constant.FLAMEKIT_INDEX}`);
-};
 
 const createCSSPath = ({ css_path }: {
 	css_path: string
@@ -90,11 +78,11 @@ const createCSSFiles = ({ wsf, active_document }: {
 	wsf: readonly vscode.WorkspaceFolder[],
 	active_document: vscode.TextDocument
 }): void => {
-	const { assets_path, active_path, css_path } = getWorkingPaths({ wsf: wsf, active_document: active_document });
+	const { assets_path, active_path, css_path } = Util.getWorkingPaths({ wsf: wsf, active_document: active_document });
 	if (active_path) {
 		createCSSPath({ css_path: css_path });
-		const flamekit_uri = getFlamekitCSSIndex({ assets_path: assets_path }),
-			active_filename = getActiveFileName({ active_document: active_document }),
+		const flamekit_uri = Util.getFlamekitCSSIndex({ assets_path: assets_path }),
+			active_filename = Util.getActiveFileName({ active_document: active_document }),
 			new_css_path = `${vscode.Uri.parse(css_path).toString()}${active_filename}.css`,
 			css_import = createNewCSS({ active_path: active_path, new_css_path: new_css_path }),
 			call = () => createImports({ flamekit_uri: flamekit_uri, css_import: css_import });
@@ -111,16 +99,16 @@ const newCreateCSSDisposable = (context: vscode.ExtensionContext) => {
 		const active_document = vscode.window.activeTextEditor?.document;
 		if (active_document !== undefined)
 			switch (true) {
-				case !getActivePath({ active_document: active_document }):
-					showInvalidPathError({ active_document: active_document });
+				case !Util.getActivePath({ active_document: active_document }):
+					Util.showInvalidPathError({ active_document: active_document });
 					break;
-				case !getActiveFileName({ active_document: active_document }):
-					showImproperFileError({ active_document: active_document });
+				case !Util.getActiveFileName({ active_document: active_document }):
+					Util.showImproperFileError({ active_document: active_document });
 					break;
 				default:
 					wsf !== undefined
 						? createCSSFiles({ wsf: wsf, active_document: active_document })
-						: showNoWorkspaceError();
+						: Util.showNoWorkspaceError();
 			}
 	});
 };

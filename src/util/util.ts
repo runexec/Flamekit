@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import * as Interface_ from '../interface';
+import * as Constant from '../constant';
 
 /*
 * @param active_document - 
@@ -115,4 +116,8 @@ export const showInvalidPathError = ({ active_document }: {
 
 export const showNoWorkspaceError = (): void => {
 	vscode.window.showErrorMessage('Command must be executed within a Workspace.');
+};
+
+export const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
+	return vscode.Uri.parse(`${assets_path}/css/${Constant.FLAMEKIT_INDEX}`);
 };
