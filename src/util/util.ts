@@ -31,11 +31,9 @@ export const getActivePath = ({ active_document, fs = false }: {
 	active_document: vscode.TextDocument,
 	fs?: boolean
 }): string | undefined => {
-	return (
-		fs
-			? getFullActivePath({ active_document: active_document })
-			: getCallingPath({ active_document: active_document, fs: fs }).split('/lib/')[1]
-	);
+	return fs
+		? getFullActivePath({ active_document: active_document })
+		: getCallingPath({ active_document: active_document, fs: fs }).split('/lib/')[1];
 };
 
 export const getFullActivePath = ({ active_document }: {
