@@ -170,15 +170,15 @@ export const getFragmentData = (content: string[]): {
 	line_number: number,
 	line_type: Enums.LineType
 }[] => {
-	let line_type = Enums.LineType.Unknown,
-		line_number = 0;
+	let line_type = Enums.LineType.Unknown;
 	return content
-		.filter((line, idx) => isValidFragment(line) && ((line_number = idx) === idx))
-		.map(line => {
+		.map((line, line_number) => {
+			if (!isValidFragment(line)) { return { line: '', line_number: -1, line_type: line_type }; }
 			switch (true) {
 				case IsFragment.isFragment(line): line_type = Enums.LineType.Fragment; break;
 				case IsFragment.isFragmentLive(line): line_type = Enums.LineType.FragmentLive; break;
 				// List must come before Array because similar regular expression
+				// Order might not matter now after Regex changes. Need to double-check
 				case IsFragment.isFragmentList(line): line_type = Enums.LineType.FragmentList; break;
 				case IsFragment.isFragmentLiveList(line): line_type = Enums.LineType.FragmentLiveList; break;
 				case IsFragment.isFragmentArray(line): line_type = Enums.LineType.FragmentArray; break;
@@ -186,7 +186,7 @@ export const getFragmentData = (content: string[]): {
 				default: line_type = Enums.LineType.Unknown;
 			}
 			return { line: line, line_number: line_number, line_type: line_type };
-		});
+		}).filter(x => x.line_type !== Enums.LineType.Unknown);
 };
 
 export const createReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
@@ -242,14 +242,17 @@ export const createFragment = (
 			directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true });
 		current_content.forEach(entity => {
-			let e = createFragmentEntity(entity),
-				new_edit;
-			vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
-				if ((new_edit = e) && new_edit) {
-					new_edit.save(directory, fs_path, new_edit.line);
-					new_edit.call(edit);
-				}
-			});
+			(async () => {
+				let e = createFragmentEntity(entity),
+					new_edit;
+				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
+					if ((new_edit = e) && new_edit) {
+						new_edit.save(directory, fs_path, new_edit.line);
+						new_edit.call(edit);
+						vscode.window.activeTextEditor?.document.save();
+					}
+				});
+			})();
 		});
 	}
 };
