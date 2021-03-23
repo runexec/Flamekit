@@ -7,9 +7,9 @@ import * as IsFragment from './isFragment';
 import * as Store from './store';
 import * as Enums from '../enum';
 import * as Interface_ from '../interface';
-import * as Fragment from './fragment';
+import * as Fragment_ from './fragment';
 
-export class FragmentLine implements Interface_.ILineTypeFragmentCalls {
+export class Fragment implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
 	getTagLength: Function;
 	getNewFragment: Function;
@@ -19,8 +19,8 @@ export class FragmentLine implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentTag;
 		this.getTagLength = FragmentTagLength.fragmentTagLength;
 		this.getNewFragment = FragmentString.fragmentString;
-		this.save = Fragment.createFragment;
-		this.Base = Fragment.Fragment;
+		this.save = Fragment_.createFragment;
+		this.Base = Fragment_.Fragment;
 	};
 };
 
@@ -34,8 +34,8 @@ export class FragmentArray implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentArrayTag;
 		this.getTagLength = FragmentTagLength.fragmentArrayTagLength;
 		this.getNewFragment = FragmentString.fragmentArrayString;
-		this.save = Fragment.createFragmentArray;
-		this.Base = Fragment.FragmentArray;
+		this.save = Fragment_.createFragmentArray;
+		this.Base = Fragment_.FragmentArray;
 	};
 };
 
@@ -49,8 +49,8 @@ export class FragmentLive implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentLiveTag;
 		this.getTagLength = FragmentTagLength.fragmentLiveTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveString;
-		this.save = Fragment.createFragmentLive;
-		this.Base = Fragment.FragmentLive;
+		this.save = Fragment_.createFragmentLive;
+		this.Base = Fragment_.FragmentLive;
 	};
 };
 
@@ -64,8 +64,8 @@ export class FragmentLiveArray implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentLiveArrayTag;
 		this.getTagLength = FragmentTagLength.fragmentLiveArrayTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveArrayString;
-		this.save = Fragment.createFragmentLiveArray;
-		this.Base = Fragment.FragmentLiveArray;
+		this.save = Fragment_.createFragmentLiveArray;
+		this.Base = Fragment_.FragmentLiveArray;
 	};
 };
 
@@ -79,8 +79,8 @@ export class FragmentList implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentListTag;
 		this.getTagLength = FragmentTagLength.fragmentListTagLength;
 		this.getNewFragment = FragmentString.fragmentListString;
-		this.save = Fragment.createFragmentList;
-		this.Base = Fragment.FragmentList;
+		this.save = Fragment_.createFragmentList;
+		this.Base = Fragment_.FragmentList;
 	};
 };
 
@@ -94,8 +94,8 @@ export class FragmentLiveList implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = FragmentTag.fragmentLiveListTag;
 		this.getTagLength = FragmentTagLength.fragmentLiveListTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveListString;
-		this.save = Fragment.createFragmentLiveList;
-		this.Base = Fragment.FragmentLiveList;
+		this.save = Fragment_.createFragmentLiveList;
+		this.Base = Fragment_.FragmentLiveList;
 	};
 };
 
@@ -109,8 +109,8 @@ export class FragmentUnknown implements Interface_.ILineTypeFragmentCalls {
 		this.getTag = (x: string) => { };
 		this.getTagLength = (x: string) => { };
 		this.getNewFragment = (x: string) => { };
-		this.save = Fragment.createUnknown;
-		this.Base = Fragment.FragmentUnknown;
+		this.save = Fragment_.createUnknown;
+		this.Base = Fragment_.FragmentUnknown;
 	};
 };
 
