@@ -207,7 +207,7 @@ export const createFragmentEntity = (
 export const fragmentLineTypeData = (line_type: Enums.LineType): Interface_.ILineTypeFragmentCalls => {
 	let calls;
 	switch (line_type) {
-		case Enums.LineType.Fragment: calls = new FragmentLine(); break;
+		case Enums.LineType.Fragment: calls = new Fragment(); break;
 		case Enums.LineType.FragmentLive: calls = new FragmentLive(); break;
 		case Enums.LineType.FragmentArray: calls = new FragmentArray(); break;
 		case Enums.LineType.FragmentLiveArray: calls = new FragmentLiveArray(); break;
