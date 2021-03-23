@@ -9,56 +9,111 @@ import * as Enums from '../enum';
 import * as Interface_ from '../interface';
 import * as Fragment from './fragment';
 
-export const fragment_data = {
-	getTag: FragmentTag.fragmentTag,
-	getTagLength: FragmentTagLength.fragmentTagLength,
-	getNewFragment: FragmentString.fragmentString,
-	save: Fragment.createFragment,
-	Base: Fragment.Fragment
-},
-	fragment_array_data = {
-		getTag: FragmentTag.fragmentArrayTag,
-		getTagLength: FragmentTagLength.fragmentArrayTagLength,
-		getNewFragment: FragmentString.fragmentArrayString,
-		save: Fragment.createFragment,
-		Base: Fragment.FragmentArray
-	},
-	fragment_live_data = {
-		getTag: FragmentTag.fragmentLiveTag,
-		getTagLength: FragmentTagLength.fragmentLiveTagLength,
-		getNewFragment: FragmentString.fragmentLiveString,
-		save: Fragment.createFragment,
-		Base: Fragment.FragmentLive
-	},
-	fragment_live_array_data = {
-		getTag: FragmentTag.fragmentLiveArrayTag,
-		getTagLength: FragmentTagLength.fragmentLiveArrayTagLength,
-		getNewFragment: FragmentString.fragmentLiveArrayString,
-		save: Fragment.createFragment,
-		Base: Fragment.FragmentLiveArray
-	},
-	fragment_live_list_data = {
-		getTag: FragmentTag.fragmentLiveListTag,
-		getTagLength: FragmentTagLength.fragmentLiveListTagLength,
-		getNewFragment: FragmentString.fragmentLiveListString,
-		save: Fragment.createFragment,
-		Base: Fragment.FragmentLiveList
-	},
-	fragment_list_data = {
-		getTag: FragmentTag.fragmentListTag,
-		getTagLength: FragmentTagLength.fragmentListTagLength,
-		getNewFragment: FragmentString.fragmentListString,
-		save: Fragment.createFragment,
-		Base: Fragment.FragmentList
-	},
-	fragment_unknown_data = {
-		getTag: (x: string) => { },
-		getTagLength: (x: string) => { },
-		getNewFragment: (x: string) => { },
-		save: Fragment.createUnknown,
-		Base: Fragment.Unknown
+export class FragmentLine implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentTag;
+		this.getTagLength = FragmentTagLength.fragmentTagLength;
+		this.getNewFragment = FragmentString.fragmentString;
+		this.save = Fragment.createFragment;
+		this.Base = Fragment.Fragment;
 	};
-	
+};
+
+export class FragmentArray implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentArrayTag;
+		this.getTagLength = FragmentTagLength.fragmentArrayTagLength;
+		this.getNewFragment = FragmentString.fragmentArrayString;
+		this.save = Fragment.createFragmentArray;
+		this.Base = Fragment.FragmentArray;
+	};
+};
+
+export class FragmentLive implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentLiveTag;
+		this.getTagLength = FragmentTagLength.fragmentLiveTagLength;
+		this.getNewFragment = FragmentString.fragmentLiveString;
+		this.save = Fragment.createFragmentLive;
+		this.Base = Fragment.FragmentLive;
+	};
+};
+
+export class FragmentLiveArray implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentLiveArrayTag;
+		this.getTagLength = FragmentTagLength.fragmentLiveArrayTagLength;
+		this.getNewFragment = FragmentString.fragmentLiveArrayString;
+		this.save = Fragment.createFragmentLiveArray;
+		this.Base = Fragment.FragmentLiveArray;
+	};
+};
+
+export class FragmentList implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentListTag;
+		this.getTagLength = FragmentTagLength.fragmentListTagLength;
+		this.getNewFragment = FragmentString.fragmentListString;
+		this.save = Fragment.createFragmentList;
+		this.Base = Fragment.FragmentList;
+	};
+};
+
+export class FragmentLiveList implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = FragmentTag.fragmentLiveListTag;
+		this.getTagLength = FragmentTagLength.fragmentLiveListTagLength;
+		this.getNewFragment = FragmentString.fragmentLiveListString;
+		this.save = Fragment.createFragmentLiveList;
+		this.Base = Fragment.FragmentLiveList;
+	};
+};
+
+export class FragmentUnknown implements Interface_.ILineTypeFragmentCalls {
+	getTag: Function;
+	getTagLength: Function;
+	getNewFragment: Function;
+	save: Function;
+	Base: any;
+	constructor() {
+		this.getTag = (x: string) => { };
+		this.getTagLength = (x: string) => { };
+		this.getNewFragment = (x: string) => { };
+		this.save = Fragment.createUnknown;
+		this.Base = Fragment.FragmentUnknown;
+	};
+};
+
 const isValidFragment = (x: string) => {
 	return [
 		IsFragment.isFragment,
@@ -69,7 +124,7 @@ const isValidFragment = (x: string) => {
 		IsFragment.isFragmentLiveList
 	].some(f => f(x));
 };
- 
+
 const isValidCreateFragment = (x: Enums.LineType) => {
 	return [
 		Enums.LineType.Fragment,
@@ -152,13 +207,13 @@ export const createFragmentEntity = (
 export const fragmentLineTypeData = (line_type: Enums.LineType): Interface_.ILineTypeFragmentCalls => {
 	let calls;
 	switch (line_type) {
-		case Enums.LineType.Fragment: calls = fragment_data; break;
-		case Enums.LineType.FragmentLive: calls = fragment_live_data; break;
-		case Enums.LineType.FragmentArray: calls = fragment_array_data; break;
-		case Enums.LineType.FragmentLiveArray: calls = fragment_live_array_data; break;
-		case Enums.LineType.FragmentList: calls = fragment_list_data; break;
-		case Enums.LineType.FragmentLiveList: calls = fragment_live_list_data; break;
-		default: calls = fragment_unknown_data; break;
+		case Enums.LineType.Fragment: calls = new FragmentLine(); break;
+		case Enums.LineType.FragmentLive: calls = new FragmentLive(); break;
+		case Enums.LineType.FragmentArray: calls = new FragmentArray(); break;
+		case Enums.LineType.FragmentLiveArray: calls = new FragmentLiveArray(); break;
+		case Enums.LineType.FragmentList: calls = new FragmentList(); break;
+		case Enums.LineType.FragmentLiveList: calls = new FragmentLiveList(); break;
+		default: calls = new FragmentUnknown(); break;
 	}
 	return calls;
 };

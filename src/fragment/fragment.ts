@@ -18,7 +18,7 @@ export class Fragment {
 	}
 };
 
-export class Unknown extends Fragment { };
+export class FragmentUnknown extends Fragment { };
 export function createUnknown<F extends Fragment>(F: F) { return F; }
 
 export function createFragment<F extends Fragment>(F: F) {
