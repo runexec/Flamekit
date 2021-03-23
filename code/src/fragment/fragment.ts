@@ -6,15 +6,22 @@ import * as FragmentTag from './fragmentTag';
 import * as FragmentFileName from './fragmentFileName';
 import * as FragmentFile from './fragmentFile';
 import * as FragmentGroup from './fragmentGroup';
+import * as FragmentClean from './fragmentClean';
 
 export class Fragment {
 	line: string;
 	fs_path: string;
 	directory: string;
+	document: undefined | vscode.TextDocument;
 	constructor(directory: string, fs_path: string, line: string) {
 		this.directory = directory;
 		this.fs_path = fs_path;
 		this.line = line;
+	}
+
+	clean() {
+		if ((this.document = vscode.window.activeTextEditor?.document))
+			FragmentClean.document();
 	}
 };
 

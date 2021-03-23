@@ -13,6 +13,8 @@ Each fragment file is opened in a pane after creation; bottom or side depending 
 =!f{[a, b, c, d]} // create tags but not files
 =f{[a, b, c, d]}[exe] // custom file extension
 
+// auto convert style tag into css file
+// warn when corresponding css is missing eex || leex
 ---
 
 #### Fragment: `l{[]}`
