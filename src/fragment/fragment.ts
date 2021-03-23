@@ -57,7 +57,7 @@ export const _createFragment = (directory: string, fs_path: string, line: string
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-	});
+	}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 };
 
 export const _createFragmentLive = (directory: string, fs_path: string, line: string) => {
@@ -67,7 +67,7 @@ export const _createFragmentLive = (directory: string, fs_path: string, line: st
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-	});
+	}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 };
 
 export const _createFragmentArray = (directory: string, fs_path: string, line: string) => {
@@ -79,7 +79,7 @@ export const _createFragmentArray = (directory: string, fs_path: string, line: s
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-		});
+		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
 };
 
@@ -92,7 +92,7 @@ export const _createFragmentLiveArray = (directory: string, fs_path: string, lin
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-		});
+		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
 };
 
@@ -105,7 +105,7 @@ export const _createFragmentList = (directory: string, fs_path: string, line: st
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-		});
+		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
 };
 
@@ -118,6 +118,6 @@ export const _createFragmentLiveList = (directory: string, fs_path: string, line
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
-		});
+		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
 };

@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import * as CreateFragment from './fragment/createFragment';
-import * as CSS from './util/css';
+import * as CreateCSS from './css/createCSS';
 
 export function activate(context: vscode.ExtensionContext) {
-	CSS.init(context);
+	CreateCSS.init(context);
 	CreateFragment.init(context);
 }
 

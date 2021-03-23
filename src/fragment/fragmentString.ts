@@ -2,6 +2,7 @@
 import * as Constant from '../constant';
 import * as FragmentTemplate from './fragmentTemplate';
 import * as FragmentGroup from './fragmentGroup';
+import * as Message from '../util/message';
 
 export const
     fragmentString = (x: string) =>
@@ -13,7 +14,17 @@ export const
     fragmentArrayString = (x: string) => {
         const group = FragmentGroup.fragmentArrayGroup(x);
         const fragments = group ? group.split(', ') : false;
-        return fragments ? fragments.map(x => FragmentTemplate.fragmentTemplate(x)).join("\n") : "";
+        return fragments ? 
+            fragments.map(x => FragmentTemplate.fragmentTemplate(x)).join("\n") 
+            : 'fragmentArrayString<Failed>';
+    },
+
+    fragmentLiveArrayString = (x: string) => {
+        const group = FragmentGroup.fragmentLiveArrayGroup(x);
+        const fragments = group ? group.split(', ') : false;
+        return fragments ?
+            fragments.map(x => FragmentTemplate.fragmentLiveTemplate(x)).join("\n")
+            : 'fragmentLiveArrayString<Failed>';
     },
 
     fragmentListString = (x: string) => {
@@ -24,7 +35,7 @@ export const
             const tag = (x.match(Constant.FRAGMENT_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
             return fragments.map(x => FragmentTemplate.fragmentListTemplate(x, tag)).join('\n');
         }
-        return '';
+        return 'fragmentListString<Failed>';
     },
 
     fragmentLiveListString = (x: string) => {
@@ -35,11 +46,5 @@ export const
             const tag = (x.match(Constant.FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
             return fragments.map(x => FragmentTemplate.fragmentLiveListTemplate(x, tag)).join('\n');
         }
-        return '';
-    },
-
-    fragmentLiveArrayString = (x: string) => {
-        const group = FragmentGroup.fragmentLiveArrayGroup(x);
-        const fragments = group ? group.split(', ') : false;
-        return fragments ? fragments.map(x => FragmentTemplate.fragmentLiveTemplate(x)).join("\n") : "";
+        return 'fragmentLiveListString<Failed>';
     };

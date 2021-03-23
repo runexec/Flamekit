@@ -8,6 +8,7 @@ import * as Store from './store';
 import * as Enums from '../enum';
 import * as Interface_ from '../interface';
 import * as Fragment_ from './fragment';
+import * as Message from '../util/message';
 
 export class Fragment implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
@@ -198,7 +199,7 @@ export const createFragmentEntity = (
 	const { line, line_number, line_type } = input_line;
 	if (line && isValidCreateFragment(line_type)) {
 		const display_number = line_number + 1;
-		vscode.window.showInformationMessage(`Fragment found on line number: ${display_number}`);
+		Message.info(`Fragment found on line number: ${display_number}`);
 		const replacement = createTextReplacement(line, line_type, line_number);
 		return replacement;
 	}
