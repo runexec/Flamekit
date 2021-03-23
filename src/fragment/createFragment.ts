@@ -5,6 +5,7 @@ import * as Enums from '../enum';
 import * as Util from '../util/util';
 import * as FragmentLineTypeData from './fragmentLineTypeData';
 import * as Constant from '../constant';
+import { Fragment } from './fragment';
 
 export const init = (context: vscode.ExtensionContext) => {
 	let disposable = newCreateFragmentDisposableCommand(context);
@@ -45,8 +46,9 @@ export const createFragment = (
 				let e = FragmentLineTypeData.createFragmentEntity(entity),
 					new_edit;
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
-					if ((new_edit = e) && new_edit) {
-						new_edit.save(directory, fs_path, new_edit.line);
+					if ((new_edit = e) && new_edit && directory && fs_path) {
+						let fragment = new new_edit.Base(directory, fs_path, new_edit.line);
+						new_edit.save(fragment);
 						new_edit.call(edit);
 						// recursive call
 						vscode.window.activeTextEditor?.document.save();

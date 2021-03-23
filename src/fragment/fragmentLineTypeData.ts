@@ -9,48 +9,54 @@ import * as Enums from '../enum';
 import * as Interface_ from '../interface';
 import * as Fragment from './fragment';
 
-
 export const fragment_data = {
 	getTag: FragmentTag.fragmentTag,
 	getTagLength: FragmentTagLength.fragmentTagLength,
 	getNewFragment: FragmentString.fragmentString,
-	save: Fragment._createFragment
+	save: Fragment.createFragment,
+	Base: Fragment.Fragment
 },
 	fragment_array_data = {
 		getTag: FragmentTag.fragmentArrayTag,
 		getTagLength: FragmentTagLength.fragmentArrayTagLength,
 		getNewFragment: FragmentString.fragmentArrayString,
-		save: Fragment._createFragmentArray
+		save: Fragment.createFragment,
+		Base: Fragment.FragmentArray
 	},
 	fragment_live_data = {
 		getTag: FragmentTag.fragmentLiveTag,
 		getTagLength: FragmentTagLength.fragmentLiveTagLength,
 		getNewFragment: FragmentString.fragmentLiveString,
-		save: Fragment._createFragmentLive
+		save: Fragment.createFragment,
+		Base: Fragment.FragmentLive
 	},
 	fragment_live_array_data = {
 		getTag: FragmentTag.fragmentLiveArrayTag,
 		getTagLength: FragmentTagLength.fragmentLiveArrayTagLength,
 		getNewFragment: FragmentString.fragmentLiveArrayString,
-		save: Fragment._createFragmentLiveArray
+		save: Fragment.createFragment,
+		Base: Fragment.FragmentLiveArray
 	},
 	fragment_live_list_data = {
 		getTag: FragmentTag.fragmentLiveListTag,
 		getTagLength: FragmentTagLength.fragmentLiveListTagLength,
 		getNewFragment: FragmentString.fragmentLiveListString,
-		save: Fragment._createFragmentLiveList
+		save: Fragment.createFragment,
+		Base: Fragment.FragmentLiveList
 	},
 	fragment_list_data = {
 		getTag: FragmentTag.fragmentListTag,
 		getTagLength: FragmentTagLength.fragmentListTagLength,
 		getNewFragment: FragmentString.fragmentListString,
-		save: Fragment._createFragmentList
+		save: Fragment.createFragment,
+		Base: Fragment.FragmentList
 	},
 	fragment_unknown_data = {
 		getTag: (x: string) => { },
 		getTagLength: (x: string) => { },
 		getNewFragment: (x: string) => { },
-		save: (_directory: string, _fs_path: string, _line: string) => { },
+		save: Fragment.createUnknown,
+		Base: Fragment.Unknown
 	};
 	
 const isValidFragment = (x: string) => {
@@ -100,7 +106,7 @@ export const getFragmentData = (content: string[]): {
 };
 
 export const createTextReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
-	const { save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type),
+	const { Base, save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type),
 		is_list = IsFragment.isFragmentList_LineType(line_type),
 		[[tag_start, tag_end]] = Store._store_fragment_singleton.shift() || [['', '']];
 	const tag = getTag(line),
@@ -122,6 +128,7 @@ export const createTextReplacement = (line: string, line_type: Enums.LineType, l
 		line_type: line_type,
 		line_number: line_number,
 		save: save,
+		Base: Base,
 		is_list: is_list === true,
 		start_position: start_position,
 		end_position: end_position,
@@ -143,7 +150,7 @@ export const createFragmentEntity = (
 };
 
 export const fragmentLineTypeData = (line_type: Enums.LineType): Interface_.ILineTypeFragmentCalls => {
-	let calls = fragment_unknown_data;
+	let calls;
 	switch (line_type) {
 		case Enums.LineType.Fragment: calls = fragment_data; break;
 		case Enums.LineType.FragmentLive: calls = fragment_live_data; break;

@@ -17,6 +17,7 @@ export interface ILineTypeFragmentCalls {
     getTagLength: Function,
     getNewFragment: Function,
     save: Function,
+    Base: any,
 }
 
 export interface ICreateFragmentStack extends Object {

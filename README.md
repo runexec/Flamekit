@@ -14,6 +14,9 @@ VSCode Marketplace
 
 Each fragment file is opened in a pane after creation; bottom or side depending on user config.
 
+=!f{[a]} // create tags but not files
+=f{[a, b, c, d]}[exe] // custom file extension
+
 <table>
     <thead>
         <th>Command</th>

@@ -7,6 +7,49 @@ import * as FragmentFileName from './fragmentFileName';
 import * as FragmentFile from './fragmentFile';
 import * as FragmentGroup from './fragmentGroup';
 
+export class Fragment {
+	line: string;
+	fs_path: string;
+	directory: string;
+	constructor(directory: string, fs_path: string, line: string) {
+		this.directory = directory;
+		this.fs_path = fs_path;
+		this.line = line;
+	}
+};
+
+export class Unknown extends Fragment { };
+export function createUnknown<F extends Fragment>(F: F) { return F; }
+
+export function createFragment<F extends Fragment>(F: F) {
+	return _createFragment(F.directory, F.fs_path, F.line);
+};
+
+export class FragmentLive extends Fragment { };
+export function createFragmentLive<F extends FragmentLive>(F: F) {
+	_createFragmentLive(F.directory, F.fs_path, F.line);
+}
+
+export class FragmentArray extends Fragment { };
+export function createFragmentArray<F extends FragmentArray>(F: F) {
+	_createFragmentArray(F.directory, F.fs_path, F.line);
+}
+
+export class FragmentLiveArray extends Fragment { };
+export function createFragmentLiveArray<F extends FragmentLiveArray>(F: F) {
+	_createFragmentLiveArray(F.directory, F.fs_path, F.line);
+}
+
+export class FragmentList extends Fragment { };
+export function createFragmentList<F extends FragmentList>(F: F) {
+	_createFragmentList(F.directory, F.fs_path, F.line);
+}
+
+export class FragmentLiveList extends Fragment { };
+export function createFragmentLiveList<F extends FragmentLiveList>(F: F) {
+	_createFragmentLiveList(F.directory, F.fs_path, F.line);
+}
+
 export const _createFragment = (directory: string, fs_path: string, line: string) => {
 	const new_file = FragmentFileName.fragmentFileName(FragmentGroup.fragmentGroup(line)),
 		path = `${directory}${new_file}`,
