@@ -12,16 +12,38 @@ Using VSCode Marketplace or Github
 
 Fragments are text patterns that trigger file or project altering events after a document has been saved.
 
+##### Fragment: `=f{}`
+##### Fragment Array: `=f{[]}`
 ##### Fragment List: `=l{[]}`
-##### Live Fragment List: `=ll{[]}`
+##### Fragment Live: `=lf{}`
+##### Fragment Live Array: `=lf{[]}`
+##### Fragment Live List: `=ll{[]}`
 
-Provided a list of names, convert into `EEX` `render` or `LEEX` `live_component` strings, and create files 
+
+Provided names, convert into `EEX` `render` or `LEEX` `live_component` strings, and create files 
 to match the tag. The files produced will match the names provided, and result in new files being placed 
 in `assets/css/` and the parent document directory with their relative associated paths.
 
 Pattern: 
 ```html
+# Fragment
+
+=f{hello}
+=f{[red, yello, blue]}
+
+# Fragment Live 
+
+=lf{world}
+=lf{[bird, dog, duck, cat]}
+
+# Fragment List
+
 <tag x="x" y="y" z="z">=l{[hello, world, one, two]}</tag>
+
+# Fragment Live List
+
+<tag liveExample="true">=ll{[a, b]}</tag>
+
 ```
 
  * Creates Files
