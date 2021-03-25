@@ -10,7 +10,11 @@ Using VSCode Marketplace or Github
 
 ### Fragments
 
-Fragments are text patterns that trigger file or project altering events after a document has been saved.
+Fragments are text patterns that trigger file or project altering events after a document has been saved. Limitations being that only one per-line may exist.
+
+Provided names, convert into `EEX` `render` or `LEEX` `live_component` strings, and create files 
+to match the tag. The files produced will match the names provided, and result in new files being placed 
+in `assets/css/` and the parent document directory with their relative associated paths.
 
 ##### Fragment: `=f{}`
 ##### Fragment Array: `=f{[]}`
@@ -19,12 +23,7 @@ Fragments are text patterns that trigger file or project altering events after a
 ##### Fragment Live Array: `=lf{[]}`
 ##### Fragment Live List: `=ll{[]}`
 
-
-Provided names, convert into `EEX` `render` or `LEEX` `live_component` strings, and create files 
-to match the tag. The files produced will match the names provided, and result in new files being placed 
-in `assets/css/` and the parent document directory with their relative associated paths.
-
-Pattern: 
+Usage Patterns:
 ```html
 # Fragment
 
@@ -39,6 +38,16 @@ Pattern:
 # Fragment List
 
 <tag x="x" y="y" z="z">=l{[hello, world, one, two]}</tag>
+
+# Fragment List Don't Do : Will expand `div` instead of `span`
+
+<div><span class="dont-do-this">=l{[will, be, div]}</span></div>
+
+# Fragment List Okay:
+
+<div>
+    <span class="do-this">=l{[will, be, span]}</span>
+</div>
 
 # Fragment Live List
 
