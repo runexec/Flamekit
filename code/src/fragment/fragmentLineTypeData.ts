@@ -4,7 +4,7 @@ import * as FragmentTag from './fragmentTag';
 import * as FragmentTagLength from './fragmentTagLength';
 import * as FragmentString from './fragmentString';
 import * as IsFragment from './isFragment';
-import * as Store from './store';
+import * as Store from './fragmentStore';
 import * as Enums from '../enum';
 import * as Interface_ from '../interface';
 import * as Fragment_ from './fragment';
@@ -147,14 +147,14 @@ export const getFragmentData = (content: string[]): {
 		.map((line, line_number) => {
 			if (!isValidFragment(line)) { return { line: '', line_number: -1, line_type: line_type }; }
 			switch (true) {
-				case IsFragment.isFragment(line): line_type = Enums.LineType.Fragment; break;
 				case IsFragment.isFragmentLive(line): line_type = Enums.LineType.FragmentLive; break;
+				case IsFragment.isFragment(line): line_type = Enums.LineType.Fragment; break;
 				// List must come before Array because similar regular expression
 				// Order might not matter now after Regex changes. Need to double-check
-				case IsFragment.isFragmentList(line): line_type = Enums.LineType.FragmentList; break;
 				case IsFragment.isFragmentLiveList(line): line_type = Enums.LineType.FragmentLiveList; break;
-				case IsFragment.isFragmentArray(line): line_type = Enums.LineType.FragmentArray; break;
+				case IsFragment.isFragmentList(line): line_type = Enums.LineType.FragmentList; break;
 				case IsFragment.isFragmentLiveArray(line): line_type = Enums.LineType.FragmentLiveArray; break;
+				case IsFragment.isFragmentArray(line): line_type = Enums.LineType.FragmentArray; break;
 				default: line_type = Enums.LineType.Unknown;
 			}
 			return { line: line, line_number: line_number, line_type: line_type };
@@ -164,7 +164,7 @@ export const getFragmentData = (content: string[]): {
 export const createTextReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
 	const { Base, save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type),
 		is_list = IsFragment.isFragmentList_LineType(line_type),
-		[[tag_start, tag_end]] = Store._store_fragment_singleton.shift() || [['', '']];
+		[[tag_start, tag_end]] = Store.FragmentStore.shift() || [['', '']];
 	const tag = getTag(line),
 		fragment = getNewFragment(line),
 		start_line = line_number,

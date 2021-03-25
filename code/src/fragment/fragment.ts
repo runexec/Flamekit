@@ -6,7 +6,7 @@ import * as FragmentTag from './fragmentTag';
 import * as FragmentFileName from './fragmentFileName';
 import * as FragmentFile from './fragmentFile';
 import * as FragmentGroup from './fragmentGroup';
-import * as FragmentClean from './fragmentClean';
+import * as Message from '../util/message';
 
 export class Fragment {
 	line: string;
@@ -20,10 +20,32 @@ export class Fragment {
 	}
 
 	clean() {
-		if ((this.document = vscode.window.activeTextEditor?.document))
-			FragmentClean.document();
-	}
-};
+		if ((this.document = vscode.window.activeTextEditor?.document)) {
+			setTimeout(() => {
+				const editor = vscode.window.activeTextEditor;
+				editor && editor.edit((e) => {
+					const text = editor.document.getText();
+					let m;
+					text.split("\n").forEach(line => {
+						let latest = vscode.window.activeTextEditor?.document; 
+						if (latest && (m = line.match(/<\/\S+>[\{][\[].*?[\]][\}]<\/\S+>/))) {
+							const dirt = '{' + m[0].split('{')[1];
+							const start = text.indexOf(dirt)-1;
+							const start_pos = latest.positionAt(start);
+							const end_pos = new vscode.Position(start_pos.line, start_pos.character + dirt.length + 1);
+							console.log(start_pos);
+							console.log(end_pos);
+							console.log(editor.document.validatePosition(start_pos));
+							console.log(editor.document.validatePosition(end_pos));
+							e.delete(new vscode.Range(start_pos, end_pos));
+							m = null;
+						}
+					});
+				});
+			}, 500);
+		}
+	};
+}
 
 export class FragmentUnknown extends Fragment { };
 export function createUnknown<F extends Fragment>(F: F) { return F; }

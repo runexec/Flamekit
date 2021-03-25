@@ -5,6 +5,7 @@ import * as Enums from '../enum';
 import * as Util from '../util/util';
 import * as FragmentLineTypeData from './fragmentLineTypeData';
 import * as Constant from '../constant';
+import { Fragment } from './fragment';
 
 export const init = (context: vscode.ExtensionContext) => {
 	let disposable = newCreateFragmentDisposableCommand(context);
@@ -42,9 +43,10 @@ const _createFragment = async (active_document: vscode.TextDocument, directory: 
 		.filter(x => x.line_type !== Enums.LineType.Unknown)
 		.forEach(async (entity) => {
 			const new_edit = FragmentLineTypeData.createFragmentEntity(entity);
+			let fragment : Fragment;
 			vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 				if (new_edit && directory && fs_path) {
-					const fragment = new new_edit.Base(directory, fs_path, new_edit.line);
+					fragment = new new_edit.Base(directory, fs_path, new_edit.line);
 					new_edit.save(fragment);
 					new_edit.call(edit);
 					vscode.window.activeTextEditor?.document.save();
