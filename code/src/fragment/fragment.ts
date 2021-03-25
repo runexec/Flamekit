@@ -25,22 +25,8 @@ export class Fragment {
 	private cleanMatch(line: string) {
 		const m = line.match(/<\/\S+><\/\S+>/),
 			m2 = line.match(/<\/\S+>\}<\/\S+>/),
-			m3 = line.match(/>>=ll.*?<\/\S+>/),
-			m4 = line.match(/>>ll.*?<\/\S+>/),
-			m5 = line.match(/>>=l.*?<\/\S+>/),
-			m6 = line.match(/>>l.*?<\/\S+>/),
-			m7 = line.match(/>>=ll.*?<\/\S+>/),
-			m8 = line.match(/<\/\S+>ll.*?<\/\S+>/),
-			m9 = line.match(/<\/\S+>=ll.*?<\/\S+>/),
-			m10 = line.match(/<\/\S+>l.*?<\/\S+>/),
-			m11 = line.match(/<\/\S+>=l.*?<\/\S+>/),
-			found = [m, m2, m3, m4, m5, ,m6, m7, m8, m9, m10, m11]
-				.filter(x => x)[0];
-		switch (true) {
-			case found == m2: this.clean_offset = 0; break;
-			/* TODO */
-			default: this.clean_offset = 1;
-		}
+			found = [m, m2].filter(x => x)[0];
+		this.clean_offset = found == m2 ? 0 : 1;
 		return found;
 	}
 
@@ -59,11 +45,11 @@ export class Fragment {
 								const offset = dirt.split('>')[1].length;
 								const start_char = line.indexOf(dirt) + offset + this.clean_offset;
 								const start_pos = new vscode.Position(idx, start_char);
-								const end_pos = start_pos && new vscode.Position(
-									start_pos.line, start_pos.character + dirt.length + 1
-								);
-								if (start_pos && end_pos)
+								const end_pos = start_pos && new vscode.Position(start_pos.line, start_pos.character + dirt.length + 1);
+								if (start_pos && end_pos) {
+									Message.info(end_pos.line + ' - ' + end_pos.character + ' <<<<<<<');
 									e.delete(new vscode.Range(start_pos, end_pos));
+								}
 							});
 						}
 					});
