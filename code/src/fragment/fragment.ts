@@ -13,10 +13,21 @@ export class Fragment {
 	fs_path: string;
 	directory: string;
 	document: undefined | vscode.TextDocument;
+	
+
 	constructor(directory: string, fs_path: string, line: string) {
 		this.directory = directory;
 		this.fs_path = fs_path;
 		this.line = line;
+	}
+
+	private clean_offset: number = 0;
+	private cleanMatch(line:string) {
+		const m = line.match(/<\/\S+><\/\S+>/),
+		m2 = line.match(/<\/\S+>\}<\/\S+>/),
+		found = [m, m2].filter(x => x)[0];
+		this.clean_offset = found == m2 ? 0 : 1;
+		return found;
 	}
 
 	clean() {
@@ -28,15 +39,12 @@ export class Fragment {
 					let m;
 					text.split("\n").forEach(line => {
 						let latest = vscode.window.activeTextEditor?.document; 
-						if (latest && (m = line.match(/<\/\S+>[\{][\[].*?[\]][\}]<\/\S+>/))) {
-							const dirt = '{' + m[0].split('{')[1];
-							const start = text.indexOf(dirt)-1;
+						if (latest && (m = this.cleanMatch(line))) {
+							const dirt = m[0];
+							const offset = dirt.split('>')[1].length;
+							const start = text.indexOf(dirt) + offset + this.clean_offset;
 							const start_pos = latest.positionAt(start);
 							const end_pos = new vscode.Position(start_pos.line, start_pos.character + dirt.length + 1);
-							console.log(start_pos);
-							console.log(end_pos);
-							console.log(editor.document.validatePosition(start_pos));
-							console.log(editor.document.validatePosition(end_pos));
 							e.delete(new vscode.Range(start_pos, end_pos));
 							m = null;
 						}

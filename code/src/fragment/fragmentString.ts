@@ -29,7 +29,7 @@ export const
 
     fragmentListString = (x: string) => {
         const group = FragmentGroup.fragmentListGroup(x),
-            remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
+        remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
         if (fragments) {
             const tag = (x.match(Constant.FRAGMENT_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
@@ -42,7 +42,6 @@ export const
         const group = FragmentGroup.fragmentLiveListGroup(x),
             remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
-            Message.info(`LiveString ${group}`);
         if (fragments) {
             const tag = (x.match(Constant.FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
             return fragments.map(x => FragmentTemplate.fragmentLiveListTemplate(x, tag)).join('\n');

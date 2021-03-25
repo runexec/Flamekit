@@ -12,7 +12,7 @@ class Store {
         this.shift = () => this.store.shift();
         this.push = (x: FragmentStorageItem) => {
             this.store.push(x);
-            Message.info(`store ${x}`)
+            Message.info(`Fragment Storage Item ${x}`)
         };
     }
 }
