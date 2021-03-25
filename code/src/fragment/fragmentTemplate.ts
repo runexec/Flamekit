@@ -17,7 +17,7 @@ export const
     
     fragmentLiveListTemplate = (x: string, tag: string) => {
         const tag_start = '<' + tag + '>',
-            tag_end = '</' + tag_start.split(' ')[0].split('<')[1];
+            tag_end = '</' + tag_start.split(' ')[0].split('<')[1] + '>';
         Store.FragmentStore.push([tag_start, tag_end]);
         return `${tag_start}<%= live_component "${FragmentFileName.fragmentLiveListFileName(x).replace(/\.html/, '')}" %>${tag_end}`;
     };
