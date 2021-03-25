@@ -36,9 +36,9 @@ export class Fragment {
 				const editor = vscode.window.activeTextEditor;
 				editor && editor.edit((e) => {
 					const text = editor.document.getText();
-					let m;
 					text.split("\n").forEach(line => {
-						let latest = vscode.window.activeTextEditor?.document; 
+						let m = null,
+							latest = vscode.window.activeTextEditor?.document;
 						if (latest && (m = this.cleanMatch(line))) {
 							const dirt = m[0];
 							const offset = dirt.split('>')[1].length;
@@ -46,7 +46,6 @@ export class Fragment {
 							const start_pos = latest.positionAt(start);
 							const end_pos = new vscode.Position(start_pos.line, start_pos.character + dirt.length + 1);
 							e.delete(new vscode.Range(start_pos, end_pos));
-							m = null;
 						}
 					});
 				});

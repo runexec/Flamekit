@@ -1,14 +1,18 @@
-# Flamekit Phoenix Development Extension
+# Flamekit Phoenix Framework Extension
 
-Developed and tested on Linux.
+For faster website development.
+
 
 ### Install
-
+Developed and tested on Linux.
 Using VSCode Marketplace or Github
 
 ---
 
 ### Fragments
+
+ * Creates Files
+ * Creates Code
 
 Fragments are text patterns that trigger file or project altering events after a document has been saved. Limitations being that only one per-line may exist.
 
@@ -16,14 +20,56 @@ Provided names, convert into `EEX` `render` or `LEEX` `live_component` strings, 
 to match the tag. The files produced will match the names provided, and result in new files being placed 
 in `assets/css/` and the parent document directory with their relative associated paths.
 
-##### Fragment: `=f{}`
-##### Fragment Array: `=f{[]}`
-##### Fragment List: `=l{[]}`
-##### Fragment Live: `=lf{}`
-##### Fragment Live Array: `=lf{[]}`
-##### Fragment Live List: `=ll{[]}`
 
-Usage Patterns:
+###### Example Document: 
+
+`example_web/hello/hello_world.html.eex`
+
+###### Example Document content: 
+
+```html
+Without tags
+
+=f{[hello, world]}
+
+With tags
+
+<a abc="123">=l{[hello, world]}</a>
+
+Live
+
+<div class="number">=ll{[one_component]}</div>
+```
+
+###### Example Document content after save: 
+
+```html
+Without tags
+
+<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
+<!-- created example_web/hello/_hello.html.eex -->
+<%= render "_hello.html" %>
+<!-- created assets/css/example_web/hello/_world.html.eex.css -->
+<!-- created example_web/hello/_world.html.eex -->
+<%= render "_world.html" %>
+
+With tags
+
+<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
+<!-- created example_web/hello/_hello.html.eex -->
+<a abc="123"><%= render "_hello.html" %></a>
+<!-- created assets/css/example_web/hello/_world.html.eex.css -->
+<!-- created example_web/hello/_world.html.eex -->
+<a abc="123"><%= render "_world.html" %></a>
+
+Live
+
+<!-- created assets/css/example_web/live/one_component.ex.css -->
+<!-- created example_web/live/one_component.ex -->
+<div class="number"><%= live_component @socket, OneComponent %></div>
+```
+
+###### Usage Patterns:
 ```html
 # Fragment
 
@@ -55,57 +101,12 @@ Usage Patterns:
 
 ```
 
- * Creates Files
- * Creates Code
-
-
-Example Document: 
-
-`example_web/hello/hello_world.html.eex`
-
-Example Document content: 
-
-```html
-Without tags
-
-=f{[hello, world]}
-
-With tags
-
-<a abc="123">=l{[hello, world]}</a>
-
-Live
-
-<div class="number">=ll{[one_component]}</div>
-```
-
-Example Document content after save: 
-
-```html
-Without tags
-
-<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
-<!-- created example_web/hello/_hello.html.eex -->
-<%= render "_hello.html" %>
-<!-- created assets/css/example_web/hello/_world.html.eex.css -->
-<!-- created example_web/hello/_world.html.eex -->
-<%= render "_world.html" %>
-
-With tags
-
-<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
-<!-- created example_web/hello/_hello.html.eex -->
-<a abc="123"><%= render "_hello.html" %></a>
-<!-- created assets/css/example_web/hello/_world.html.eex.css -->
-<!-- created example_web/hello/_world.html.eex -->
-<a abc="123"><%= render "_world.html" %></a>
-
-Live
-
-<!-- created assets/css/example_web/live/one_component.ex.css -->
-<!-- created example_web/live/one_component.ex -->
-<div class="number"><%= live_component @socket, OneComponent %></div>
-```
+##### Fragment: `=f{}`
+##### Fragment Array: `=f{[]}`
+##### Fragment List: `=l{[]}`
+##### Fragment Live: `=lf{}`
+##### Fragment Live Array: `=lf{[]}`
+##### Fragment Live List: `=ll{[]}`
 
 ----------
 
