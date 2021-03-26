@@ -6,7 +6,6 @@ import * as FragmentTag from './fragmentTag';
 import * as FragmentFileName from './fragmentFileName';
 import * as FragmentFile from './fragmentFile';
 import * as FragmentGroup from './fragmentGroup';
-import * as Message from '../util/message';
 
 export class Fragment {
 	line: string;

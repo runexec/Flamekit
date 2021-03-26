@@ -1,4 +1,5 @@
 export const
+	DEBUG_MODE = true,
 	// Not Tested
 	FLAMEKIT_INDEX = 'flamekit.index.css',
 	// Tested

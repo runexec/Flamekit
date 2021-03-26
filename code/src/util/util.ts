@@ -2,7 +2,6 @@
 import * as vscode from 'vscode';
 import * as Interface_ from '../interface';
 import * as Constant from '../constant';
-
 /*
 * @param active_document - 
 * Current document in focus. Must end with or`html.eex` or `html.leex`

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import * as FragmentTag from './fragmentTag';
-import * as FragmentTagLength from './fragmentTagLength';
 import * as FragmentString from './fragmentString';
 import * as IsFragment from './isFragment';
 import * as Store from './fragmentStore';
@@ -151,14 +150,14 @@ export const createTextReplacement = (line: string, line_type: Enums.LineType, l
 	const { Base, save, getTag, getNewFragment } = fragmentLineTypeData(line_type),
 		is_list = IsFragment.isFragmentListLineType(line_type),
 		// `tag_start` and `tag_end` only used if List
-		[[tag_start, tag_end]] = Store.FragmentStore.shift() || [['', '']];
-	const tag = getTag(line),
+		[[tag_start, _tag_end]] = Store.FragmentStore.shift() || [['', '']],
+		tag = getTag(line),
 		fragment = getNewFragment(line),
 		start_line = line_number,
 		start_char = Math.max(0, line.indexOf(is_list ? tag_start : tag)),
-		end_line = line_number,
-		end_char = Math.max(0, line.length - (is_list ? start_char : tag.legnth)),
 		start_position = new vscode.Position(start_line, start_char),
+		end_line = line_number,
+		end_char = Math.max(0, line.length - (is_list ? start_char : tag.length)),
 		end_position = new vscode.Position(end_line, end_char),
 		replace_range = new vscode.Range(start_position, end_position);
 	return {
@@ -194,10 +193,10 @@ export const fragmentLineTypeData = (line_type: Enums.LineType): Interface_.ILin
 	let calls;
 	switch (line_type) {
 		case Enums.LineType.Fragment: calls = new Fragment(); break;
-		case Enums.LineType.FragmentLive: calls = new FragmentLive(); break;
-		case Enums.LineType.FragmentArray: calls = new FragmentArray(); break;
-		case Enums.LineType.FragmentLiveArray: calls = new FragmentLiveArray(); break;
 		case Enums.LineType.FragmentList: calls = new FragmentList(); break;
+		case Enums.LineType.FragmentArray: calls = new FragmentArray(); break;
+		case Enums.LineType.FragmentLive: calls = new FragmentLive(); break;
+		case Enums.LineType.FragmentLiveArray: calls = new FragmentLiveArray(); break;
 		case Enums.LineType.FragmentLiveList: calls = new FragmentLiveList(); break;
 		default: calls = new FragmentUnknown(); break;
 	}

@@ -8,23 +8,12 @@ export const
     fragmentString = (x: string) =>
         FragmentTemplate.fragmentTemplate(FragmentGroup.fragmentGroup(x)),
 
-    fragmentLiveString = (x: string) =>
-        FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)),
-
     fragmentArrayString = (x: string) => {
         const group = FragmentGroup.fragmentArrayGroup(x);
         const fragments = group ? group.split(', ') : false;
         return fragments ? 
             fragments.map(x => FragmentTemplate.fragmentTemplate(x)).join("\n") 
             : 'fragmentArrayString<Failed>';
-    },
-
-    fragmentLiveArrayString = (x: string) => {
-        const group = FragmentGroup.fragmentLiveArrayGroup(x);
-        const fragments = group ? group.split(', ') : false;
-        return fragments ?
-            fragments.map(x => FragmentTemplate.fragmentLiveTemplate(x)).join("\n")
-            : 'fragmentLiveArrayString<Failed>';
     },
 
     fragmentListString = (x: string) => {
@@ -36,6 +25,17 @@ export const
             return fragments.map(x => FragmentTemplate.fragmentListTemplate(x, tag)).join('\n');
         }
         return 'fragmentListString<Failed>';
+    },
+
+    fragmentLiveString = (x: string) =>
+        FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)),
+
+    fragmentLiveArrayString = (x: string) => {
+        const group = FragmentGroup.fragmentLiveArrayGroup(x);
+        const fragments = group ? group.split(', ') : false;
+        return fragments ?
+            fragments.map(x => FragmentTemplate.fragmentLiveTemplate(x)).join("\n")
+            : 'fragmentLiveArrayString<Failed>';
     },
 
     fragmentLiveListString = (x: string) => {
