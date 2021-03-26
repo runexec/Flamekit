@@ -1,6 +1,7 @@
-# Flamekit Phoenix Framework Extension
+# Flamekit
+##### *Build websites faster with Flamekit Phoenix Framework Development extension for VSCode.*
+---- 
 
-For faster website development.
 
 
 ### Install
@@ -11,16 +12,16 @@ Using VSCode Marketplace or Github
 
 ### Fragments
 
- * Creates Files
- * Creates Code
-
-Fragments are text patterns that trigger file or project altering events after a document has been saved. Limitations being that only one per-line may exist.
+Fragments are text patterns that trigger file or project altering events after a document has been saved. 
+Limitations being that only one Fragment per-line may exist.
 
 Provided names, convert into `EEX` `render` or `LEEX` `live_component` strings, and create files 
 to match the tag. The files produced will match the names provided, and result in new files being placed 
 in `assets/css/` and the parent document directory with their relative associated paths.
 
-
+ * Creates Files
+ * Creates Code
+ 
 ###### Example Document: 
 
 `example_web/hello/hello_world.html.eex`
