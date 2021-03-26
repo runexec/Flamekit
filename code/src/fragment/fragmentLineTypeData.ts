@@ -12,13 +12,11 @@ import * as Message from '../util/message';
 
 export class Fragment implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentTag;
-		this.getTagLength = FragmentTagLength.fragmentTagLength;
 		this.getNewFragment = FragmentString.fragmentString;
 		this.save = Fragment_.createFragment;
 		this.Base = Fragment_.Fragment;
@@ -27,13 +25,11 @@ export class Fragment implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentArray implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentArrayTag;
-		this.getTagLength = FragmentTagLength.fragmentArrayTagLength;
 		this.getNewFragment = FragmentString.fragmentArrayString;
 		this.save = Fragment_.createFragmentArray;
 		this.Base = Fragment_.FragmentArray;
@@ -42,13 +38,11 @@ export class FragmentArray implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentLive implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentLiveTag;
-		this.getTagLength = FragmentTagLength.fragmentLiveTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveString;
 		this.save = Fragment_.createFragmentLive;
 		this.Base = Fragment_.FragmentLive;
@@ -57,13 +51,11 @@ export class FragmentLive implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentLiveArray implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentLiveArrayTag;
-		this.getTagLength = FragmentTagLength.fragmentLiveArrayTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveArrayString;
 		this.save = Fragment_.createFragmentLiveArray;
 		this.Base = Fragment_.FragmentLiveArray;
@@ -72,13 +64,11 @@ export class FragmentLiveArray implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentList implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentListTag;
-		this.getTagLength = FragmentTagLength.fragmentListTagLength;
 		this.getNewFragment = FragmentString.fragmentListString;
 		this.save = Fragment_.createFragmentList;
 		this.Base = Fragment_.FragmentList;
@@ -87,13 +77,11 @@ export class FragmentList implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentLiveList implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = FragmentTag.fragmentLiveListTag;
-		this.getTagLength = FragmentTagLength.fragmentLiveListTagLength;
 		this.getNewFragment = FragmentString.fragmentLiveListString;
 		this.save = Fragment_.createFragmentLiveList;
 		this.Base = Fragment_.FragmentLiveList;
@@ -102,13 +90,11 @@ export class FragmentLiveList implements Interface_.ILineTypeFragmentCalls {
 
 export class FragmentUnknown implements Interface_.ILineTypeFragmentCalls {
 	getTag: Function;
-	getTagLength: Function;
 	getNewFragment: Function;
 	save: Function;
 	Base: any;
 	constructor() {
 		this.getTag = (x: string) => { };
-		this.getTagLength = (x: string) => { };
 		this.getNewFragment = (x: string) => { };
 		this.save = Fragment_.createUnknown;
 		this.Base = Fragment_.FragmentUnknown;
@@ -162,20 +148,17 @@ export const getFragmentData = (content: string[]): {
 };
 
 export const createTextReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
-	const { Base, save, getTag, getTagLength, getNewFragment } = fragmentLineTypeData(line_type),
-		is_list = IsFragment.isFragmentList_LineType(line_type),
+	const { Base, save, getTag, getNewFragment } = fragmentLineTypeData(line_type),
+		is_list = IsFragment.isFragmentListLineType(line_type),
+		// `tag_start` and `tag_end` only used if List
 		[[tag_start, tag_end]] = Store.FragmentStore.shift() || [['', '']];
 	const tag = getTag(line),
 		fragment = getNewFragment(line),
 		start_line = line_number,
-		start_char = is_list
-			? line.indexOf(tag_start)
-			: line.indexOf(tag),
-		start_position = new vscode.Position(start_line, start_char),
+		start_char = Math.max(0, line.indexOf(is_list ? tag_start : tag)),
 		end_line = line_number,
-		end_char = IsFragment.isFragmentList_LineType(line_type)
-			? line.length - start_char
-			: start_char + getTagLength(line),
+		end_char = Math.max(0, line.length - (is_list ? start_char : tag.legnth)),
+		start_position = new vscode.Position(start_line, start_char),
 		end_position = new vscode.Position(end_line, end_char),
 		replace_range = new vscode.Range(start_position, end_position);
 	return {
@@ -189,7 +172,9 @@ export const createTextReplacement = (line: string, line_type: Enums.LineType, l
 		start_position: start_position,
 		end_position: end_position,
 		fragment: fragment,
-		call: (edit: vscode.TextEditorEdit) => edit.replace(replace_range, fragment)
+		call: (edit: vscode.TextEditorEdit) => {
+			edit.replace(replace_range, fragment);
+		}
 	};
 };
 

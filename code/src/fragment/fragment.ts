@@ -13,8 +13,6 @@ export class Fragment {
 	fs_path: string;
 	directory: string;
 	document: undefined | vscode.TextDocument;
-
-
 	constructor(directory: string, fs_path: string, line: string) {
 		this.directory = directory;
 		this.fs_path = fs_path;

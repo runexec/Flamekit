@@ -14,7 +14,6 @@ export interface IWorkingPaths extends IPaths {
 
 export interface ILineTypeFragmentCalls {
     getTag: Function,
-    getTagLength: Function,
     getNewFragment: Function,
     save: Function,
     Base: any,
