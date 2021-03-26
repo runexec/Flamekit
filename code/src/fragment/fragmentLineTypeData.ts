@@ -174,7 +174,7 @@ export const createTextReplacement = (line: string, line_type: Enums.LineType, l
 		start_position = new vscode.Position(start_line, start_char),
 		end_line = line_number,
 		end_char = IsFragment.isFragmentList_LineType(line_type)
-			? start_char + tag_end.length-1 + getTagLength(line)
+			? line.length - start_char
 			: start_char + getTagLength(line),
 		end_position = new vscode.Position(end_line, end_char),
 		replace_range = new vscode.Range(start_position, end_position);

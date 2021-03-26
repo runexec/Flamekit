@@ -20,43 +20,6 @@ export class Fragment {
 		this.fs_path = fs_path;
 		this.line = line;
 	}
-
-	private clean_offset: number = 0;
-	private cleanMatch(line: string) {
-		const m = line.match(/<\/\S+><\/\S+>/),
-			m2 = line.match(/<\/\S+>\}<\/\S+>/),
-			found = [m, m2].filter(x => x)[0];
-		this.clean_offset = found == m2 ? 0 : 1;
-		return found;
-	}
-
-	clean() {
-		if ((this.document = vscode.window.activeTextEditor?.document)) {
-			setTimeout(() => {
-				const editor = vscode.window.activeTextEditor;
-				editor && editor.edit((e) => {
-					const text = editor.document.getText();
-					text.split("\n").forEach(async (line, idx) => {
-						let m = null,
-							latest = vscode.window.activeTextEditor?.document;
-						if (latest && (m = this.cleanMatch(line))) {
-							m.forEach((token) => {
-								const dirt = token;
-								const offset = dirt.split('>')[1].length;
-								const start_char = line.indexOf(dirt) + offset + this.clean_offset;
-								const start_pos = new vscode.Position(idx, start_char);
-								const end_pos = start_pos && new vscode.Position(start_pos.line, start_pos.character + dirt.length + 1);
-								if (start_pos && end_pos) {
-									Message.info(end_pos.line + ' - ' + end_pos.character + ' <<<<<<<');
-									e.delete(new vscode.Range(start_pos, end_pos));
-								}
-							});
-						}
-					});
-				});
-			}, 100);
-		}
-	};
 }
 
 export class FragmentUnknown extends Fragment { };

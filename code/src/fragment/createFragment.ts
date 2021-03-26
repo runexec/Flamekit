@@ -50,7 +50,6 @@ const _createFragment = async (active_document: vscode.TextDocument, directory: 
 					new_edit.save(fragment);
 					new_edit.call(edit);
 					vscode.window.activeTextEditor?.document.save();
-					fragment.clean();
 				}
 			});
 		});
