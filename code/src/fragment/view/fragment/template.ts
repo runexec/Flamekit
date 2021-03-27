@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as FragmentFileName from './fragmentFileName';
-import * as Store from './fragmentStore';
+import * as FragmentFileName from '../../controller/fileName';
+import * as Store from '../../store/store';
 
 export const
     fragmentTemplate = (x: string) => `<%= render "${FragmentFileName.fragmentFileName(x)}" %>`,

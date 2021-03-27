@@ -1,7 +1,7 @@
 /* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
-import * as CreateFragment from './fragment/createFragment';
+import * as CreateFragment from './fragment/controller/create';
 import * as CreateCSS from './css/createCSS';
 
 export function activate(context: vscode.ExtensionContext) {

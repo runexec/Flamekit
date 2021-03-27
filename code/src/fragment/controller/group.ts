@@ -1,4 +1,4 @@
-import * as Constant from '../constant';
+import * as Constant from '../../constant';
 export const
     fragmentGroup = (x: string) => (x.match(Constant.FRAGMENT_GROUP_REGEX) || [])[1],
     fragmentListGroup = (x: string) => (x.match(Constant.FRAGMENT_LIST_GROUP_REGEX) || [])[1],

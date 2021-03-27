@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as Constant from '../constant';
-import * as FragmentTemplate from './fragmentTemplate';
-import * as FragmentGroup from './fragmentGroup';
-import * as Message from '../util/message';
+import * as Constant from '../../constant';
+import * as FragmentTemplate from './fragment/template';
+import * as FragmentGroup from '../controller/group';
 
 export const
-    fragmentString = (x: string) => { FragmentTemplate.fragmentTemplate(FragmentGroup.fragmentGroup(x)) },
+    fragmentView = (x: string) => { return FragmentTemplate.fragmentTemplate(FragmentGroup.fragmentGroup(x)) },
 
-    fragmentArrayString = (x: string) => {
+    fragmentArrayView = (x: string) => {
         const group = FragmentGroup.fragmentArrayGroup(x);
         const fragments = group ? group.split(', ') : false;
         return fragments ?
@@ -15,7 +14,7 @@ export const
             : 'fragmentArrayString<Failed>';
     },
 
-    fragmentListString = (x: string) => {
+    fragmentListView = (x: string) => {
         const group = FragmentGroup.fragmentListGroup(x),
             remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
@@ -26,9 +25,9 @@ export const
         return 'fragmentListString<Failed>';
     },
 
-    fragmentLiveString = (x: string) => { FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)) },
+    fragmentLiveView = (x: string) => { return FragmentTemplate.fragmentLiveTemplate(FragmentGroup.fragmentLiveGroup(x)) },
 
-    fragmentLiveArrayString = (x: string) => {
+    fragmentLiveArrayView = (x: string) => {
         const group = FragmentGroup.fragmentLiveArrayGroup(x),
             fragments = group ? group.split(', ') : false;
         return fragments ?
@@ -36,7 +35,7 @@ export const
             : 'fragmentLiveArrayString<Failed>';
     },
 
-    fragmentLiveListString = (x: string) => {
+    fragmentLiveListView = (x: string) => {
         const group = FragmentGroup.fragmentLiveListGroup(x),
             remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;

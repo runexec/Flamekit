@@ -1,4 +1,4 @@
-import * as Message from '../util/message';
+import * as Message from '../../util/message';
 
 type FragmentStorageItem = [tagStart: string, tagEnd: string];
 

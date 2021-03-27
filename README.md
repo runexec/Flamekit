@@ -110,7 +110,7 @@ Live
 ##### Fragment Live List: `=ll{[]}`
 
 ----------
-
+// install PETAL
 // !=f{[a, b, c, d]} // create tags but not files
 // =f{[a, b, c, d]}[exe] // custom file extension
 // open fragment in pane
