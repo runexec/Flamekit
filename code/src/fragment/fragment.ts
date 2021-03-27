@@ -23,7 +23,7 @@ export class FragmentUnknown extends Fragment { };
 export function createUnknown<F extends Fragment>(F: F) { return F; }
 
 export function createFragment<F extends Fragment>(F: F) {
-	return _createFragment(F.directory, F.fs_path, F.line);
+	_createFragment(F.directory, F.fs_path, F.line);
 };
 
 export class FragmentLive extends Fragment { };
@@ -62,9 +62,11 @@ export const _createFragment = (directory: string, fs_path: string, line: string
 };
 
 export const _createFragmentLive = (directory: string, fs_path: string, line: string) => {
-	const new_file = FragmentFileName.fragmentFileName(FragmentTag.fragmentLiveTag(line)).replace(/\.html/, '_live.html'),
+	const new_file = FragmentFileName.fragmentLiveFileName(
+			FragmentTag.fragmentLiveTag(line)).replace(/\.html/, '_live.html'
+		),
 		path = `${directory}${new_file}`,
-		uri = vscode.Uri.parse(fs_path + new_file + '.' + Constant.EXTENSION_LEEX);
+		uri = vscode.Uri.parse(fs_path + new_file + '.' + Constant.EXTENSION_EX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
@@ -113,7 +115,7 @@ export const _createFragmentList = (directory: string, fs_path: string, line: st
 export const _createFragmentLiveList = (directory: string, fs_path: string, line: string) => {
 	const new_files = FragmentFile.fragmentLiveListFiles(line),
 		paths = new_files.map(x => `${directory}${x.replace(/\.html/, '_live.html')}`),
-		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + Constant.EXTENSION_LEEX));
+		uris = new_files.map(x => vscode.Uri.parse(fs_path + x + '.' + Constant.EXTENSION_EX));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {

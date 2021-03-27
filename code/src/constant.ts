@@ -2,6 +2,7 @@ export const
 	DEBUG_MODE = true,
 	// Not Tested
 	FLAMEKIT_INDEX = 'flamekit.index.css',
+	EXTENSION_EX = 'ex',
 	// Tested
 	EXTENSION_EEX = 'eex',
 	EXTENSION_LEEX = 'leex',

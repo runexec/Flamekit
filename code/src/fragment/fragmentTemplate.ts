@@ -22,5 +22,5 @@ export const
             is_missing =_tag_end && _tag_end.indexOf('>') === -1,
             tag_end = is_missing ? _tag_end + '>' : _tag_end;
         Store.FragmentStore.push([tag_start, tag_end]);
-        return `${tag_start}<%= live_component "${FragmentFileName.fragmentLiveListFileName(x).replace(/\.html/, '')}" %>${tag_end}`;
+        return `${tag_start}<%= live_component ${FragmentFileName.fragmentLiveListFileName(x).replace(/\.html/, '')} %>${tag_end}`;
     };

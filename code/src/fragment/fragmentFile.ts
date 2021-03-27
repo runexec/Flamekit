@@ -24,9 +24,13 @@ export const
 			fragments = group ? group.split(', ') : false;
 		return fragments ? fragments.map(x => FragmentFileName.fragmentLiveFileName(x)) : [];
 	},
-	
+
 	fragmentLiveListFiles = (x: string): string[] => {
-		const group = FragmentTag.fragmentLiveListTag(x),
-			fragments = group ? group.split(', ') : false;
-		return fragments ? fragments.map(x => FragmentFileName.fragmentLiveFileName(x)) : [];
+		const group = FragmentTag.fragmentLiveListTag(x);
+		let fragments: string[] | undefined;
+		if (group) {
+			const m = group.match(/\[(.*)\]/);
+			m && (fragments = m[1].split(', '));
+		}
+		return fragments ? fragments.map(x => FragmentFileName.fragmentLiveListFileName(x)) : [];
 	};
