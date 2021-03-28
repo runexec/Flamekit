@@ -60,8 +60,8 @@ export function initFragment(F: Fragment.Fragment) : void;
 export function initFragment(F: Fragment.FragmentLive) : void;
 export function initFragment(F: Fragment.FragmentLiveList) : void;
 export function initFragment(F: Fragment.FragmentLiveArray) : void;
-export function initFragment(F: Fragment.FragmentList) :void;
-export function initFragment(F: Fragment.FragmentArray) :void { 
+export function initFragment(F: Fragment.FragmentList) : void;
+export function initFragment(F: Fragment.FragmentArray) : void { 
 	switch (true) {
 		case F instanceof Fragment.FragmentUnknown: null; break;
 		case F instanceof Fragment.FragmentLiveList: createFragmentLiveList(F); break;
@@ -95,7 +95,6 @@ function createFragmentArray(F: Fragment.FragmentArray): void {
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
 		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
-
 }
 
 function createFragmentList(F: Fragment.FragmentList): void {

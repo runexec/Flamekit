@@ -3,7 +3,7 @@ import * as FragmentFileName from '../../controller/fileName';
 
 export class FragmentLiveTemplate extends Template.Template {
     constructor(x: string) { 
-        super();
+        super(x);
         this.toString = () => { return `<%= render "${FragmentFileName.fragmentLiveFileName(x)}" %>`; }
         return this;
     }

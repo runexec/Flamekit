@@ -18,6 +18,7 @@ export class Fragment {
 		this.directory = directory;
 		this.fs_path = fs_path;
 		this.line = line;
+		this.Base = Fragment;
 		return this;
 	}
 }
@@ -41,7 +42,6 @@ export class FragmentList extends Fragment {
 		return this;
 	};
 };
-
 
 export class FragmentLive extends Fragment {
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {

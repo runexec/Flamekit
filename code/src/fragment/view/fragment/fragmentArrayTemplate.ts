@@ -3,7 +3,7 @@ import * as FileName from '../../controller/fileName';
 
 export class FragmentArrayTemplate extends Template.Template {
     constructor(x: string) {
-        super();
+        super(x);
         this.toString = () => { return `<%= render "${FileName.fragmentFileName(x)}" %>` };
         return this;
     }

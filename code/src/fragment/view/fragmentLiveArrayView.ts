@@ -1,4 +1,4 @@
-import * as View from './viewClass';
+import * as View from './view';
 import * as Template from './fragment/template'
 import * as Group from '../controller/group'
 

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as Enums from '../../enum';
-import * as FragmentMatch from './match';
+import * as Match from './match';
 
 export const
-    isFragment = (x: string) => FragmentMatch.fragment(x) !== null,
-    isFragmentList = (x: string) => FragmentMatch.fragmentList(x) !== null,
-    isFragmentArray = (x: string) => FragmentMatch.fragmentArray(x) !== null,
-    isFragmentLive = (x: string) => FragmentMatch.fragmentLive(x) !== null,
-    isFragmentLiveArray = (x: string) => FragmentMatch.fragmentLiveArray(x) !== null,
-    isFragmentLiveList = (x: string) => FragmentMatch.fragmentLiveList(x) !== null,
+    isFragment = (x: string) => Match.fragment(x) !== null,
+    isFragmentList = (x: string) => Match.fragmentList(x) !== null,
+    isFragmentArray = (x: string) => Match.fragmentArray(x) !== null,
+    isFragmentLive = (x: string) => Match.fragmentLive(x) !== null,
+    isFragmentLiveArray = (x: string) => Match.fragmentLiveArray(x) !== null,
+    isFragmentLiveList = (x: string) => Match.fragmentLiveList(x) !== null,
     isFragmentListLineType = (x: Enums.LineType) => x === Enums.LineType.FragmentList || Enums.LineType.FragmentLiveList;
 
 export const isValidFragment = (x: string) => {
@@ -29,6 +29,6 @@ export const isValidCreateFragment = (x: Enums.LineType) => {
         Enums.LineType.FragmentLive,
         Enums.LineType.FragmentLiveArray,
         Enums.LineType.FragmentList,
-        Enums.LineType.FragmentLiveList,
+        Enums.LineType.FragmentLiveList
     ].some(y => y === x);
 };

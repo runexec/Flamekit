@@ -4,7 +4,7 @@ import * as FragmentFileName from '../../controller/fileName';
 
 export class FragmentLiveListTemplate extends Template.Template {
     constructor(x: string, tag: string) {
-        super();
+        super(x);
         this.toString = () => {
             const tag_start = '<' + tag + '>',
             _tag_end = '</' + tag_start.split(' ')[0].split('<')[1],
