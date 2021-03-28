@@ -8,7 +8,6 @@ import * as Constant from '../../constant';
 import * as Fragment from '../fragment';
 import * as File from './file';
 import * as FileName from './fileName';
-import * as Tag from './tag';
 import * as Group from './group';
 import * as Entity from './entity';
 
@@ -111,9 +110,7 @@ function createFragmentList(F: Fragment.FragmentList): void {
 }
 
 function createFragmentLive(F: Fragment.FragmentLive): void {
-	const new_file = FileName.fragmentLiveFileName(
-		Tag.fragmentLiveTag(F.line)).replace(/\.html/, '_live.html'
-		),
+	const new_file = FileName.fragmentLiveFileName(Group.fragmentLiveGroup(F.line)),
 		path = `${F.directory}${new_file}`,
 		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.EXTENSION_EX);
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
