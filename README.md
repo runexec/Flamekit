@@ -113,9 +113,8 @@ Live
 
 ### AlpineJS
 
-AlpineJS triggers are applied within JS and TS documents. An import for AlpineJS is added to the 
-document, along with LiveView compatability code. A terminal is then opened, and the `alpinejs`
-`npm` package is installed.
+AlpineJS triggers are applied within `JS` and `TS` documents. An `import` for AlpineJS is added to the document,
+ along with `LiveView` compatability code. A terminal is then opened, and the `alpinejs` `npm` package is installed.
 
 ##### Install: `=setupAlpine`
 
@@ -152,6 +151,39 @@ liveSocket.connect()
 
 ----------
 
+### TailwindCSS
+
+TailwindCSS triggers are applied within `CSS` documents. An `import` for TailwindCSS is added to the document,
+ and a terminal is then opened. The terminal will execute commands to create (~ WARNING: overwrites ~) 
+ configurations for `postcss.config.js`, and `tailwind.config.js`. The Webpack configuration is updated, not 
+ overwritten, at `webpack.config.js`. The terminal will then execute `npm install` for all required packages.
+
+##### Install: `=setupTW`
+
+###### Example Document: 
+
+```app.css```
+
+###### Example Document content:
+
+```css
+=setupTW
+```
+
+###### Example Document content after save:
+
+```css
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+``
+
+------
+
+
+// maybe absinthe support
+// inject module name on new file (based on path, defmodule My.Path)
 // install PETAL
 // !=f{[a, b, c, d]} // create tags but not files
 // =f{[a, b, c, d]}[exe] // custom file extension
