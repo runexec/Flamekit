@@ -109,12 +109,13 @@ Live
 ##### Fragment Live Array: `=lf{[]}`
 ##### Fragment Live List: `=ll{[]}`
 
+---
 
 ### AlpineJS
 
 AlpineJS triggers are applied within JS and TS documents.
 
-##### `=install.alpine`
+##### Install: `=install.alpine`
 
 ###### Example Document: 
 
