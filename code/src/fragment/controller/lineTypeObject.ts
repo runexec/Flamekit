@@ -26,15 +26,15 @@ export const getFragmentData = (content: string[]): {
 	}).filter(x => x.line_type !== Enums.LineType.Unknown);
 };
 
-export const getLineTypeObject = (line_type: Enums.LineType): Fragment_.Fragment => {
+export const getLineTypeObject = (line_type: Enums.LineType) => {
 	switch (line_type) {
-		case Enums.LineType.Fragment: return new Fragment_.Fragment(); break;
-		case Enums.LineType.FragmentList: return new Fragment_.FragmentList(); break;
-		case Enums.LineType.FragmentArray: return new Fragment_.FragmentArray(); break;
-		case Enums.LineType.FragmentLive: return new Fragment_.FragmentLive(); break;
-		case Enums.LineType.FragmentLiveArray: return new Fragment_.FragmentLiveArray(); break;
-		case Enums.LineType.FragmentLiveList: return new Fragment_.FragmentLiveList(); break;
-		default: return new Fragment_.FragmentUnknown();
+		case Enums.LineType.Fragment: return Fragment_.Fragment; break;
+		case Enums.LineType.FragmentList: return Fragment_.FragmentList; break;
+		case Enums.LineType.FragmentArray: return Fragment_.FragmentArray; break;
+		case Enums.LineType.FragmentLive: return Fragment_.FragmentLive; break;
+		case Enums.LineType.FragmentLiveArray: return Fragment_.FragmentLiveArray; break;
+		case Enums.LineType.FragmentLiveList: return Fragment_.FragmentLiveList; break;
+		default: return Fragment_.FragmentUnknown;
 	}
 };
 

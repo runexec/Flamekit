@@ -5,6 +5,7 @@ import * as Message from '../../util/message';
 import * as Store from '../store/store';
 import * as Interface_ from '../../interface'
 import * as LineTypeObject from './lineTypeObject';
+import { Fragment } from '../fragment';
 
 export const createFragmentEntity = (
 	input_line: Interface_.ICreateFragmentLine
@@ -19,12 +20,12 @@ export const createFragmentEntity = (
 };
 
 const createTextReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
-	const { Base, save, getTag, getNewFragment } = LineTypeObject.getLineTypeObject(line_type),
+	const LTO = LineTypeObject.getLineTypeObject(line_type),
 		is_list = Is.isFragmentListLineType(line_type),
 		// `tag_start` and `tag_end` only used if List
 		[[tag_start, _tag_end]] = Store.FragmentStore.shift() || [['', '']],
-		tag = getTag(line),
-		fragment = getNewFragment(line),
+		tag = LTO.getTag(line),
+		fragment = LTO.getNewFragment(line),
 		start_line = line_number,
 		start_char = Math.max(0, line.indexOf(is_list ? tag_start : tag)),
 		start_position = new vscode.Position(start_line, start_char),
@@ -37,8 +38,8 @@ const createTextReplacement = (line: string, line_type: Enums.LineType, line_num
 		line: line,
 		line_type: line_type,
 		line_number: line_number,
-		save: save,
-		Base: Base,
+		Base: LTO.Base,
+		save: LTO.save,
 		is_list: is_list === true,
 		start_position: start_position,
 		end_position: end_position,

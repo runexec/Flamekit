@@ -10,6 +10,7 @@ import * as File from './file';
 import * as FileName from '../view/fragment/fileName';
 import * as Group from './group';
 import * as Entity from './entity';
+import * as CreateFragment from './create';
 
 export const init = (context: vscode.ExtensionContext) => {
 	let disposable = newCreateFragmentDisposableCommand(context);
@@ -38,15 +39,16 @@ export const createFragment = async (active_document: vscode.TextDocument | unde
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
 			lines = active_document.getText().toString().split("\n");
+		let fragment: Fragment.Fragment;
 		directory && fs_path && LineTypeObject.getFragmentData(lines)
 			.filter(x => x.line_type !== Enums.LineType.Unknown)
 			.forEach(async (entity) => {
+				// TODO: refactor so constant not called for each iteration
 				const new_edit = Entity.createFragmentEntity(entity);
-				let fragment: Fragment.Fragment;
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 					if (new_edit && directory && fs_path) {
 						fragment = new new_edit.Base(directory, fs_path, new_edit.line);
-						new_edit.save(fragment);
+						CreateFragment.initFragment(fragment);
 						new_edit.call(edit);
 						vscode.window.activeTextEditor?.document.save();
 					}
