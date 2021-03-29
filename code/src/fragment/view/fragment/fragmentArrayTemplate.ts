@@ -1,5 +1,5 @@
 import * as Template from './templateClass';
-import * as FileName from '../../controller/fileName';
+import * as FileName from './fileName';
 
 export class FragmentArrayTemplate extends Template.Template {
     constructor(x: string) {

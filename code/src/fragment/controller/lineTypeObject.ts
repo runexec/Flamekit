@@ -34,7 +34,7 @@ export const getLineTypeObject = (line_type: Enums.LineType): Fragment_.Fragment
 		case Enums.LineType.FragmentLive: return new Fragment_.FragmentLive(); break;
 		case Enums.LineType.FragmentLiveArray: return new Fragment_.FragmentLiveArray(); break;
 		case Enums.LineType.FragmentLiveList: return new Fragment_.FragmentLiveList(); break;
-		default: return new Fragment_.FragmentUnknown(); break;
+		default: return new Fragment_.FragmentUnknown();
 	}
 };
 

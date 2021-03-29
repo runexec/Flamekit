@@ -1,6 +1,6 @@
 import * as Store from '../../store/store';
 import * as Template from './templateClass';
-import * as FragmentFileName from '../../controller/fileName';
+import * as FragmentFileName from './fileName';
 
 export class FragmentListTemplate extends Template.Template {
     constructor(x: string, tag: string) {

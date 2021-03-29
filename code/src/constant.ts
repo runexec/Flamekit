@@ -1,15 +1,12 @@
 export const
-	DEBUG_MODE = true,
-	// Not Tested
+	DEBUG_MODE = true,	
 	FLAMEKIT_INDEX = 'flamekit.index.css',
 	EXTENSION_EX = 'ex',
-	// Tested
 	EXTENSION_EEX = 'eex',
 	EXTENSION_LEEX = 'leex',
 	EXTENSION_EEX_REGEX = /\S+\.eex/,
 	EXTENSION_LEEX_REGEX = /\S+\.leex/,
 	EXTENSION_REGEX = /\S+\.(eex|leex)/,
-	// extension.createFragment
 	FRAGMENT_REGEX = /=f\{\S+\}/,
 	FRAGMENT_GROUP_REGEX = /=f\{(\S+)\}/,
 	FRAGMENT_ARRAY_REGEX = /=f\{\[.*?\]\}/,

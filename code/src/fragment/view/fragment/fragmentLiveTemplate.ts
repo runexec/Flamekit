@@ -1,5 +1,5 @@
 import * as Template from './templateClass';
-import * as FragmentFileName from '../../controller/fileName';
+import * as FragmentFileName from './fileName';
 
 export class FragmentLiveTemplate extends Template.Template {
     constructor(x: string) { 

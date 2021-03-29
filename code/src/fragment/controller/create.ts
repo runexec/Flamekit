@@ -7,7 +7,7 @@ import * as LineTypeObject from './lineTypeObject';
 import * as Constant from '../../constant';
 import * as Fragment from '../fragment';
 import * as File from './file';
-import * as FileName from './fileName';
+import * as FileName from '../view/fragment/fileName';
 import * as Group from './group';
 import * as Entity from './entity';
 
@@ -55,12 +55,12 @@ export const createFragment = async (active_document: vscode.TextDocument | unde
 	}
 };
 
-export function initFragment(F: Fragment.Fragment) : void;
-export function initFragment(F: Fragment.FragmentLive) : void;
-export function initFragment(F: Fragment.FragmentLiveList) : void;
-export function initFragment(F: Fragment.FragmentLiveArray) : void;
-export function initFragment(F: Fragment.FragmentList) : void;
-export function initFragment(F: Fragment.FragmentArray) : void { 
+export async function initFragment(F: Fragment.Fragment) : Promise<void>;
+export async function initFragment(F: Fragment.FragmentLive) : Promise<void>;
+export async function initFragment(F: Fragment.FragmentLiveList) : Promise<void>;
+export async function initFragment(F: Fragment.FragmentLiveArray) : Promise<void>;
+export async function initFragment(F: Fragment.FragmentList) : Promise<void>;
+export async function initFragment(F: Fragment.FragmentArray) : Promise<void> { 
 	switch (true) {
 		case F instanceof Fragment.FragmentUnknown: null; break;
 		case F instanceof Fragment.FragmentLiveList: createFragmentLiveList(F); break;
@@ -73,7 +73,7 @@ export function initFragment(F: Fragment.FragmentArray) : void {
 	}
 }
 
-function _createFragment(F: Fragment.Fragment): void {
+async function _createFragment(F: Fragment.Fragment): Promise<void> {
 	const new_file = FileName.fragmentFileName(Group.fragmentGroup(F.line)),
 		path = `${F.directory}${new_file}`,
 		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.EXTENSION_EEX);
@@ -83,7 +83,7 @@ function _createFragment(F: Fragment.Fragment): void {
 	}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 }
 
-function createFragmentArray(F: Fragment.FragmentArray): void {
+async function createFragmentArray(F: Fragment.FragmentArray): Promise<void> {
 	const new_files = File.fragmentArrayFiles(F.line),
 		paths = new_files.map(x => `${F.directory}${x}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
@@ -96,7 +96,7 @@ function createFragmentArray(F: Fragment.FragmentArray): void {
 	});
 }
 
-function createFragmentList(F: Fragment.FragmentList): void {
+async function createFragmentList(F: Fragment.FragmentList): Promise<void> {
 	const new_files = File.fragmentListFiles(F.line),
 		paths = new_files.map(x => `${F.directory}${x})}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
@@ -109,7 +109,7 @@ function createFragmentList(F: Fragment.FragmentList): void {
 	});
 }
 
-function createFragmentLive(F: Fragment.FragmentLive): void {
+async function createFragmentLive(F: Fragment.FragmentLive): Promise<void> {
 	const new_file = FileName.fragmentLiveFileName(Group.fragmentLiveGroup(F.line)),
 		path = `${F.directory}${new_file}`,
 		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.EXTENSION_EX);
@@ -119,7 +119,7 @@ function createFragmentLive(F: Fragment.FragmentLive): void {
 	}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 }
 
-function createFragmentLiveArray(F: Fragment.FragmentLiveArray): void {
+async function createFragmentLiveArray(F: Fragment.FragmentLiveArray): Promise<void> {
 	const new_files = File.fragmentLiveArrayFiles(F.line),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_LEEX));
@@ -132,7 +132,7 @@ function createFragmentLiveArray(F: Fragment.FragmentLiveArray): void {
 	});
 }
 
-function createFragmentLiveList(F: Fragment.FragmentLiveList): void {
+async function createFragmentLiveList(F: Fragment.FragmentLiveList): Promise<void> {
 	const new_files = File.fragmentLiveListFiles(F.line),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EX));

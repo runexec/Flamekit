@@ -1,6 +1,6 @@
 import * as FragmentGroup from './group';
 import * as FragmentTag from './tag';
-import * as FragmentFileName from './fileName';
+import * as FragmentFileName from '../view/fragment/fileName';
 
 export const
 	fragmentArrayFiles = (x: string): string[] => {
