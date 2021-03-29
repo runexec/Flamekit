@@ -87,10 +87,11 @@ export const getWorkingPaths = ({ wsf, active_document }: {
 }): Interface_.IWorkingPaths => {
 	const root_uri = wsf[0].uri,
 		assets_path = `${root_uri.toString()}/assets`,
-		directory = getDirectory({ active_document: active_document }),
+		directory = getDirectory({ active_document: active_document }) || '',
 		css_path = `${assets_path}/css/${directory}`,
+		js_path = `${assets_path}/js/${directory}`,
 		paths = getPaths({ active_document: active_document }),
-		new_paths = { assets_path: assets_path, css_path: css_path };
+		new_paths = { assets_path: assets_path, css_path: css_path, js_path: js_path };
 	return Object.assign({}, new_paths, paths);
 };
 

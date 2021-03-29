@@ -113,9 +113,11 @@ Live
 
 ### AlpineJS
 
-AlpineJS triggers are applied within JS and TS documents.
+AlpineJS triggers are applied within JS and TS documents. An import for AlpineJS is added to the 
+document, along with LiveView compatability code. A terminal is then opened, and the `alpinejs`
+`npm` package is installed.
 
-##### Install: `=install.alpine`
+##### Install: `=setupAlpine`
 
 ###### Example Document: 
 
@@ -123,8 +125,8 @@ AlpineJS triggers are applied within JS and TS documents.
 
 ###### Example Document content:
 
-```
-=install.alpine
+```js
+=setup.alpine
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 ```
@@ -132,6 +134,8 @@ liveSocket.connect()
 ###### Example Document content after save:
 
 ```js
+import Alpine from 'alpinejs';
+...
 let liveSocket = new LiveSocket("/live", Socket, {
     params: { _csrf_token: csrfToken },
     dom: {
@@ -146,11 +150,8 @@ let liveSocket = new LiveSocket("/live", Socket, {
 liveSocket.connect()
 ```
 
-TODO: add import
-TODO: add alpine to project
-TODO: terminal npm install
-
 ----------
+
 // install PETAL
 // !=f{[a, b, c, d]} // create tags but not files
 // =f{[a, b, c, d]}[exe] // custom file extension

@@ -10,6 +10,7 @@ export interface IPaths {
 export interface IWorkingPaths extends IPaths {
     assets_path: string;
     css_path: string;
+    js_path: string;
 }
 
 export interface ILineTypeFragmentCalls {
