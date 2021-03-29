@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import * as Enums from '../../enum';
-import * as Util from '../../util/util';
+import * as Util from '../../util';
 import * as LineTypeObject from './lineTypeObject';
 import * as Constant from '../../constant';
 import * as Fragment from '../fragment';

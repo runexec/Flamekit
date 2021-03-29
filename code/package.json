@@ -10,9 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:runexecFlamekit.createCSS",
 		"workspaceContains:**/*.html.eex",
-		"workspaceContains:**/*.html.leex"
+		"workspaceContains:**/*.html.leex",
+		"workspaceContains:**/app.js"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -24,6 +24,10 @@
 			{
 				"command": "runexecFlamekit.createFragment",
 				"title": "Phoenix Fragment Create"
+			},
+			{
+				"command": "runexecFlamekit.addAlpine",
+				"title": "Phoenix Add Alpine"
 			}
 		]
 	},

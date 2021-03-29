@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
-import * as Util from '../util/util';
+import * as Util from '../util';
 
 const newCreateCSSDisposable = (_context: vscode.ExtensionContext) => {
     return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
