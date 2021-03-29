@@ -153,7 +153,7 @@ liveSocket.connect()
 
 ### TailwindCSS
 
-TailwindCSS triggers are applied within `CSS` documents. An `import` for TailwindCSS is added to the document,
+TailwindCSS triggers are applied within `CSS` and `SCSS` documents. An `import` for TailwindCSS is added to the document,
  and a terminal is then opened. The terminal will execute commands to create (~ WARNING: overwrites ~) 
  configurations for `postcss.config.js`, and `tailwind.config.js`. The Webpack configuration is updated, not 
  overwritten, at `webpack.config.js`. The terminal will then execute `npm install` for all required packages.
@@ -177,7 +177,7 @@ TailwindCSS triggers are applied within `CSS` documents. An `import` for Tailwin
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-``
+```
 
 ------
 
