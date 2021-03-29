@@ -109,6 +109,46 @@ Live
 ##### Fragment Live Array: `=lf{[]}`
 ##### Fragment Live List: `=ll{[]}`
 
+
+### AlpineJS
+
+AlpineJS triggers are applied within JS and TS documents.
+
+##### `=install.alpine`
+
+###### Example Document: 
+
+```app.js```
+
+###### Example Document content:
+
+```
+=install.alpine
+// connect if there are any LiveViews on the page
+liveSocket.connect()
+```
+
+###### Example Document content after save:
+
+```js
+let liveSocket = new LiveSocket("/live", Socket, {
+    params: { _csrf_token: csrfToken },
+    dom: {
+        onBeforeElUpdated(from, to) {
+            if (from.__x) {
+                Alpine.clone(from.__x, to);
+            }
+        },
+    },
+});
+// connect if there are any LiveViews on the page
+liveSocket.connect()
+```
+
+TODO: add import
+TODO: add alpine to project
+TODO: terminal npm install
+
 ----------
 // install PETAL
 // !=f{[a, b, c, d]} // create tags but not files
