@@ -12,7 +12,7 @@ const view = (new LiveSocketView.LiveSocketView()).toString();
 const newCreateAlpineDisposable = (_context: vscode.ExtensionContext) => {
     console.log('init');
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-        if (document.fileName.match(/\.js$/)) {
+        if (document.fileName.match(/\.(js|ts)$/)) {
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
                 const text = document.getText();
