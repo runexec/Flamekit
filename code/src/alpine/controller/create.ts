@@ -29,20 +29,20 @@ const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionCont
                     const end_pos = document.positionAt(start + 12);
                     edit.replace(new vscode.Range(start_pos, end_pos), view);
                     edit.replace(new vscode.Position(0, 0), import_view);
+                    const { assets_path } = Util.getWorkingPaths({
+                        wsf: vscode.workspace.workspaceFolders || [],
+                        active_document: document
+                    });
+                    terminal_home = assets_path.replace('file://', '');
                 }
-                const { assets_path } = Util.getWorkingPaths({
-                    wsf: vscode.workspace.workspaceFolders || [],
-                    active_document: document
-                });
-                terminal_home = assets_path.replace('file://', '');
             }).then(() => {
                 if (terminal_home) {
                     terminal = vscode.window.createTerminal('Flamekit AlpineJS Install');
                     terminal.show();
                     terminal.sendText('# Installing AlpineJS');
                     terminal.sendText(`cd ${terminal_home}`);
-                    terminal.sendText(`npm install alpine --save`);
                     terminal_home = null;
+                    terminal.sendText(`npm install alpine --save`);
                 }
             });
         }
