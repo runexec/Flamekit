@@ -3,12 +3,12 @@ import * as Enums from '../../enum';
 import * as Match from './match';
 
 export const
-    isFragment = (x: string) => Match.fragment(x) !== null,
-    isFragmentList = (x: string) => Match.fragmentList(x) !== null,
-    isFragmentArray = (x: string) => Match.fragmentArray(x) !== null,
-    isFragmentLive = (x: string) => Match.fragmentLive(x) !== null,
-    isFragmentLiveArray = (x: string) => Match.fragmentLiveArray(x) !== null,
-    isFragmentLiveList = (x: string) => Match.fragmentLiveList(x) !== null,
+    isFragment = (x: string) => Match.MatchFragment.match(x) !== null,
+    isFragmentList = (x: string) => Match.MatchFragmentList.match(x) !== null,
+    isFragmentArray = (x: string) => Match.MatchFragmentArray.match(x) !== null,
+    isFragmentLive = (x: string) => Match.MatchFragmentLive.match(x) !== null,
+    isFragmentLiveArray = (x: string) => Match.MatchFragmentLiveArray.match(x) !== null,
+    isFragmentLiveList = (x: string) => Match.MatchFragmentLiveList.match(x) !== null,
     isFragmentListLineType = (x: Enums.LineType) => x === Enums.LineType.FragmentList || Enums.LineType.FragmentLiveList;
 
 export const isValidFragment = (x: string) => {
