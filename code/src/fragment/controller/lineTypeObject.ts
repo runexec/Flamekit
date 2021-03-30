@@ -3,15 +3,15 @@ import * as Is from './is';
 import * as Enums from '../../enum';
 import * as Fragment_ from '../fragment';
 
-export const getFragmentData = (content: string[]): {
+export const getFragmentData = ({ content }: { content: string[] }): {
 	line: string | undefined,
 	line_number: number,
 	line_type: Enums.LineType
 }[] => {
-	let line_type = Enums.LineType.Unknown;
+	let line_type = Enums.LineType.FragmentUnknown;
 	return content.map((line, line_number) => {
 		switch (true) {
-			case (!Is.isValidFragment(line)): line_type = Enums.LineType.Unknown; break;
+			case (!Is.isValidFragment(line)): line_type = Enums.LineType.FragmentUnknown; break;
 			// List must come before Array because similar regular expression
 			// Order might not matter now after Regex changes. Need to double-check
 			case Is.isFragmentLiveList(line): line_type = Enums.LineType.FragmentLiveList; break;
@@ -20,10 +20,10 @@ export const getFragmentData = (content: string[]): {
 			case Is.isFragmentList(line): line_type = Enums.LineType.FragmentList; break;
 			case Is.isFragmentArray(line): line_type = Enums.LineType.FragmentArray; break;
 			case Is.isFragment(line): line_type = Enums.LineType.Fragment; break;
-			default: line_type = Enums.LineType.Unknown;
+			default: line_type = Enums.LineType.FragmentUnknown;
 		}
 		return { line: line, line_number: line_number, line_type: line_type };
-	}).filter(x => x.line_type !== Enums.LineType.Unknown);
+	}).filter(x => x.line_type !== Enums.LineType.FragmentUnknown);
 };
 
 export const getLineTypeObject = (line_type: Enums.LineType) => {

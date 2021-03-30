@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 	CreateCSS.init({context: context});
 	CreateFragment.init({context: context});
 	CreateAlpine.init({context: context});
-	CreateTailwindCSS.init(context);
+	CreateTailwindCSS.init({context: context});
 }
 
 // this method is called when your extension is deactivated

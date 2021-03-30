@@ -6,5 +6,5 @@ export enum LineType {
 	FragmentLiveArray,
 	FragmentList,
 	FragmentLiveList,
-	Unknown
+	FragmentUnknown
 };

@@ -4,8 +4,8 @@ import * as vscode from 'vscode';
 import { TextDecoder } from 'util';
 
 
-export const init = (context: vscode.ExtensionContext) => {
-    let disposable = newCreateTailwindCSSDisposable(context);
+export const init = ({ context }: { context: vscode.ExtensionContext }) => {
+    let disposable = newCreateTailwindCSSDisposable({ context: context });
     context.subscriptions.push(disposable);
 };
 
@@ -51,12 +51,12 @@ const postcss_loader_view = "'css-loader',\n'postcss-loader',\n";
 
 const Decoder = new TextDecoder('utf-8');
 
-const newCreateTailwindCSSDisposable = (_context: vscode.ExtensionContext) => {
+const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.ExtensionContext }) => {
     let terminal_home: string | null = null,
-    terminal: vscode.Terminal | null = null,
-    tailwind_config_path: string | null = null,
-    postcss_config_path: string | null = null,
-    webpack_config_path: string | null = null;
+        terminal: vscode.Terminal | null = null,
+        tailwind_config_path: string | null = null,
+        postcss_config_path: string | null = null,
+        webpack_config_path: string | null = null;
     return vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
         if (document.fileName.match(/\.(s)css$/)) {
             const editor = vscode.window.activeTextEditor;
@@ -102,9 +102,9 @@ const newCreateTailwindCSSDisposable = (_context: vscode.ExtensionContext) => {
                     terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
                 }
                 terminal_home = null,
-                tailwind_config_path = null,
-                postcss_config_path = null,
-                webpack_config_path = null;
+                    tailwind_config_path = null,
+                    postcss_config_path = null,
+                    webpack_config_path = null;
             });
         }
     });
