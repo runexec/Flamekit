@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
-import * as Util from '../util';
+import * as Util from '../../util';
 
 const newCreateCSSDisposable = (_context: vscode.ExtensionContext) => {
     return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
@@ -21,20 +21,21 @@ export const init = (context: vscode.ExtensionContext) => {
 const createCSSFiles = () => {
     const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
     const active_document = vscode.window.activeTextEditor?.document;
-    if (active_document !== undefined) {
-        switch (true) {
-            case !Util.getActivePath({ active_document: active_document }):
-                Util.showInvalidPathError({ active_document: active_document });
-                break;
-            case !Util.getActiveFileName({ active_document: active_document }):
-                Util.showImproperFileError({ active_document: active_document });
-                break;
-            default:
-                wsf === undefined
-                    ? Util.showNoWorkspaceError()
-                    : _createCSSFiles({ wsf: wsf, active_document: active_document });
+    if (active_document)
+        if (wsf === undefined) {
+            Util.showNoWorkspaceError();
+        } else {
+            switch (true) {
+                case !Util.getActivePath({ active_document: active_document }):
+                    Util.showInvalidPathError({ active_document: active_document });
+                    break;
+                case !Util.getActiveFileName({ active_document: active_document }):
+                    Util.showImproperFileError({ active_document: active_document });
+                    break;
+                default:
+                    _createCSSFiles({ wsf: wsf, active_document: active_document });
+            }
         }
-    }
 };
 
 const _createCSSFiles = ({ wsf, active_document }: {
