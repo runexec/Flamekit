@@ -38,10 +38,10 @@ const createCSSFiles = () => {
         }
 };
 
-const _createCSSFiles = ({ wsf, active_document }: {
+const _createCSSFiles = async ({ wsf, active_document }: {
     wsf: readonly vscode.WorkspaceFolder[] | undefined
     active_document: vscode.TextDocument | undefined
-}): void => {
+}): Promise<void> => {
     wsf = vscode.workspace.workspaceFolders;
     active_document = vscode.window.activeTextEditor?.document;
     if (wsf && active_document) {

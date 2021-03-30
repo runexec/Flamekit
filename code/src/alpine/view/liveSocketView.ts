@@ -1,6 +1,6 @@
-import * as View from "./view";
+import * as ViewClass from "./view";
 
-export class LiveSocketView extends View.View {
+export class View extends ViewClass.View {
     constructor() {
         super();
         this.toString = () => {
