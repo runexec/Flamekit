@@ -79,7 +79,7 @@ async function _createFragment(F: Fragment.Fragment): Promise<void> {
 }
 
 async function createFragmentArray(F: Fragment.FragmentArray): Promise<void> {
-	const new_files = File.fragmentArrayFiles({ file_name: F.line }),
+	const new_files = File.FragmentArrayFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
@@ -92,7 +92,7 @@ async function createFragmentArray(F: Fragment.FragmentArray): Promise<void> {
 }
 
 async function createFragmentList(F: Fragment.FragmentList): Promise<void> {
-	const new_files = File.fragmentListFiles({ file_name: F.line }),
+	const new_files = File.FragmentListFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x})}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
@@ -115,7 +115,7 @@ async function createFragmentLive(F: Fragment.FragmentLive): Promise<void> {
 }
 
 async function createFragmentLiveArray(F: Fragment.FragmentLiveArray): Promise<void> {
-	const new_files = File.fragmentLiveArrayFiles({ file_name: F.line }),
+	const new_files = File.FragmentLiveArrayFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
@@ -128,7 +128,7 @@ async function createFragmentLiveArray(F: Fragment.FragmentLiveArray): Promise<v
 }
 
 async function createFragmentLiveList(F: Fragment.FragmentLiveList): Promise<void> {
-	const new_files = File.fragmentLiveListFiles({ file_name: F.line }),
+	const new_files = File.FragmentLiveListFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EX));
 	uris.forEach((uri, idx) => {
