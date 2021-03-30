@@ -1,10 +1,10 @@
-import * as Template from './templateClass';
+import * as TemplateClass from './templateClass';
 import * as FileName from './fileName';
 
-export class FragmentArrayTemplate extends Template.Template {
-    constructor(x: string) {
-        super(x);
-        this.toString = () => { return `<%= render "${FileName.fragmentFileName(x)}" %>` };
+export class Template extends TemplateClass.Template {
+    constructor({ file_name }: { file_name: string }) {
+        super({ file_name: file_name });
+        this.toString = () => { return `<%= render "${FileName.fragmentFileName(file_name)}" %>` };
         return this;
     }
 }

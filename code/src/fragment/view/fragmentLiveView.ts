@@ -1,13 +1,17 @@
-import * as View from './view';
+import * as ViewClass from './view';
 import * as Template from './fragment/template'
 import * as Group from '../controller/group'
 
-export class FragmentLiveView extends View.View {
-    constructor(x: string) {
-        super(x);
+export class View extends ViewClass.View {
+    constructor({ file_name }: { file_name: string }) {
+        super({ file_name: file_name });
         this.toString = () => {
-            return new Template.FragmentLiveTemplate(Group.fragmentLiveGroup(x)).toString();
-        }
+            const template =
+                new Template.FragmentLive.Template({
+                    file_name: Group.fragmentLiveGroup(file_name)
+                }).toString();
+            return template;
+        };
         return this;
     }
 }

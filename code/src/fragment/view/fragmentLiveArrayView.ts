@@ -1,15 +1,15 @@
-import * as View from './view';
+import * as ViewClass from './view';
 import * as Template from './fragment/template'
 import * as Group from '../controller/group'
 
-export class FragmentLiveArrayView extends View.View {
-    constructor(x: string) {
-        super(x);
-        const group = Group.fragmentLiveArrayGroup(x),
-                fragments = group ? group.split(', ') : false;
+export class View extends ViewClass.View {
+    constructor({ file_names }: { file_names: string }) {
+        super({ file_name: file_names });
+        const group = Group.fragmentLiveArrayGroup(file_names),
+            fragments = group ? group.split(', ') : false;
         this.toString = () => {
             return fragments ?
-                fragments.map(x => new Template.FragmentLiveArrayTemplate(x)).join("\n")
+                fragments.map(x => new Template.FragmentLiveArray.Template({ file_name: x })).join("\n")
                 : 'fragmentArrayView<Failed>';
         };
         return this;

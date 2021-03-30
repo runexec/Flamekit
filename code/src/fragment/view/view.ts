@@ -1,6 +1,6 @@
 export class View extends String {
-    constructor(x: string = '') {
-        super(x);
+    constructor({file_name} : {file_name: string}) {
+        super({file_name: file_name});
         return this;
     }
 }

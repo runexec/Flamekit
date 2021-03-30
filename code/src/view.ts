@@ -1,9 +1,9 @@
-export * from './fragment/view/fragmentView';
-export * from './fragment/view/fragmentListView';
-export * from './fragment/view/fragmentArrayView';
+export * as Fragment from './fragment/view/fragmentView';
+export * as FragmentList from './fragment/view/fragmentListView';
+export * as FragmentArray from './fragment/view/fragmentArrayView';
 
-export * from './fragment/view/fragmentLiveView';
-export * from './fragment/view/fragmentLiveListView';
-export * from './fragment/view/fragmentLiveArrayView';
+export * as FragmentLive from './fragment/view/fragmentLiveView';
+export * as FragmentLiveList from './fragment/view/fragmentLiveListView';
+export * as FragmentLiveArray from './fragment/view/fragmentLiveArrayView';
 
-export * from './alpine/view/liveSocketView';
+export * as AlpineLiveSocket from './alpine/view/liveSocketView';

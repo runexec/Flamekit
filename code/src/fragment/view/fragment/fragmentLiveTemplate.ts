@@ -1,10 +1,10 @@
-import * as Template from './templateClass';
+import * as TemplateClass from './templateClass';
 import * as FragmentFileName from './fileName';
 
-export class FragmentLiveTemplate extends Template.Template {
-    constructor(x: string) { 
-        super(x);
-        this.toString = () => { return `<%= render "${FragmentFileName.fragmentLiveFileName(x)}" %>`; }
+export class Template extends TemplateClass.Template {
+    constructor({ file_name }: { file_name: string }) {
+        super({ file_name: file_name });
+        this.toString = () => { return `<%= render "${FragmentFileName.fragmentLiveFileName(file_name)}" %>`; }
         return this;
     }
 }

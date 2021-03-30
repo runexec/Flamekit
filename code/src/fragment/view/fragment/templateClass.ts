@@ -1,4 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class Template extends String {
-    constructor(x:string = '') { super(x); return this; }
+    constructor({ file_name }: { file_name: string }) { super(file_name); return this; }
 }
