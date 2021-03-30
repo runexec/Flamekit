@@ -1,55 +1,23 @@
+import { TextDecoder } from 'util';
+import * as vscode from 'vscode';
 import * as Util from '../../util';
 import * as Message from '../../util/message';
-import * as vscode from 'vscode';
-import { TextDecoder } from 'util';
-
+import * as ConfigView from '../view/configView';
+import * as ImportView from '../view/importView';
+import * as PostCSSLoaderView from '../view/postCSSLoaderView';
+import * as PostCSSConfigView from '../view/postCSSConfigView';
 
 export const init = ({ context }: { context: vscode.ExtensionContext }) => {
     let disposable = newCreateTailwindCSSDisposable({ context: context });
     context.subscriptions.push(disposable);
 };
 
-const view =
-    `
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-` + "\n";
-
-const tw_config_view =
-    `
-module.exports = {
-  purge: [
-    '../lib/**/*.ex',
-    '../lib/**/*.leex',
-    '../lib/**/*.eex',
-    './js/**/*.js'
-  ],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
-}
-`;
-
-const postcss_config_view =
-    `
-module.exports = {
-    plugins: [
-            require('postcss-import'),
-            require('tailwindcss'),
-            require('autoprefixer'),
-    ]
-}
-`;
-
-const postcss_loader_view = "'css-loader',\n'postcss-loader',\n";
-
 const Decoder = new TextDecoder('utf-8');
+
+const import_view = new ImportView.View().toString();
+const config_view = new ConfigView.View().toString();
+const postcss_config_view = new PostCSSConfigView.View().toString();
+const postcss_loader_view = new PostCSSLoaderView.View().toString();
 
 const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.ExtensionContext }) => {
     let terminal_home: string | null = null,
@@ -67,7 +35,7 @@ const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.Extension
                     const start_pos = document.positionAt(start);
                     const end_pos = document.positionAt(start + 8);
                     edit.delete(new vscode.Range(start_pos, end_pos));
-                    edit.replace(new vscode.Position(0, 0), view);
+                    edit.replace(new vscode.Position(0, 0), import_view);
                     const { assets_path } = Util.getWorkingPaths({
                         wsf: vscode.workspace.workspaceFolders || [],
                         active_document: document
@@ -85,7 +53,7 @@ const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.Extension
                     terminal.sendText('# Installing TailwindCSS');
                     let uri = vscode.Uri.parse(tailwind_config_path);
                     terminal && terminal.sendText('# Creating ' + uri.toString());
-                    vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
+                    vscode.workspace.fs.writeFile(uri, Buffer.from(config_view, 'utf-8'));
                     uri = vscode.Uri.parse(postcss_config_path);
                     terminal && terminal.sendText('# Creating ' + uri.toString());
                     vscode.workspace.fs.writeFile(uri, Buffer.from(postcss_config_view, 'utf-8'));

@@ -1,6 +1,4 @@
-export class View extends String {
-    constructor(x: string = '') {
-        super(x);
-        return this;
-    }
-}
+export * as ConfigView from './configView';
+export * as ImportView from './importView';
+export * as PostCSSLoaderView from './postCSSLoaderView';
+export * as PostCSSConfigView from './postCSSConfigView';
