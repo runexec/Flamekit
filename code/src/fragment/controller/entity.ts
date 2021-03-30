@@ -7,19 +7,17 @@ import * as Interface_ from '../../interface'
 import * as LineTypeObject from './lineTypeObject';
 import { Fragment } from '../fragment';
 
-export const createFragmentEntity = (
-	input_line: Interface_.ICreateFragmentLine
-) => {
+export const createFragmentEntity = ({ input_line }: { input_line: Interface_.ICreateFragmentLine }) => {
 	const { line, line_number, line_type } = input_line;
 	if (line && Is.isValidCreateFragment(line_type)) {
 		const display_number = line_number + 1;
 		Message.info(`Fragment found on line number: ${display_number}`);
-		const replacement = createTextReplacement(line, line_type, line_number);
+		const replacement = createTextReplacement({ line: line, line_type: line_type, line_number: line_number });
 		return replacement;
 	}
 };
 
-const createTextReplacement = (line: string, line_type: Enums.LineType, line_number: number) => {
+const createTextReplacement = ({ line, line_type, line_number }: { line: string, line_type: Enums.LineType, line_number: number }) => {
 	const LTO = LineTypeObject.getLineTypeObject(line_type),
 		is_list = Is.isFragmentListLineType(line_type),
 		// `tag_start` and `tag_end` only used if List

@@ -6,5 +6,6 @@ export class View extends ViewClass.View {
         this.toString = () => {
             return `import Alpine from 'alpinejs'`;
         }
+        return this;
     }
 }

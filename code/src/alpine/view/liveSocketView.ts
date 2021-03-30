@@ -17,6 +17,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
 });
 `
         };
+        return this;
     }
 }
 

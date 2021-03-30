@@ -14,9 +14,9 @@ import * as CreateFragment from './create';
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {
-		let disposable = newCreateFragmentDisposableCommand({context: context});
+		let disposable = newCreateFragmentDisposableCommand({ context: context });
 		context.subscriptions.push(disposable);
-		disposable = newCreateFragmentDisposable({context: context});
+		disposable = newCreateFragmentDisposable({ context: context });
 		context.subscriptions.push(disposable);
 	}
 };
@@ -24,7 +24,7 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 const newCreateFragmentDisposableCommand = ({ context }: { context?: vscode.ExtensionContext }) => {
 	return vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
 		const active_document = vscode.window.activeTextEditor?.document;
-		active_document && createFragment({active_document: active_document});
+		active_document && createFragment({ active_document: active_document });
 	});
 };
 
@@ -32,11 +32,11 @@ const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionCo
 	return vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
 		const m = d.fileName.match(Constant.EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
-		m && active_document && createFragment({active_document: active_document});
+		m && active_document && createFragment({ active_document: active_document });
 	});
 };
 
-export const createFragment = async ({ active_document } : { active_document: vscode.TextDocument | undefined }) => {
+export const createFragment = async ({ active_document }: { active_document: vscode.TextDocument | undefined }) => {
 	if (active_document) {
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
@@ -46,7 +46,7 @@ export const createFragment = async ({ active_document } : { active_document: vs
 			.filter(x => x.line_type !== Enums.LineType.Unknown)
 			.forEach(async (entity) => {
 				// TODO: refactor so constant not called for each iteration
-				const new_edit = Entity.createFragmentEntity(entity);
+				const new_edit = Entity.createFragmentEntity({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 					if (new_edit && directory && fs_path) {
 						fragment = new new_edit.Base(directory, fs_path, new_edit.line);
@@ -88,7 +88,7 @@ async function _createFragment(F: Fragment.Fragment): Promise<void> {
 }
 
 async function createFragmentArray(F: Fragment.FragmentArray): Promise<void> {
-	const new_files = File.fragmentArrayFiles(F.line),
+	const new_files = File.fragmentArrayFiles({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
@@ -101,7 +101,7 @@ async function createFragmentArray(F: Fragment.FragmentArray): Promise<void> {
 }
 
 async function createFragmentList(F: Fragment.FragmentList): Promise<void> {
-	const new_files = File.fragmentListFiles(F.line),
+	const new_files = File.fragmentListFiles({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x})}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EEX));
 	uris.forEach((uri, idx) => {
@@ -124,7 +124,7 @@ async function createFragmentLive(F: Fragment.FragmentLive): Promise<void> {
 }
 
 async function createFragmentLiveArray(F: Fragment.FragmentLiveArray): Promise<void> {
-	const new_files = File.fragmentLiveArrayFiles(F.line),
+	const new_files = File.fragmentLiveArrayFiles({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_LEEX));
 	uris.forEach((uri, idx) => {
@@ -137,7 +137,7 @@ async function createFragmentLiveArray(F: Fragment.FragmentLiveArray): Promise<v
 }
 
 async function createFragmentLiveList(F: Fragment.FragmentLiveList): Promise<void> {
-	const new_files = File.fragmentLiveListFiles(F.line),
+	const new_files = File.fragmentLiveListFiles({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.EXTENSION_EX));
 	uris.forEach((uri, idx) => {
