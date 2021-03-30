@@ -1,8 +1,7 @@
-import * as Constant from '../../constant';
-export const
-    fragmentGroup = (x: string) => (x.match(Constant.FRAGMENT_GROUP_REGEX) || [])[1],
-    fragmentListGroup = (x: string) => (x.match(Constant.FRAGMENT_LIST_GROUP_REGEX) || [])[1],
-    fragmentArrayGroup = (x: string) => (x.match(Constant.FRAGMENT_ARRAY_GROUP_REGEX) || [])[1],
-    fragmentLiveGroup = (x: string) => (x.match(Constant.FRAGMENT_LIVE_GROUP_REGEX) || [])[1],
-    fragmentLiveArrayGroup = (x: string) => (x.match(Constant.FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || [])[1],
-    fragmentLiveListGroup = (x: string) => (x.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX) || [])[1];
+export * as FragmentGroup from './group/fragmentGroup';
+export * as FragmentArrayGroup from './group/fragmentArrayGroup';
+export * as FragmentListGroup from './group/fragmentListGroup';
+
+export * as FragmentLiveGroup from './group/fragmentLiveGroup';
+export * as FragmentLiveArrayGroup from './group/fragmentLiveArrayGroup';
+export * as FragmentLiveListGroup from './group/fragmentLiveListGroup';

@@ -6,7 +6,7 @@ import * as Constant from '../../constant';
 export class View extends ViewClass.View {
     constructor({ file_name }: { file_name: string }) {
         super({ file_name: file_name });
-        const group = Group.fragmentLiveListGroup(file_name),
+        const group = Group.FragmentLiveListGroup.getGroup(file_name),
             remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
         this.toString = () => {

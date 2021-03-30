@@ -8,7 +8,7 @@ export class View extends ViewClass.View {
         this.toString = () => {
             const template =
                 new Template.Fragment.Template({
-                    file_name: Group.fragmentGroup(file_name)
+                    file_name: Group.FragmentGroup.getGroup(file_name)
                 }).toString();
             return template;
         }

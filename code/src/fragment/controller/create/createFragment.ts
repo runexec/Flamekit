@@ -5,7 +5,7 @@ import * as FileName from '../../view/fragment/fileName';
 import * as Group from '../group';
 
 export async function createFragment(F: Fragment.Fragment): Promise<void> {
-    const new_file = FileName.fragmentFileName(Group.fragmentGroup(F.line)),
+    const new_file = FileName.fragmentFileName(Group.FragmentGroup.getGroup(F.line)),
         path = `${F.directory}${new_file}`,
         uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.EXTENSION_EEX);
     vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
