@@ -3,13 +3,15 @@ import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 import * as Util from '../../util';
 
-const newCreateCSSDisposable = (_context: vscode.ExtensionContext) => {
+const newCreateCSSDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
 };
 
-export const init = (context: vscode.ExtensionContext) => {
-    let disposable = newCreateCSSDisposable(context);
-    context.subscriptions.push(disposable);
+export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
+    if (context) {
+        let disposable = newCreateCSSDisposable({ context: context });
+        context.subscriptions.push(disposable);
+    }
 };
 
 /*
