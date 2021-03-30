@@ -185,7 +185,7 @@ execute commands to create (~ WARNING: overwrites ~) configurations for `postcss
 
 ------
 
-
+// TODO: check for mix project file and add to activation check
 // maybe absinthe support
 // inject module name on new file (based on path, defmodule My.Path)
 // install PETAL
