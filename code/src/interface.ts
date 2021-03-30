@@ -13,13 +13,6 @@ export interface IWorkingPaths extends IPaths {
     js_path: string;
 }
 
-export interface ILineTypeFragmentCalls {
-    getTag: Function,
-    getNewFragment: Function,
-    save: Function,
-    Base: any,
-}
-
 export interface ICreateFragmentLine {
     line: string | undefined, 
     line_number: number, 
