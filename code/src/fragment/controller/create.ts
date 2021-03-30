@@ -12,29 +12,31 @@ import * as Group from './group';
 import * as Entity from './entity';
 import * as CreateFragment from './create';
 
-export const init = (context: vscode.ExtensionContext) => {
-	let disposable = newCreateFragmentDisposableCommand(context);
-	context.subscriptions.push(disposable);
-	disposable = newCreateFragmentDisposable(context);
-	context.subscriptions.push(disposable);
+export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
+	if (context) {
+		let disposable = newCreateFragmentDisposableCommand({context: context});
+		context.subscriptions.push(disposable);
+		disposable = newCreateFragmentDisposable({context: context});
+		context.subscriptions.push(disposable);
+	}
 };
 
-const newCreateFragmentDisposableCommand = (_context: vscode.ExtensionContext) => {
+const newCreateFragmentDisposableCommand = ({ context }: { context?: vscode.ExtensionContext }) => {
 	return vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
 		const active_document = vscode.window.activeTextEditor?.document;
-		if (active_document) createFragment(active_document);
+		active_document && createFragment({active_document: active_document});
 	});
 };
 
-const newCreateFragmentDisposable = (_context: vscode.ExtensionContext) => {
+const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
 	return vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
 		const m = d.fileName.match(Constant.EXTENSION_REGEX);
 		const active_document = vscode.window.activeTextEditor?.document;
-		if (m && active_document) createFragment(active_document);
+		m && active_document && createFragment({active_document: active_document});
 	});
 };
 
-export const createFragment = async (active_document: vscode.TextDocument | undefined) => {
+export const createFragment = async ({ active_document } : { active_document: vscode.TextDocument | undefined }) => {
 	if (active_document) {
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
@@ -57,12 +59,12 @@ export const createFragment = async (active_document: vscode.TextDocument | unde
 	}
 };
 
-export async function initFragment(F: Fragment.Fragment) : Promise<void>;
-export async function initFragment(F: Fragment.FragmentLive) : Promise<void>;
-export async function initFragment(F: Fragment.FragmentLiveList) : Promise<void>;
-export async function initFragment(F: Fragment.FragmentLiveArray) : Promise<void>;
-export async function initFragment(F: Fragment.FragmentList) : Promise<void>;
-export async function initFragment(F: Fragment.FragmentArray) : Promise<void> { 
+export async function initFragment(F: Fragment.Fragment): Promise<void>;
+export async function initFragment(F: Fragment.FragmentLive): Promise<void>;
+export async function initFragment(F: Fragment.FragmentLiveList): Promise<void>;
+export async function initFragment(F: Fragment.FragmentLiveArray): Promise<void>;
+export async function initFragment(F: Fragment.FragmentList): Promise<void>;
+export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
 	switch (true) {
 		case F instanceof Fragment.FragmentUnknown: null; break;
 		case F instanceof Fragment.FragmentLiveList: createFragmentLiveList(F); break;
