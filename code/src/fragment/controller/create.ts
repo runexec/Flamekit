@@ -14,18 +14,9 @@ import * as CreateFragment from './create';
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {
-		let disposable = newCreateFragmentDisposableCommand({ context: context });
-		context.subscriptions.push(disposable);
-		disposable = newCreateFragmentDisposable({ context: context });
+		const disposable = newCreateFragmentDisposable({ context: context });
 		context.subscriptions.push(disposable);
 	}
-};
-
-const newCreateFragmentDisposableCommand = ({ context }: { context?: vscode.ExtensionContext }) => {
-	return vscode.commands.registerCommand('runexecFlamekit.createFragment', () => {
-		const active_document = vscode.window.activeTextEditor?.document;
-		active_document && createFragment({ active_document: active_document });
-	});
 };
 
 const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
@@ -42,8 +33,8 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
 			lines = active_document.getText().toString().split("\n");
 		let fragment: Fragment.Fragment;
-		directory && fs_path && LineTypeObject.getFragmentData(lines)
-			.filter(x => x.line_type !== Enums.LineType.Unknown)
+		directory && fs_path && LineTypeObject.getFragmentData({content: lines})
+			.filter(x => x.line_type !== Enums.LineType.FragmentUnknown)
 			.forEach(async (entity) => {
 				// TODO: refactor so constant not called for each iteration
 				const new_edit = Entity.createFragmentEntity({ input_line: entity });
