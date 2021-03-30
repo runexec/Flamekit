@@ -1,8 +1,13 @@
 import * as Constant from '../../constant';
-export const
-    fragmentTag = (x: string) => (x.match(Constant.FRAGMENT_REGEX) || [''])[0],
-    fragmentLiveTag = (x: string) => (x.match(Constant.FRAGMENT_LIVE_REGEX) || [''])[0],
-    fragmentArrayTag = (x: string) => (x.match(Constant.FRAGMENT_ARRAY_REGEX) || [''])[0],
-    fragmentLiveArrayTag = (x: string) => (x.match(Constant.FRAGMENT_LIVE_ARRAY_REGEX) || [''])[0],
-    fragmentListTag = (x: string) => (x.match(Constant.FRAGMENT_LIST_GROUP_REGEX) || [''])[0],
-    fragmentLiveListTag = (x: string) => (x.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX) || [''])[0];
+import * as FragmentTag from './tag/fragmentTag';
+export * as FragmentTag from './tag/fragmentTag';
+import * as FragmentArrayTag from './tag/fragmentArrayTag';
+export * as FragmentArrayTag from './tag/fragmentArrayTag';
+import * as FragmentListTag from './tag/fragmentListTag';
+export * as FragmentListTag from './tag/fragmentListTag';
+import * as FragmentLiveTag from './tag/fragmentLiveTag';
+export * as FragmentLiveTag from './tag/fragmentLiveTag';
+import * as FragmentLiveArrayTag from './tag/fragmentLiveArrayTag';
+export * as FragmentLiveArrayTag from './tag/fragmentLiveArrayTag';
+import * as FragmentLiveListTag from './tag/fragmentLiveListTag';
+export * as FragmentLiveListTag from './tag/fragmentLiveListTag';

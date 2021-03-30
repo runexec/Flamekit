@@ -11,7 +11,7 @@ export class Fragment {
 	directory: string;
 	document: undefined | vscode.TextDocument;
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentTag;
+	static getTag : (file_name:string) => string = Tag.FragmentTag.geTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.Fragment.View({file_name: x}).toString();
 	static Base: any = Fragment;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
@@ -24,7 +24,7 @@ export class Fragment {
 
 export class FragmentArray extends Fragment {
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentArrayTag;
+	static getTag : (file_name:string) => string = Tag.FragmentArrayTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentArray.View({file_name: x}).toString();
 	static Base: any = FragmentArray;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
@@ -35,7 +35,7 @@ export class FragmentArray extends Fragment {
 
 export class FragmentList extends Fragment {
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentListTag;
+	static getTag : (file_name:string) => string = Tag.FragmentListTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentList.View({file_name: x}).toString();
 	static Base : any = FragmentList;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
@@ -46,7 +46,7 @@ export class FragmentList extends Fragment {
 
 export class FragmentLive extends Fragment {
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentLiveTag;
+	static getTag : (file_name:string) => string = Tag.FragmentLiveTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentLive.View({file_name: x}).toString();
 	static Base : any = FragmentLive;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
@@ -57,7 +57,7 @@ export class FragmentLive extends Fragment {
 
 export class FragmentLiveArray extends Fragment {
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentLiveArrayTag;
+	static getTag : (file_name:string) => string = Tag.FragmentLiveArrayTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentLiveArray.View({file_names: x}).toString();
 	static Base : any = FragmentLiveArray;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
@@ -69,7 +69,7 @@ export class FragmentLiveArray extends Fragment {
 
 export class FragmentLiveList extends Fragment {
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.fragmentLiveListTag;
+	static getTag : (file_name:string) => string = Tag.FragmentLiveListTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentLiveList.View({file_name: x}).toString();
 	static Base : any = FragmentLiveList;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
