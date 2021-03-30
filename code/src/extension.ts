@@ -7,7 +7,7 @@ import * as CreateAlpine from './alpine/controller/create';
 import * as CreateTailwindCSS from './tailwindcss/controller/create';
 
 export function activate(context: vscode.ExtensionContext) {
-	CreateCSS.init(context);
+	CreateCSS.init({context: context});
 	CreateFragment.init(context);
 	CreateAlpine.init({context: context});
 	CreateTailwindCSS.init(context);
