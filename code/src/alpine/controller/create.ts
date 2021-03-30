@@ -26,7 +26,7 @@ const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionCont
                 if (start && start !== -1) {
                     Message.info(`Found Alpine Install Line`);
                     const start_pos = document.positionAt(start);
-                    const end_pos = document.positionAt(start + 12);
+                    const end_pos = document.positionAt(start + view.length);
                     edit.replace(new vscode.Range(start_pos, end_pos), view);
                     edit.replace(new vscode.Position(0, 0), import_view);
                     const { assets_path } = Util.getWorkingPaths({
