@@ -57,7 +57,7 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 			.filter(x => x.line_type !== Enums.LineType.FragmentUnknown)
 			.forEach(async (entity) => {
 				// TODO: refactor so constant not called for each iteration
-				const new_edit = Entity.createFragmentEntity({ input_line: entity });
+				const new_edit = Entity.create({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 					if (new_edit && directory && fs_path) {
 						fragment = new new_edit.Base(directory, fs_path, new_edit.line);
