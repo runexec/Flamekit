@@ -2,6 +2,7 @@ import * as Is from './is';
 import * as Message from '../../util/message';
 import * as Interface_ from '../../interface'
 import * as CreateTextReplacement from './enitity/createTextReplacement';
+export * as CreateTextReplacement from './enitity/createTextReplacement';
 
 export const create = ({ input_line }: { input_line: Interface_.ICreateFragmentLine }) => {
 	const { line, line_number, line_type } = input_line;
