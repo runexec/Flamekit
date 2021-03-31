@@ -27,40 +27,46 @@ describe('Constants', () => {
 		// Live must come after everything else because of the similar regular expressions. 
 		// If you're confused, think in terms of `switch`, `case` statements, and how order matters.
 		// ** NOT JUST IN TESTING **
-		let test = ('=f{abc}'.match(Constant.FRAGMENT_REGEX) || []);
-		it('Fragment Line Match', () => assert.ok(test[0] !== undefined));
+		let test : RegExpMatchArray | null = ('=f{abc}'.match(Constant.FRAGMENT_REGEX) || []);
+		it('Fragment Line Match', () => assert.ok(test && test[0] !== undefined));
 
-		test = ('=f{abc}'.match(Constant.FRAGMENT_GROUP_REGEX) || []);
-		it('Fragment Group Match',() => assert.ok(test[1] === 'abc'));
+		test = '=f{abc}'.match(Constant.FRAGMENT_GROUP_REGEX);
+		test = test && test[1].match(/^abc$/);
+		it('Fragment Group Match',() => assert.ok(test));
 
 		test = ('=f{[a,b]}'.match(Constant.FRAGMENT_ARRAY_REGEX) || []);
-		it('Fragment Array Line Match',() => assert.ok(test[0] !== undefined));
+		it('Fragment Array Line Match',() => assert.ok(test && test[0] !== undefined));
 
-		test = ('=f{[a,b]}'.match(Constant.FRAGMENT_ARRAY_GROUP_REGEX) || []);
-		it('Fragment Array Group Match',() => assert.ok(test[1] === 'a,b'));
-
-		test = ('<a hello"there">=l{[a,b]}</a>'.match(Constant.FRAGMENT_LIST_GROUP_REGEX) || []);
-		it('Fragment List Line Match',() => assert.ok(test[0] !== undefined));
+		test = '=f{[a,b]}'.match(Constant.FRAGMENT_ARRAY_GROUP_REGEX);
+		test = test && test[1].match(/^a,b$/);
+		it('Fragment Array Group Match',() => assert.ok(test));
 
 		test = ('<a hello"there">=l{[a,b]}</a>'.match(Constant.FRAGMENT_LIST_GROUP_REGEX) || []);
-		it('Fragment List Group Match',() => assert.ok(test[1] !== 'a,b'));
+		it('Fragment List Line Match',() => assert.ok(test && test[0] !== undefined));
+
+		test = '<a hello"there">=l{[a,b]}</a>'.match(Constant.FRAGMENT_LIST_GROUP_REGEX);
+		test = test && test[1].match(/^>=l\{\[a,b\]\}$/);
+		it('Fragment List Group Match',() => assert.ok(test));
 
 		test = ('=lf{abc}'.match(Constant.FRAGMENT_LIVE_REGEX) || []);
-		it('Fragment Live Line Match', () => assert.ok(test[0] !== undefined));
+		it('Fragment Live Line Match', () => assert.ok(test && test[0] !== undefined));
 
-		test = ('=lf{abc}'.match(Constant.FRAGMENT_LIVE_GROUP_REGEX) || []);
-		it('Fragment Live Group Match',() => assert.ok(test[1] === 'abc'));
+		test = '=lf{abc}'.match(Constant.FRAGMENT_LIVE_GROUP_REGEX);
+		test = test && test[1].match(/^abc$/);
+		it('Fragment Live Group Match',() => assert.ok(test));
 
 		test = ('=lf{[a,b]}'.match(Constant.FRAGMENT_LIVE_ARRAY_REGEX) || []);
-		it('Fragment Live Array Line Match',() => assert.ok(test[0] !== undefined));
+		it('Fragment Live Array Line Match',() => assert.ok(test && test[0] !== undefined));
 
-		test = ('=lf{[a,b]}'.match(Constant.FRAGMENT_LIVE_ARRAY_GROUP_REGEX) || []);
-		it('Fragment Live Array Group Match',() => assert.ok(test[1] === 'a,b'));
+		test = '=lf{[a,b]}'.match(Constant.FRAGMENT_LIVE_ARRAY_GROUP_REGEX);
+		test = test && test[1].match(/^a,b$/);
+		it('Fragment Live Array Group Match',() => assert.ok(test));
 
-		test = ('<a hello"there">=ll{[a,b]}</a>'.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX) || []);
-		it('Fragment Live List Line Match',() => assert.ok(test[0] !== undefined));
+		test = '<a hello"there">=ll{[a,b]}</a>'.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX);
+		test && test[0] !== undefined;
+		it('Fragment Live List Line Match',() => assert.ok(test));
 
-		test = ('<a hello"there">=ll{[a,b]}</a>'.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX) || []);
-		it('Fragment Live List Group Match',() => assert.ok(test[1] === '=ll{[a,b]}'));
+		test = '<a hello"there">=ll{[a,b]}</a>'.match(Constant.FRAGMENT_LIVE_LIST_GROUP_REGEX);
+		it('Fragment Live List Group Match',() => assert.strictEqual(test && test[1],'=ll{[a,b]}'));
 	});
 });
