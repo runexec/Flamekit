@@ -2,6 +2,7 @@ import * as ViewClass from './view';
 import * as Template from './fragment/template'
 import * as Group from './../controller/group'
 import * as Constant from '../../constant';
+import * as Message from '../../util/message';
 
 export class View extends ViewClass.View {
     constructor({ file_name }: { file_name: string }) {

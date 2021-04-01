@@ -11,7 +11,14 @@ export class Template extends TemplateClass.Template {
                 is_missing = _tag_end && _tag_end.indexOf('>') === -1,
                 tag_end = is_missing ? _tag_end + '>' : _tag_end;
             Store.FragmentStore.push([tag_start, tag_end]);
-            return `${tag_start}<%= live_component ${FragmentFileName.fragmentLiveListFileName(file_name).replace(/\.html/, '')} %>${tag_end}`;
+            const names = file_name
+                .split(',')
+                .map(x => {
+                    const name = FragmentFileName.fragmentLiveListFileName(x).replace(/\.html/, '');
+                    return `${tag_start}<%= live_component ${name} %>${tag_end}`;
+                });
+                console.log(names);
+            return names.join("\n");
         };
         return this;
     }

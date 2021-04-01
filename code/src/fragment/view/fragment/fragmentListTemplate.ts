@@ -11,7 +11,13 @@ export class Template extends TemplateClass.Template {
                 is_missing = _tag_end && _tag_end.indexOf('>') === -1,
                 tag_end = is_missing ? _tag_end + '>' : _tag_end;
             Store.FragmentStore.push([tag_start, tag_end]);
-            return `${tag_start}<%= render "${FragmentFileName.fragmentListFileName(file_name)}" %>${tag_end}`;
+            const names = file_name
+                .split(',')
+                .map(x => {
+                    const name = FragmentFileName.fragmentListFileName(x);
+                    return `${tag_start}<%= render "${name}" %>${tag_end}`;
+                });
+            return names.join("\n");
         };
         return this;
     }
