@@ -1,15 +1,8 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as extension from '../../extension';
-
 import * as Constant from '../../constant';
 
-vscode.window.showInformationMessage('Start all tests.');
-
-describe('Constants', () => {
+describe('Constant', () => {
 	describe('Elixir Extension Patterns', () => {
 		it('EXTENSION_EEX', () => assert.strictEqual(Constant.EXTENSION_EEX, 'eex'));
 		it('EXTENSION_EEX != leex', () => assert.notStrictEqual(Constant.EXTENSION_EEX, 'leex'));
