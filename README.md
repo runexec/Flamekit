@@ -113,11 +113,18 @@ Live
 
 ### AlpineJS
 
-AlpineJS triggers are applied within `JS` and `TS` documents. An `import` for AlpineJS is added to the document,
- along with `LiveView` compatability code. A terminal is then opened, and the `alpinejs` `npm` package is installed.
+AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
+An `import` for AlpineJS is added to the document, along with `LiveView` compatability code.
+A terminal is then opened, and the `alpinejs` `npm` package is installed.
+
+*NOTE: Places `imports` at top of active document, and deletes the input of `=setupAlpine`*
+
+ * Creates Files
+ * Creates Code
+  
 ###### Example Document: 
 
 ```app.js```
@@ -125,28 +132,35 @@ AlpineJS triggers are applied within `JS` and `TS` documents. An `import` for Al
 ###### Example Document content:
 
 ```js
-=setup.alpine
-// connect if there are any LiveViews on the page
-liveSocket.connect()
+// example line
+=setupAlpine
 ```
 
 ###### Example Document content after save:
 
 ```js
 import Alpine from 'alpinejs';
-...
-let liveSocket = new LiveSocket("/live", Socket, {
-    params: { _csrf_token: csrfToken },
-    dom: {
-        onBeforeElUpdated(from, to) {
-            if (from.__x) {
-                Alpine.clone(from.__x, to);
-            }
+import { Socket } from "phoenix";
+import { LiveSocket } from "phoenix_live_view";
+
+// example line 
+const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content"),
+    live_socket = new live_socket("/live", Socket, {
+        params: { _csrf_token: csrf_token },
+        dom: {
+            onBeforeElUpdated(from, to) {
+                if (from.__x) {
+                    Alpine.clone(from.__x, to);
+                }
+            },
         },
-    },
-});
-// connect if there are any LiveViews on the page
-liveSocket.connect()
+    });
+
+// expose live_socket on window for web console debug logs and latency simulation:
+// >> live_socket.enableDebug()
+// >> live_socket.enableLatencySim(1000)  // enabled for duration of browser session
+// >> live_socket.disableLatencySim()
+live_socket.connect() && (window.live_socket = live_socket);
 ```
 
 ----------
@@ -164,6 +178,9 @@ execute commands to create (~ WARNING: overwrites ~) configurations for `postcss
 
 *NOTE: Places `imports` at top of active document, and deletes the input of `=setupTW`*
 
+ * Creates Files
+ * Creates Code
+  
 ###### Example Document: 
 
 ```app.css```
@@ -185,6 +202,7 @@ execute commands to create (~ WARNING: overwrites ~) configurations for `postcss
 
 ------
 
+// TODO: nprogress
 // TODO: typescript setup 
 // TODO: check for mix project file and add to activation check
 // maybe absinthe support

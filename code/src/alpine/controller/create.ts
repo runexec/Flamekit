@@ -42,7 +42,7 @@ const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionCont
                     terminal.sendText('# Installing AlpineJS');
                     terminal.sendText(`cd ${terminal_home}`);
                     terminal_home = null;
-                    terminal.sendText(`npm install alpine --save`);
+                    terminal.sendText(`npm install alpinejs --save`);
                 }
             });
         }

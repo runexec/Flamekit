@@ -5,19 +5,25 @@ export class View extends ViewClass.View {
         super();
         this.toString = () => {
             return `
-let liveSocket = new LiveSocket("/live", Socket, {
-    params: { _csrf_token: csrfToken },
-    dom: {
-        onBeforeElUpdated(from, to) {
-            if (from.__x) {
-                Alpine.clone(from.__x, to);
-            }
+const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content"),
+    live_socket = new live_socket("/live", Socket, {
+        params: { _csrf_token: csrf_token },
+        dom: {
+            onBeforeElUpdated(from, to) {
+                if (from.__x) {
+                    Alpine.clone(from.__x, to);
+                }
+            },
         },
-    },
-});
+    });
+
+// expose live_socket on window for web console debug logs and latency simulation:
+// >> live_socket.enableDebug()
+// >> live_socket.enableLatencySim(1000)  // enabled for duration of browser session
+// >> live_socket.disableLatencySim()
+live_socket.connect() && (window.live_socket = live_socket);
 `
         };
         return this;
     }
 }
-
