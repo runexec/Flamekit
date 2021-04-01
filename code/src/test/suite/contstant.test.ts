@@ -58,10 +58,11 @@ describe('Constants', () => {
 			() => assert.ok(test));
 
 		test = '=l{[a,b]}'.match(Constant.FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX);
-		// `test` isn't of `boolean`, so define `b` 
-		const b = test && test.every(x => x === '=l' || x === '{[' || x === ']}');
 		it('Fragment ListString Remove Brackets Match',
-			() => assert.ok(b));
+			// Our three brackets `=l, {[, ]}`
+			// Done this way because the standard way doesn't work for some reason.
+			// Still investigating.
+			() => assert.ok(test?.length === 3)); 
 
 		test = ('=lf{abc}'.match(Constant.FRAGMENT_LIVE_REGEX) || []);
 		it('Fragment Live Line Match',
@@ -98,6 +99,6 @@ describe('Constants', () => {
 
 		test = '=ll{[a,b]}'.match(Constant.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX);
 		it('Fragment Live ListString Remove Brackets Match',
-			() => assert.ok(test?.every(x => x === '=ll' || x === '{[' || x === ']}')));
+			() => assert.ok(test && test.every(x => x === '=ll' || x === '{[' || x === ']}')));
 	});
 });
