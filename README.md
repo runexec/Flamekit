@@ -222,15 +222,36 @@ execute commands to create (~ WARNING: overwrites ~) configurations for `postcss
 
 ------
 
-// TODO: nprogress
-// TODO: typescript setup 
-// TODO: check for mix project file and add to activation check
-// maybe absinthe support
-// inject module name on new file (based on path, defmodule My.Path)
-// install PETAL
-// !=f{[a, b, c, d]} // create tags but not files
-// =f{[a, b, c, d]}[exe] // custom file extension
-// open fragment in pane
-// Each fragment file is opened in a pane after creation; bottom or side depending on user config.
-// auto convert style tag into css file
-// warn when corresponding css is missing eex || leex
+### Command: `Phoenix CSS Create`
+
+Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
+command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
+css file will be created in `assets/css/`. All imports are automatically deduplicated and stored
+in `assets/css/flamekit.css`.
+
+###### Example Document:
+                
+```
+/tmp/project/lib/mysite_web/live/page_live.html.leex
+```
+
+###### Run Command Results:
+
+```
+New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
+New/Updated file: /tmp/project/assets/css/flamekit.css
+```
+
+-------
+
+// ? TODO: typescript setup 
+// ? TODO: check for mix project file and add to activation check
+// ? maybe absinthe support
+// ? inject module name on new file (based on path, defmodule My.Path)
+// ? install PETAL
+// ? !=f{[a, b, c, d]} // create tags but not files
+// ? =f{[a, b, c, d]}[exe] // custom file extension
+// ? open fragment in pane?
+// ? Each fragment file is opened in a pane after creation; bottom or side depending on user config.
+// ? auto convert style tag into css file
+// ? warn when corresponding css is missing eex || leex
