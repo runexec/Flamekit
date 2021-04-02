@@ -22,12 +22,8 @@
 				"title": "Phoenix CSS Create"
 			},
 			{
-				"command": "runexecFlamekit.createFragment",
-				"title": "Phoenix Fragment Create"
-			},
-			{
-				"command": "runexecFlamekit.addAlpine",
-				"title": "Phoenix Add Alpine"
+				"command": "runexecFlamekit.setupPETAL",
+				"title": "Phoenix Setup PETAL"
 			}
 		]
 	},

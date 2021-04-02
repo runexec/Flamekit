@@ -3,7 +3,7 @@
 ---- 
 
 ### Install
-Developed and tested on Linux.
+Developed from scratch and tested on Linux.
 Using VSCode Marketplace or Github
 
 ---

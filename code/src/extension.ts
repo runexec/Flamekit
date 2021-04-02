@@ -6,6 +6,7 @@ import * as CreateCSS from './css/controller/create';
 import * as CreateAlpine from './alpine/controller/create';
 import * as CreateTailwindCSS from './tailwindcss/controller/create';
 import * as CreateTypeScript from './typescript/controller/create';
+import * as CreatePETAL from './petal/controller/create';
 
 export function activate(context: vscode.ExtensionContext) {
 	CreateCSS.init({context: context});
@@ -13,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 	CreateAlpine.init({context: context});
 	CreateTailwindCSS.init({context: context});
 	CreateTypeScript.init({context: context});
+	CreatePETAL.init({context: context});
 }
 
 // this method is called when your extension is deactivated
