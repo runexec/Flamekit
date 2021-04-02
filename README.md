@@ -115,6 +115,8 @@ AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
+[setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
+
 <video controls width="800" height="600">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true" type="video/webm">
     Sorry, your browser doesn't support embedded videos.
@@ -173,6 +175,8 @@ live_socket.connect() && (window.live_socket = live_socket);
 TailwindCSS triggers are applied within `CSS` and `SCSS` documents.
 
 ##### Install: `=setupTW`
+
+[setupTW Video](https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true)
 
 <video controls width="800" height="600">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true" type="video/webm">
