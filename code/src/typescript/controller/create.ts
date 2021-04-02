@@ -1,8 +1,8 @@
 import * as Util from '../../util';
 import * as Message from '../../util/message';
 import * as vscode from 'vscode';
-import * as BabelrcConfigView from '../view/babelrcConfigView';
 import * as WebpackConfigView from '../view/webpackConfigView';
+import * as TSConfigConfigView from '../view/tsconfigConfigView';
 import { TextDecoder } from 'util';
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
@@ -12,19 +12,18 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     }
 };
 
-const babelrc_config_view = (new BabelrcConfigView.View()).toString();
 const webpack_config_view = new WebpackConfigView.View();
+const tsconfig_config_view = new TSConfigConfigView.View().toString();
 
 const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
         let terminal_home: string,
             terminal: vscode.Terminal,
-            babelrc: string,
-            babelrc_uri: vscode.Uri,
-            babelrc_config: string,
             webpack: string,
             webpack_uri: vscode.Uri,
-            webpack_config: string;
+            webpack_config: string,
+            tsconfig: string,
+            tsconfig_uri : vscode.Uri;
         if (document.fileName.match(/\.(js|ts)$/)) {
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
@@ -40,37 +39,32 @@ const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.Extension
                         active_document: document
                     });
                     terminal_home = assets_path.replace('file://', '');
-                    babelrc = assets_path + '/.babelrc';
                     webpack = assets_path + '/webpack.config.js';
+                    tsconfig = assets_path + '/tsconfig.json';
                 }
             }).then(() => {
                 if (terminal_home) {
                     terminal = vscode.window.createTerminal('Flamekit TypeScript Install');
                     terminal.show();
-                    terminal.sendText('Updating .babelrc');
-                    if (babelrc) {
-                        babelrc_uri = vscode.Uri.parse(babelrc);
-                        vscode.workspace.fs.readFile(babelrc_uri).then((config) => {
-                            babelrc_config = new TextDecoder('utf-8').decode(config);
-                            babelrc_config = babelrc_config.replace('"presets": [', babelrc_config_view);
-                            babelrc_uri && vscode.workspace.fs.writeFile(babelrc_uri, Buffer.from(babelrc_config));
-                        })
-                    }
-                    terminal.sendText('Updating webpack.config.js');
+                    terminal.sendText('# Updating webpack.config.js');
                     if (webpack) {
                         webpack_uri = vscode.Uri.parse(webpack);
                         vscode.workspace.fs.readFile(webpack_uri).then((config) => {
                             webpack_config = new TextDecoder('utf-8').decode(config);
-                            webpack_config = 
-                                webpack_config
-                                    .replace(webpack_config_view.getReplace(), webpack_config_view.toString());
+                            webpack_config_view.getReplace().forEach(([old, now]) => {
+                                webpack_config = webpack_config.replace(old,now);
+                            });
                             webpack_uri && vscode.workspace.fs.writeFile(webpack_uri, Buffer.from(webpack_config));
                         })
                     }
+                    terminal.sendText('# Creating tsconfig.json');
+                    if (tsconfig) {
+                        tsconfig_uri = vscode.Uri.parse(tsconfig);
+                        vscode.workspace.fs.writeFile(tsconfig_uri, Buffer.from(tsconfig_config_view));
+                    }
                     terminal.sendText('# Installing TypeScript');
                     terminal.sendText(`cd ${terminal_home}`);
-                    terminal.sendText(`npm install --save-dev @babel/preset-typescript`);
-                    terminal.sendText(``);
+                    terminal.sendText(`npm install typescript ts-loader --save-dev`);
                 }
             });
         }

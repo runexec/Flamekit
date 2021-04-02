@@ -4,10 +4,9 @@ export class View extends ViewClass.View {
     constructor() {
         super();
         this.toString = () => {
-            return `
-    "presets": [
-        "@babel/preset-typescript",
-`;       
+            return `{
+    "include": ["js/**/*"]
+}`;
         };
         return this;
     }

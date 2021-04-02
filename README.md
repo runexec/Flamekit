@@ -250,10 +250,11 @@ TypeScript triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupTS`
 
-Adds TypeScript to `assets/.babelrc`, installs via `npm`, changes Webpack Entry to `app.ts`.
+Adds TypeScript to `assets/webpack.config.js`, installs via `npm`, changes Webpack to `app.ts`,
+and finally adds `ts-loader` for `.ts` files.
 
  * Creates Code
- * 
+  
 -----
 
 // ? TODO: typescript setup 
