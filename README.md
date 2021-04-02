@@ -115,11 +115,11 @@ AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
-[setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
-
 <video controls width="800" height="600">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true" type="video/webm">
-    Sorry, your browser doesn't support embedded videos.
+
+[setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
+
 </video>
 
 An `import` for AlpineJS is added to the document, along with `LiveView` compatability code.
@@ -176,12 +176,13 @@ TailwindCSS triggers are applied within `CSS` and `SCSS` documents.
 
 ##### Install: `=setupTW`
 
-[setupTW Video](https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true)
-
 <video controls width="800" height="600">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true" type="video/webm">
-    Sorry, your browser doesn't support embedded videos.
+
+[setupTW Video](https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true)
+
 </video>
+
 
 An `import` for TailwindCSS is added to the document, and a terminal is then opened. The terminal will 
 execute commands to create (~ WARNING: overwrites ~) configurations for `postcss.config.js`, and 
