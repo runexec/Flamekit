@@ -10,6 +10,13 @@ Using VSCode Marketplace or Github
 
 ### Fragments
 
+<video controls width="800" height="600">
+    <source src="https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true" type="video/webm">
+
+[Fragments Video](https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true)
+
+</video>
+
 Fragments are text patterns that trigger file or project altering events after a document has been saved. 
 Limitations being that only one Fragment per-line may exist.
 
