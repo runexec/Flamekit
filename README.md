@@ -244,6 +244,18 @@ New/Updated file: /tmp/project/assets/css/flamekit.css
 
 -------
 
+### TypeScript
+
+TypeScript triggers are applied within `JS` and `TS` documents.
+
+##### Install: `=setupTS`
+
+Adds TypeScript to `assets/.babelrc`, installs via `npm`, changes Webpack Entry to `app.ts`.
+
+ * Creates Code
+ * 
+-----
+
 // ? TODO: typescript setup 
 // ? TODO: check for mix project file and add to activation check
 // ? maybe absinthe support
