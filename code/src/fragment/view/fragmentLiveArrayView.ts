@@ -3,7 +3,7 @@ import * as Template from './fragment/template'
 import * as Group from '../controller/group'
 
 export class View extends ViewClass.View {
-    constructor({ file_names }: { file_names: string }) {
+    constructor({ file_name: file_names }: { file_name: string }) {
         super({ file_name: file_names });
         const group = Group.FragmentLiveArrayGroup.getGroup(file_names),
             fragments = group ? group.split(', ') : false;

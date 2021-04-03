@@ -58,7 +58,7 @@ export class FragmentLive extends Fragment {
 export class FragmentLiveArray extends Fragment {
 	static save : Function = CreateFragment.initFragment;
 	static getTag : (file_name:string) => string = Tag.FragmentLiveArrayTag.getTag;
-	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentLiveArray.View({file_names: x}).toString();
+	static getNewFragment : (file_name:string) => string = (x) => new View.FragmentLiveArray.View({file_name: x}).toString();
 	static Base : any = FragmentLiveArray;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {
 		super(directory, fs_path, line);
