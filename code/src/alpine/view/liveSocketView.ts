@@ -6,7 +6,7 @@ export class View extends ViewClass.View {
         this.toString = () => {
             return `
 const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content"),
-    live_socket = new live_socket("/live", Socket, {
+    live_socket = new LiveSocket("/live", Socket, {
         params: { _csrf_token: csrf_token },
         dom: {
             onBeforeElUpdated(from, to) {
@@ -21,7 +21,7 @@ const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribut
 // >> live_socket.enableDebug()
 // >> live_socket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> live_socket.disableLatencySim()
-live_socket.connect() && (window.live_socket = live_socket);
+live_socket.connect() && ((window as any).live_socket = live_socket);
 `
         };
         return this;
