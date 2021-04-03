@@ -51,6 +51,7 @@
 		"vscode-test": "^1.5.0"
 	},
 	"dependencies": {
+		"reflect-metadata": "^0.1.13",
 		"tsyringe": "^4.5.0"
 	}
 }

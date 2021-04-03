@@ -54,7 +54,8 @@ export const getActiveFileName = ({ active_document, fs = false }: {
 	active_document: vscode.TextDocument
 	fs?: boolean
 }): string | null => {
-	const m = getCallingPath({ active_document: active_document, fs: fs }).match(/[\w,\s]+\.html\.(eex|leex)$/);
+	const m = getCallingPath({ active_document: active_document, fs: fs })
+		.match(/[\w,\s]+\.(html\.)?(l)?(e)?ex$/);
 	return m ? m[0] : null;
 };
 
@@ -100,7 +101,7 @@ export const showImproperFileError = ({ active_document }: {
 }): void => {
 	const calling_path = getCallingPath({ active_document: active_document }),
 		msg = `
-	Command must be executed in a file ending with \`html.leex\` or \`html.eex\`. : ${calling_path}
+	Command must be executed in a file ending with \`.ex\`, \`html.leex\`, or \`html.eex\`. : ${calling_path}
 	`;
 	vscode.window.showErrorMessage(msg);
 };
