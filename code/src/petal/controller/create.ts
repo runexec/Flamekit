@@ -35,7 +35,7 @@ const writeImports = ({ terminal, uri, view }: {
     });
 };
 
-const getVars = (folders: readonly vscode.WorkspaceFolder[]) => {
+const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) => {
     const folder = folders[0].uri.toString() + '/assets';
     const assets_path = folder.replace('file://', '');
     const js_path = assets_path + '/js';
@@ -73,7 +73,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             const terminal = vscode.window.createTerminal('Flamekit PETAL');
             const {
                 js, css, assets_path, tailwind_config_path, postcss_config_path, webpack_config_path
-            } = getVars(folders);
+            } = getVars({ folders: folders });
             terminal.show();
             terminal.sendText(`cd ${assets_path}`);
             terminal.sendText('# Installing TypeScript');
@@ -82,8 +82,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText(`npm install alpinejs --save`);
             terminal.sendText(`# Installing TailwindCSS`)
             terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
-            js.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
-            css.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
+            [...js, ...css].forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
             let uri = vscode.Uri.parse(tailwind_config_path);
             terminal && terminal.sendText('# Creating ' + uri.toString());
             vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
@@ -94,9 +93,9 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             vscode.workspace.fs.readFile(uri).then(data => {
                 let config = Decoder.decode(data);
                 const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
-                config  = !isPostcss ? config :  config.replace("'css-loader',\n", tw_postcss_loader_view);
+                config = !isPostcss ? config : config.replace("'css-loader',\n", tw_postcss_loader_view);
                 terminal.sendText('# Updating ' + uri.toString());
-                ts_webpack_config_view.getReplace().forEach((r) => config = config.replace(r[0],r[1]));
+                ts_webpack_config_view.getReplace().forEach((r) => config = config.replace(r[0], r[1]));
                 vscode.workspace.fs.writeFile(uri, Buffer.from(config, 'utf-8'));
             });
         }
