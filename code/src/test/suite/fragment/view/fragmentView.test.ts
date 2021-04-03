@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import * as Constant from '../../../../constant';
 import * as FragmentView from '../../../../fragment/view/fragmentView';
 
 const new_view = (x:string) => new FragmentView.View({ file_name: x }).toString();
