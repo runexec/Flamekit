@@ -222,7 +222,26 @@ execute commands to create (~ WARNING: overwrites ~) configurations for `postcss
 
 ------
 
-### Command: `Phoenix CSS Create`
+### TypeScript
+
+TypeScript triggers are applied within `JS` and `TS` documents.
+
+##### Install: `=setupTS`
+
+Adds TypeScript to `assets/webpack.config.js`, installs via `npm`, changes Webpack to `app.ts`,
+and finally adds `ts-loader` for `.ts` files.
+
+ * Creates Code
+  
+-----
+
+### Command: `Phoenix Setup PETAL`
+
+Automatically installs and configures PETAL stack.
+
+-----
+
+### Command: `Phoenix Create CSS`
 
 Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
 command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
@@ -243,19 +262,6 @@ New/Updated file: /tmp/project/assets/css/flamekit.css
 ```
 
 -------
-
-### TypeScript
-
-TypeScript triggers are applied within `JS` and `TS` documents.
-
-##### Install: `=setupTS`
-
-Adds TypeScript to `assets/webpack.config.js`, installs via `npm`, changes Webpack to `app.ts`,
-and finally adds `ts-loader` for `.ts` files.
-
- * Creates Code
-  
------
 
 // ? TODO: typescript setup 
 // ? TODO: check for mix project file and add to activation check
