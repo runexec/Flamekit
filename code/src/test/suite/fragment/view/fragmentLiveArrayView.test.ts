@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as FragmentLiveArrayView from '../../../../fragment/view/fragmentLiveArrayView';
 
-const new_view = (x:string) => new FragmentLiveArrayView.View({ file_name: x }).toString();
+const new_view = (x:string) => new FragmentLiveArrayView.View({ fragment_string: x }).toString();
 
 describe('Fragment / View / fragmentLiveArrayView.ts ', () => {
     let test_view = '=lf{[abc, 123]}';

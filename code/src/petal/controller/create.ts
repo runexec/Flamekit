@@ -6,6 +6,9 @@ import * as TWPostCSSLoaderView from '../../tailwindcss/view/postCSSLoaderView';
 import * as TWPostCSSConfigView from '../../tailwindcss/view/postCSSConfigView';
 import * as AlpineImportView from '../../alpine/view/alpineImportView';
 import * as LiveSocketView from '../../alpine/view/liveSocketView';
+
+/* TODO: tsconfig.json or it will error about files*/
+
 import * as TSWebpackConfigView from '../../typescript/view/webpackConfigView';
 
 import { TextDecoder } from 'util';

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as FragmentListView from '../../../../fragment/view/fragmentListView';
 
-const new_view = (x:string) => new FragmentListView.View({ file_name: x }).toString();
+const new_view = (x:string) => new FragmentListView.View({ fragment_string: x }).toString();
 
 describe('Fragment / View / fragmentListView.ts ', () => {
     let test_view = '<a hello="world">=l{[abc, 123]}</a>';
