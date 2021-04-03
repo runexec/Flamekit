@@ -87,7 +87,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText('# Creating ' + uri.toString());
             vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
             uri = vscode.Uri.parse(postcss_config_path);
-            terminal && terminal.sendText('# Creating ' + uri.toString());
+            terminal.sendText('# Creating ' + uri.toString());
             vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));
             uri = vscode.Uri.parse(webpack_config_path);
             vscode.workspace.fs.readFile(uri).then(data => {
