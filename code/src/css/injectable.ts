@@ -3,11 +3,11 @@ import * as vscode from 'vscode';
 import * as Create from './controller/create';
 
 @injectable()
-export class CreateCSS {
+export class CSS {
     init: ({ context }: { context?: vscode.ExtensionContext | undefined; }) => void;
     constructor(){
         this.init = Create.init;
     }
 }
 
-export default CreateCSS;
+export default CSS;

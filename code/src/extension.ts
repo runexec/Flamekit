@@ -3,18 +3,14 @@
 import "reflect-metadata";
 import { container } from 'tsyringe';
 import * as vscode from 'vscode';
-import Alpine from './alpine/injectable';
-import TailwindCSS from './fragment/injectable';
-import CSS from './css/injectable';
-import TypeScript from './typescript/injectable';
-import PETAL from './petal/injectable';
+import * as Injections from './injections'
 
-const AlpineInstance = container.resolve(Alpine);
-const FragmentInstance = container.resolve(TailwindCSS);
-const CSSInstance = container.resolve(CSS);
-const TailwindCSSInstance = container.resolve(TailwindCSS);
-const TypeScriptInstance = container.resolve(TypeScript);
-const PETALInstance = container.resolve(PETAL);
+const AlpineInstance = container.resolve(Injections.Alpine);
+const FragmentInstance = container.resolve(Injections.Fragment);
+const CSSInstance = container.resolve(Injections.CSS);
+const TailwindCSSInstance = container.resolve(Injections.TailwindCSS);
+const TypeScriptInstance = container.resolve(Injections.TypeScript);
+const PETALInstance = container.resolve(Injections.PETAL);
 
 export function activate(context: vscode.ExtensionContext) {
 	CSSInstance.init({ context: context });
