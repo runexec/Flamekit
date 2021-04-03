@@ -3,9 +3,9 @@ import * as Template from './fragment/template'
 import * as Group from './../controller/group'
 
 export class View extends ViewClass.View {
-    constructor({ file_name }: { file_name: string }) {
-        super({ file_name: file_name });
-        const group = Group.FragmentArrayGroup.getGroup(file_name);
+    constructor({ fragment_string }: { fragment_string: string }) {
+        super({ fragment_string: fragment_string });
+        const group = Group.FragmentArrayGroup.getGroup(fragment_string);
         const fragments = group ? group.split(', ') : false;
         this.toString = () => {
             return fragments ?

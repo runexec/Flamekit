@@ -3,12 +3,12 @@ import * as Template from './fragment/template'
 import * as Group from '../controller/group'
 
 export class View extends ViewClass.View {
-    constructor({ file_name }: { file_name: string }) {
-        super({ file_name: file_name });
+    constructor({ fragment_string }: { fragment_string: string }) {
+        super({ fragment_string: fragment_string });
         this.toString = () => {
             const template =
                 new Template.FragmentLive.Template({
-                    file_name: Group.FragmentLiveGroup.getGroup(file_name)
+                    file_name: Group.FragmentLiveGroup.getGroup(fragment_string)
                 }).toString();
             return template;
         };

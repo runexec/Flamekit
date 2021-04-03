@@ -4,14 +4,14 @@ import * as Group from '../controller/group'
 import * as Constant from '../../constant';
 
 export class View extends ViewClass.View {
-    constructor({ file_name }: { file_name: string }) {
-        super({ file_name: file_name });
-        const group = Group.FragmentLiveListGroup.getGroup(file_name),
+    constructor({ fragment_string }: { fragment_string: string }) {
+        super({ fragment_string: fragment_string });
+        const group = Group.FragmentLiveListGroup.getGroup(fragment_string),
             remove_brackets = (x: string) => x.replace(Constant.FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX, ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
         this.toString = () => {
             if (fragments) {
-                const tag = (file_name.match(Constant.FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
+                const tag = (fragment_string.match(Constant.FRAGMENT_LIVE_LISTSTRING_REGEX) || ['', ''])[1].split('>')[0];
                 return fragments
                     .map(x => new Template.FragmentLiveList.Template({ file_name: x, tag: tag })).join('\n');
             }
