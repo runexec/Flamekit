@@ -84,7 +84,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
             [...js, ...css].forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
             let uri = vscode.Uri.parse(tailwind_config_path);
-            terminal && terminal.sendText('# Creating ' + uri.toString());
+            terminal.sendText('# Creating ' + uri.toString());
             vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
             uri = vscode.Uri.parse(postcss_config_path);
             terminal && terminal.sendText('# Creating ' + uri.toString());
