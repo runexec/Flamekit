@@ -3,7 +3,7 @@
 import "reflect-metadata";
 import { container } from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Injection from './injection'
+import * as Injection from './injection';
 
 const AlpineInstance = container.resolve(Injection.Alpine);
 const CSSInstance = container.resolve(Injection.CSS);
