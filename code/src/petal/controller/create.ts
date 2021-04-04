@@ -43,14 +43,18 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
             css.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
             terminal.sendText(`# Creating ${ts_uri}`)
+            backupConfig({ terminal: terminal, uri: ts_uri });
             vscode.workspace.fs.writeFile(ts_uri, Buffer.from(ts, 'utf-8'));
             let uri = vscode.Uri.parse(tailwind_config_path);
+            backupConfig({ terminal: terminal, uri: uri });
             terminal.sendText('# Creating ' + uri.toString());
             vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
             uri = vscode.Uri.parse(postcss_config_path);
+            backupConfig({ terminal: terminal, uri: uri });
             terminal.sendText('# Creating ' + uri.toString());
-            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));
+            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));            
             uri = vscode.Uri.parse(webpack_config_path);
+            backupConfig({ terminal: terminal, uri: uri });
             vscode.workspace.fs.readFile(uri).then(data => {
                 let config = Decoder.decode(data);
                 const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
@@ -72,11 +76,20 @@ const writeImports = ({ terminal, uri, view }: {
     // skips uri on rejection
     vscode.workspace.fs.stat(uri).then(() => {
         vscode.workspace.fs.readFile(uri).then((data) => {
+            backupConfig({ terminal: terminal, uri: uri });
             terminal.sendText(`# Updating ${uri.toString()}`)
             const updated = view + "\n" + Decoder.decode(data);
             vscode.workspace.fs.writeFile(uri, Buffer.from(updated));
         });
     });
+};
+
+const backupConfig = ({ terminal, uri } : { 
+    terminal: vscode.Terminal, 
+    uri: vscode.Uri 
+}) => {
+    terminal.sendText(`# Backing up ${uri}`);
+    vscode.workspace.fs.copy(uri, vscode.Uri.parse(uri.toString() + '.bak'));
 };
 
 const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) => {
