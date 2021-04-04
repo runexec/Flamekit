@@ -7,8 +7,7 @@ import * as TWPostCSSConfigView from '../../tailwindcss/view/postCSSConfigView';
 import * as AlpineImportView from '../../alpine/view/alpineImportView';
 import * as LiveSocketView from '../../alpine/view/liveSocketView';
 import * as AppView from '../view/view';
-/* TODO: tsconfig.json or it will error about files*/
-
+import * as TSConfigConfigView from '../../typescript/view/tsconfigConfigView';
 import * as TSWebpackConfigView from '../../typescript/view/webpackConfigView';
 
 import { TextDecoder } from 'util';
@@ -20,6 +19,7 @@ const tw_postcss_config_view = new TWPostCSSConfigView.View().toString();
 const tw_postcss_loader_view = new TWPostCSSLoaderView.View().toString();
 const alpine_import_view = (new AlpineImportView.View()).toString();
 const live_socket_view = (new LiveSocketView.View()).toString();
+const ts_config_view = new TSConfigConfigView.View().toString();
 const ts_webpack_config_view = new TSWebpackConfigView.View();
 
 const Decoder = new TextDecoder('utf-8');
@@ -31,7 +31,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
         if (folders) {
             const terminal = vscode.window.createTerminal('Flamekit PETAL');
             const {
-                ts_uri, ts, css, assets_path, tailwind_config_path, postcss_config_path, webpack_config_path
+                ts_uri, ts_config_uri, ts, css, assets_path, tailwind_config_path, postcss_config_path, webpack_config_path
             } = getVars({ folders: folders });
             terminal.show();
             terminal.sendText(`cd ${assets_path}`);
@@ -42,7 +42,10 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText(`# Installing TailwindCSS`)
             terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
             css.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
-            terminal.sendText(`# Creating ${ts_uri}`)
+            terminal.sendText(`# Creating ${ts_config_uri}`);
+            backupConfig({ terminal: terminal, uri: ts_config_uri })
+            vscode.workspace.fs.writeFile(ts_config_uri, Buffer.from(ts_config_view, 'utf-8'));
+            terminal.sendText(`# Creating ${ts_uri}`);
             backupConfig({ terminal: terminal, uri: ts_uri });
             vscode.workspace.fs.writeFile(ts_uri, Buffer.from(ts, 'utf-8'));
             let uri = vscode.Uri.parse(tailwind_config_path);
@@ -110,6 +113,7 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const webpack_config_path = assets_path + '/webpack.config.js';
     return {
         ts_uri: appts_uri,
+        ts_config_uri: vscode.Uri.parse(assets_path + '/tsconfig.json'),
         ts: js,
         css: css,
         assets_path: assets_path,

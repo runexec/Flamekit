@@ -1,4 +1,4 @@
-import * as ViewClass from "./view";
+import * as ViewClass from "./viewClass";
 
 export class View extends ViewClass.View {
     constructor() {
