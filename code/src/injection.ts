@@ -6,5 +6,5 @@ import './injection/cssInjection';
 import './injection/alpineInjection';
 import './injection/fragmentInjection';
 import './injection/petalInjection';
-import './injection/tailwindInjectable';
+import './injection/tailwindInjection';
 import './injection/typescriptInjection';
