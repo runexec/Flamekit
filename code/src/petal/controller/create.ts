@@ -42,11 +42,11 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             terminal.sendText(`# Installing TailwindCSS`)
             terminal.sendText(`npm install tailwindcss postcss postcss-import autoprefixer postcss-loader@4.2.0 --save-dev`);
             css.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
-            terminal.sendText(`# Creating ${ts_config_uri}`);
             backupConfig({ terminal: terminal, uri: ts_config_uri })
+            terminal.sendText(`# Creating ${ts_config_uri}`);
             vscode.workspace.fs.writeFile(ts_config_uri, Buffer.from(ts_config_view, 'utf-8'));
-            terminal.sendText(`# Creating ${ts_uri}`);
             backupConfig({ terminal: terminal, uri: ts_uri });
+            terminal.sendText(`# Creating ${ts_uri}`);
             vscode.workspace.fs.writeFile(ts_uri, Buffer.from(ts, 'utf-8'));
             let uri = vscode.Uri.parse(tailwind_config_path);
             backupConfig({ terminal: terminal, uri: uri });
@@ -55,7 +55,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             uri = vscode.Uri.parse(postcss_config_path);
             backupConfig({ terminal: terminal, uri: uri });
             terminal.sendText('# Creating ' + uri.toString());
-            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));            
+            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));
             uri = vscode.Uri.parse(webpack_config_path);
             backupConfig({ terminal: terminal, uri: uri });
             vscode.workspace.fs.readFile(uri).then(data => {
@@ -87,9 +87,9 @@ const writeImports = ({ terminal, uri, view }: {
     });
 };
 
-const backupConfig = ({ terminal, uri } : { 
-    terminal: vscode.Terminal, 
-    uri: vscode.Uri 
+const backupConfig = ({ terminal, uri }: {
+    terminal: vscode.Terminal,
+    uri: vscode.Uri
 }) => {
     terminal.sendText(`# Backing up ${uri}`);
     vscode.workspace.fs.copy(uri, vscode.Uri.parse(uri.toString() + '.bak'));
