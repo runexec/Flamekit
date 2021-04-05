@@ -1,8 +1,6 @@
-import * as Util from '../../util';
-import * as Message from '../../util/message';
+import 'reflect-metadata';
+import { container } from 'tsyringe';
 import * as vscode from 'vscode';
-import * as LiveSocketView from '../view/liveSocketView';
-import * as AlpineImportView from '../view/alpineImportView';
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     if (context) {
@@ -11,8 +9,12 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     }
 };
 
-const view = (new LiveSocketView.View()).toString();
-const import_view = (new AlpineImportView.View()).toString();
+const Message: {
+    info: (message: string) => void
+} = container.resolve('Util.Message.info');
+const Util: { getWorkingPaths: Function } = container.resolve('Util');
+const view: string = container.resolve('Alpine.LiveSocketView');
+const import_view: string = container.resolve('Alpine.AlpineImportView');
 
 const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
