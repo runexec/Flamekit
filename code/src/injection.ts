@@ -1,5 +1,8 @@
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {injectable, container} from "tsyringe";
+
+import * as ConstantI from './constant';
+container.register('ConstantInstance', ConstantI.Injection);
 
 import * as AlpineI from './alpine/injectable';
 container.register('AlpineInstance', AlpineI.Alpine);
@@ -18,4 +21,3 @@ container.register('TypeScriptInstance', TypeScriptI.TypeScript);
 
 import * as TailwindCSSI from './tailwindcss/injectable';
 container.register('TailwindCSSInstance', TailwindCSSI.TailwindCSS);
-

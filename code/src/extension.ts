@@ -3,10 +3,11 @@
 import "reflect-metadata";
 import './injection';
 import * as vscode from 'vscode';
-import * as Services from './services';
+import * as Service from './service';
+
 
 export function activate(context: vscode.ExtensionContext) {
-	Services.init({ context: context });
+	Service.init({ context: context });
 }
 
 // this method is called when your extension is deactivated

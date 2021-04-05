@@ -1,10 +1,11 @@
 /* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
+import 'reflect-metadata';
+import {container} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Enums from '../../enum';
 import * as Util from '../../util';
 import * as LineTypeObject from './lineTypeObject';
-import * as Constant from '../../constant';
 import * as Fragment from '../fragment';
 import * as Entity from './entity';
 import * as CreateFragment from './create/createFragment';
@@ -20,6 +21,8 @@ export * as CreateFragmentLiveArray from './create/createFragmentLiveArray';
 import * as CreateFragmentLiveList from './create/createFragmentLiveList';
 export * as CreateFragmentLiveList from './create/createFragmentLiveList';
 
+const Constant : Map<string, any> = container.resolve('ConstantInstance');
+
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {
 		const disposable = newCreateFragmentDisposable({ context: context });
@@ -29,7 +32,7 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 
 const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
 	return vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
-		const m = d.fileName.match(Constant.EXTENSION_REGEX);
+		const m = d.fileName.match(Constant.get('EXTENSION_REGEX'));
 		const active_document = vscode.window.activeTextEditor?.document;
 		m && active_document && createFragment({ active_document: active_document });
 	});

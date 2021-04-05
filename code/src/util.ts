@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import 'reflect-metadata';
+import {container} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Interface_ from './interface';
-import * as Constant from './constant';
+
+const Constant : Map<string, any> = container.resolve('ConstantInstance');
+
 /*
 * @param active_document - 
 * Current document in focus. Must end with or`html.eex` or `html.leex`
@@ -118,5 +122,5 @@ export const showNoWorkspaceError = (): void => {
 };
 
 export const getFlamekitCSSIndex = ({ assets_path }: { assets_path: string }): vscode.Uri => {
-	return vscode.Uri.parse(`${assets_path}/css/${Constant.FLAMEKIT_INDEX}`);
+	return vscode.Uri.parse(`${assets_path}/css/${Constant.get('FLAMEKIT_INDEX')}`);
 };

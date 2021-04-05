@@ -1,13 +1,16 @@
+import 'reflect-metadata';
+import {container} from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Constant from '../../../constant';
 import * as Fragment from '../../fragment';
 import * as FileName from '../../view/fragment/fileName';
 import * as Group from '../group';
 
+const Constant : Map<string, any> = container.resolve('ConstantInstance');
+
 export async function createFragment(F: Fragment.FragmentLive): Promise<void> {
 	const new_file = FileName.fragmentLiveFileName(Group.FragmentLiveGroup.getGroup(F.line)),
 		path = `${F.directory}${new_file}`,
-		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.EXTENSION_EX);
+		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.get('EXTENSION_EX'));
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
 		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));

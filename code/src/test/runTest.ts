@@ -1,4 +1,5 @@
 import * as path from 'path';
+import "reflect-metadata";
 
 import { runTests } from 'vscode-test';
 
