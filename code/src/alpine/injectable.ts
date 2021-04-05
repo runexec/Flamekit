@@ -1,8 +1,8 @@
-import {injectable} from 'tsyringe';
+import {singleton} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Create from './controller/create';
 
-@injectable()
+@singleton()
 export class Alpine {
     init: ({ context }: { context?: vscode.ExtensionContext | undefined; }) => void;
     constructor(){

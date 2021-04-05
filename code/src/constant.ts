@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import { injectable } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 export const constants = {
 	DEBUG_MODE: true,
@@ -26,7 +26,7 @@ export const constants = {
 	FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX: /((=ll)|(\{\[)|(\]\}))/g
 };
 
-@injectable()
+@singleton()
 export class Injection extends Map {
 	constructor() {
 		super();

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {injectable, container} from "tsyringe";
+import {container} from "tsyringe";
 
 import * as ConstantI from './constant';
 container.register('ConstantInstance', ConstantI.Injection);
