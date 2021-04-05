@@ -101,7 +101,7 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const js_path = assets_path + '/js';
     const appts_path = js_path + '/app.ts';
     const appts_uri = vscode.Uri.parse(appts_path);
-    const js = [alpine_import_view, app_view, live_socket_view].join("\n");
+    const ts = [alpine_import_view, app_view, live_socket_view].join("\n");
     const css_path = assets_path + '/css';
     const appscss_path = css_path + '/app.scss';
     const appcss_path = css_path + '/app.css';
@@ -114,7 +114,7 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     return {
         ts_uri: appts_uri,
         ts_config_uri: vscode.Uri.parse(assets_path + '/tsconfig.json'),
-        ts: js,
+        ts: ts,
         css: css,
         assets_path: assets_path,
         tailwind_config_path: tailwind_config_path,
