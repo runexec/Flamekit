@@ -1,7 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
-import * as Util from '../../util';
+import 'reflect-metadata';
+import { container } from 'tsyringe';
+
+const Util: { 
+    showNoWorkspaceError: Function,
+    showInvalidPathError: Function,
+    showImproperFileError: Function,
+    getActiveFileName: Function,
+    getActivePath: Function,
+    getWorkingPaths: Function,
+    getFlamekitCSSIndex: Function
+} = container.resolve('Util');
 
 const newCreateCSSDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
