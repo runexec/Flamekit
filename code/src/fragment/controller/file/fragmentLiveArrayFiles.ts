@@ -1,10 +1,14 @@
-import * as Group from '../group';
-import * as FileName from '../../view/fragment/fileName';
+
 import 'reflect-metadata';
-import {singleton} from 'tsyringe';
+import {singleton, container} from 'tsyringe';
+
+let FileName: { fragmentLiveFileName: (x: string) => string };
+let FragmentLiveArrayGroup: { getGroup: (x: string) => string };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
-	const group = Group.FragmentLiveArrayGroup.getGroup(file_name),
+	FileName = container.resolve('fragment.FragmentFileName');
+	FragmentLiveArrayGroup = container.resolve('fragment.FragmentLiveArrayGroup');
+	const group = FragmentLiveArrayGroup.getGroup(file_name),
 		fragments = group ? group.split(', ') : false;
 	return fragments ? fragments.map(file_name => FileName.fragmentLiveFileName(file_name)) : [];
 };

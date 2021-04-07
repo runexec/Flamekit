@@ -14,7 +14,9 @@ export const asArray = ({ file_name }: { file_name: string }): string[] => {
         const m = group.match(/\[(.*)\]/);
         m && (fragments = m[1].split(', '));
     }
-    return fragments ? fragments.map(file_name => FileName.fragmentListFileName(file_name)) : [];
+    return fragments
+        ? fragments.map(file_name => FileName.fragmentListFileName(file_name))
+        : [];
 };
 
 @singleton()
