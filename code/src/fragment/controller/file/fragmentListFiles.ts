@@ -6,7 +6,7 @@ let FragmentListTag: { getTag: (x: string) => string };
 let FileName: { fragmentListFileName: (x: string) => string };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
-    FileName = container.resolve('fragment.FragmentFileName');
+    FileName = container.resolve('fragment.FileName');
     FragmentListTag = container.resolve('fragment.FragmentListTag');
     const group = FragmentListTag.getTag(file_name);
     let fragments: string[] | undefined;

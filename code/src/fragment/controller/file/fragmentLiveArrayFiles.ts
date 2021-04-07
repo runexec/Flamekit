@@ -6,7 +6,7 @@ let FileName: { fragmentLiveFileName: (x: string) => string };
 let FragmentLiveArrayGroup: { getGroup: (x: string) => string };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
-	FileName = container.resolve('fragment.FragmentFileName');
+	FileName = container.resolve('fragment.FileName');
 	FragmentLiveArrayGroup = container.resolve('fragment.FragmentLiveArrayGroup');
 	const group = FragmentLiveArrayGroup.getGroup(file_name),
 		fragments = group ? group.split(', ') : false;

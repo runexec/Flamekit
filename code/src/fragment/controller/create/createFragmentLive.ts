@@ -9,7 +9,7 @@ let FragmentLiveGroup: { getGroup: (x: string) => string };
 
 export async function createFragment(F: Fragment.FragmentLive): Promise<void> {
 	Constant = container.resolve('ConstantInstance');
-	FileName = container.resolve('fragment.FragmentFileName');
+	FileName = container.resolve('fragment.FileName');
 	FragmentLiveGroup = container.resolve('fragment.FragmentLiveGroup');
 	const new_file = FileName.fragmentLiveFileName(FragmentLiveGroup.getGroup(F.line)),
 		path = `${F.directory}${new_file}`,

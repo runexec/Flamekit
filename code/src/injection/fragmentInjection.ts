@@ -38,7 +38,7 @@ import * as FragmentGroup from '../fragment/controller/group/fragmentGroup';
 container.register('fragment.FragmentGroup', FragmentGroup.Injection);
 
 import * as FragmentFileName from '../fragment/view/fragment/fileName';
-container.register('fragment.FragmentFileName', FragmentFileName.Injection);
+container.register('fragment.FileName', FragmentFileName.Injection);
 
 import * as FragmentLiveListTag from '../fragment/controller/tag/fragmentLiveListTag';
 container.register('fragment.FragmentLiveListTag', FragmentLiveListTag.Injection);
