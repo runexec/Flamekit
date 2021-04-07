@@ -1,10 +1,16 @@
-import * as Is from './is';
-import * as Message from '../../util/message';
+import 'reflect-metadata';
+import { singleton, container } from 'tsyringe';
+import * as Enums from '../../enum';
 import * as Interface_ from '../../interface'
-import * as CreateTextReplacement from './enitity/createTextReplacement';
-export * as CreateTextReplacement from './enitity/createTextReplacement';
+
+let Message: {info: (message: string) => void};
+let Is: { isValidCreateFragment: (x: Enums.LineType) => boolean };
+let CreateTextReplacement: {create: Function};
 
 export const create = ({ input_line }: { input_line: Interface_.ICreateFragmentLine }) => {
+	Is = container.resolve('fragment.Is');
+	Message = container.resolve('Util.Message.info');
+	CreateTextReplacement = container.resolve('fragment.CreateTextReplacement');
 	const { line, line_number, line_type } = input_line;
 	if (line && Is.isValidCreateFragment(line_type)) {
 		const display_number = line_number + 1;
@@ -12,3 +18,8 @@ export const create = ({ input_line }: { input_line: Interface_.ICreateFragmentL
 		return CreateTextReplacement.create({ line: line, line_type: line_type, line_number: line_number });
 	}
 };
+
+@singleton()
+export class Injection {
+	create = create
+}

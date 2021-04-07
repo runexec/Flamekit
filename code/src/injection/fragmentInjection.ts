@@ -7,6 +7,9 @@ container.register('fragment.Is', Is.Injection);
 import * as Store from '../fragment/store/store';
 container.register('fragment.Store', Store.Injection);
 
+import * as Entity from '../fragment/controller/entity';
+container.register('fragment.Entity', Entity.Injection);
+
 import * as FragmentLiveListFiles from '../fragment/controller/file/fragmentLiveListFiles';
 container.register('fragment.FragmentLiveListFiles', FragmentLiveListFiles.Injection);
 
@@ -37,8 +40,8 @@ container.register('fragment.FragmentArrayGroup', FragmentArrayGroup.Injection);
 import * as FragmentGroup from '../fragment/controller/group/fragmentGroup';
 container.register('fragment.FragmentGroup', FragmentGroup.Injection);
 
-import * as FragmentFileName from '../fragment/view/fragment/fileName';
-container.register('fragment.FileName', FragmentFileName.Injection);
+import * as FileName from '../fragment/view/fragment/fileName';
+container.register('fragment.FileName', FileName.Injection);
 
 import * as FragmentLiveListTag from '../fragment/controller/tag/fragmentLiveListTag';
 container.register('fragment.FragmentLiveListTag', FragmentLiveListTag.Injection);

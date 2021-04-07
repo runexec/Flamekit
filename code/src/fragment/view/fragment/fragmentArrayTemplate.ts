@@ -1,7 +1,11 @@
+import 'reflect-metadata';
+import {container} from 'tsyringe';
 import * as TemplateClass from './templateClass';
-import * as FileName from './fileName';
+
+let FileName : { fragmentFileName: (x: string) => string };
 
 export class Template extends TemplateClass.Template {
+    FileName = container.resolve('fragment.FileName');
     constructor({ file_name }: { file_name: string }) {
         super({ file_name: file_name });
         this.toString = () => file_name.split(',').map(x => {

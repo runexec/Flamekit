@@ -25,7 +25,6 @@ export const getFragmentData = ({ content }: { content: string[] }): {
 		switch (true) {
 			case (!Is.isValidFragment(line)): line_type = Enums.LineType.FragmentUnknown; break;
 			// List must come before Array because similar regular expression
-			// Order might not matter now after Regex changes. Need to double-check
 			case Is.isFragmentLiveList(line): line_type = Enums.LineType.FragmentLiveList; break;
 			case Is.isFragmentLiveArray(line): line_type = Enums.LineType.FragmentLiveArray; break;
 			case Is.isFragmentLive(line): line_type = Enums.LineType.FragmentLive; break;
