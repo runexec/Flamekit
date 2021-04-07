@@ -5,9 +5,15 @@ import { container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Enums from '../../enum';
 import * as Fragment from '../fragment';
-import * as Entity from './entity';
+import * as Interface_ from '../../interface'
 
 let Constant: Map<string, any>;
+
+let Entity: {
+	create: ({ input_line }: {
+		input_line: Interface_.ICreateFragmentLine
+	}) => any
+}
 
 let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
 
@@ -67,6 +73,7 @@ export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
 export const createFragment = async ({ active_document }: { active_document: vscode.TextDocument | undefined }) => {
 	if (active_document) {
 		Util = container.resolve('Util');
+		Entity = container.resolve('fragment.Entity');
 		LineTypeObject = container.resolve('fragment.LineTypeObject');
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
