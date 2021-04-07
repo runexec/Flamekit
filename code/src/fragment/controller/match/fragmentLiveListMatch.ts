@@ -1,9 +1,12 @@
 import 'reflect-metadata';
-import {container, singleton} from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 
-const Constant : Map<string, any> = container.resolve('ConstantInstance');
+let Constant: Map<string, any>;
 
-export const match = (x: string): string | null => (x.match(Constant.get('FRAGMENT_LIVE_LIST_GROUP_REGEX')) || [null, null])[1];
+export const match = (x: string): string | null => {
+    Constant = container.resolve('ConstantInstance');
+    return (x.match(Constant.get('FRAGMENT_LIVE_LIST_GROUP_REGEX')) || [null, null])[1];
+}
 
 @singleton()
-export class Injection { match: (x:string) => string | null = match }
+export class Injection { match: (x: string) => string | null = match }
