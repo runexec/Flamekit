@@ -105,10 +105,11 @@ export class FragmentUnknown extends Fragment {
 
 @singleton()
 export class Injection {
-	fragmentType = typeof Fragment;
-	fragmentListType = typeof FragmentList;
-	fragmentArrayType = typeof FragmentArray;
-	fragmentLiveType = typeof FragmentLive;
-	fragmentLiveListType = typeof FragmentLiveList;
-	fragmentLiveArrayType = typeof FragmentLiveArray;
+	Fragment = Fragment;
+	FragmentList = FragmentList;
+	FragmentArray = FragmentArray;
+	FragmentLive = FragmentLive;
+	FragmentLiveList = FragmentLiveList;
+	FragmentLiveArray = FragmentLiveArray;
+	FragmentUnknown = FragmentUnknown;
 }

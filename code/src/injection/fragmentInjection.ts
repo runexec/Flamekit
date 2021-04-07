@@ -100,5 +100,8 @@ container.register('fragment.FragmentArrayMatch', FragmentArrayMatch.Injection);
 import * as FragmentMatch from '../fragment/controller/match/fragmentMatch';
 container.register('fragment.FragmentMatch', FragmentMatch.Injection);
 
+import * as Fragment from '../fragment/fragment';
+container.register('Fragment', Fragment.Fragment);
+
 import * as FragmentI from '../fragment/injectable';
 container.register('FragmentInstance', FragmentI.Fragment);

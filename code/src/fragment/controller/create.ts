@@ -1,22 +1,26 @@
 /* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import 'reflect-metadata';
-import {container} from 'tsyringe';
+import { container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Enums from '../../enum';
-import * as Util from '../../util';
-import * as LineTypeObject from './lineTypeObject';
 import * as Fragment from '../fragment';
 import * as Entity from './entity';
 
-const Constant : Map<string, any> = container.resolve('ConstantInstance');
+let Constant: Map<string, any>;
+let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
+let Util: {
+	getDirectory: ({ active_document, fs }: {
+		active_document: vscode.TextDocument, fs?: boolean
+	}) => string,
+};
 
-const CreateFragment : {createFragment: Function} = container.resolve('fragment.CreateFragment');
-const CreateFragmentArray : {createFragment: Function} = container.resolve('fragment.CreateFragmentArray');
-const CreateFragmentList : {createFragment: Function} = container.resolve('fragment.CreateFragmentList');
-const CreateFragmentLive : {createFragment: Function} = container.resolve('fragment.CreateFragmentLive');
-const CreateFragmentLiveArray : {createFragment: Function} = container.resolve('fragment.CreateFragmentLiveArray');
-const CreateFragmentLiveList : {createFragment: Function} = container.resolve('fragment.CreateFragmentLiveList');
+const CreateFragment: { createFragment: Function } = container.resolve('fragment.CreateFragment');
+const CreateFragmentArray: { createFragment: Function } = container.resolve('fragment.CreateFragmentArray');
+const CreateFragmentList: { createFragment: Function } = container.resolve('fragment.CreateFragmentList');
+const CreateFragmentLive: { createFragment: Function } = container.resolve('fragment.CreateFragmentLive');
+const CreateFragmentLiveArray: { createFragment: Function } = container.resolve('fragment.CreateFragmentLiveArray');
+const CreateFragmentLiveList: { createFragment: Function } = container.resolve('fragment.CreateFragmentLiveList');
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {
@@ -26,6 +30,7 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 };
 
 const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+	Constant = container.resolve('ConstantInstance');
 	return vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
 		const m = d.fileName.match(Constant.get('EXTENSION_REGEX'));
 		const active_document = vscode.window.activeTextEditor?.document;
@@ -53,14 +58,15 @@ export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
 
 export const createFragment = async ({ active_document }: { active_document: vscode.TextDocument | undefined }) => {
 	if (active_document) {
+		Util = container.resolve('Util');
+		LineTypeObject = container.resolve('fragment.LineTypeObject');
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
 			lines = active_document.getText().toString().split("\n");
 		let fragment: Fragment.Fragment;
-		directory && fs_path && LineTypeObject.getFragmentData({content: lines})
-			.filter(x => x.line_type !== Enums.LineType.FragmentUnknown)
-			.forEach(async (entity) => {
-				// TODO: refactor so constant not called for each iteration
+		directory && fs_path && LineTypeObject.getFragmentData({ content: lines })
+			.filter((x:any) => x.line_type !== Enums.LineType.FragmentUnknown)
+			.forEach(async (entity: any) => {
 				const new_edit = Entity.create({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
 					if (new_edit && directory && fs_path) {
