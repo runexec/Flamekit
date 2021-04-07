@@ -11,12 +11,12 @@ import * as Entity from './entity';
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
-const CreateFragment : {createFragment: Function} = container.resolve('fragment.createFragment');
-const CreateFragmentArray : {createFragment: Function} = container.resolve('fragment.createFragmentArray');
-const CreateFragmentList : {createFragment: Function} = container.resolve('fragment.createFragmentList');
-const CreateFragmentLive : {createFragment: Function} = container.resolve('fragment.createFragmentLive');
-const CreateFragmentLiveArray : {createFragment: Function} = container.resolve('fragment.createFragmentLiveArray');
-const CreateFragmentLiveList : {createFragment: Function} = container.resolve('fragment.createFragmentLiveList');
+const CreateFragment : {createFragment: Function} = container.resolve('fragment.CreateFragment');
+const CreateFragmentArray : {createFragment: Function} = container.resolve('fragment.CreateFragmentArray');
+const CreateFragmentList : {createFragment: Function} = container.resolve('fragment.CreateFragmentList');
+const CreateFragmentLive : {createFragment: Function} = container.resolve('fragment.CreateFragmentLive');
+const CreateFragmentLiveArray : {createFragment: Function} = container.resolve('fragment.CreateFragmentLiveArray');
+const CreateFragmentLiveList : {createFragment: Function} = container.resolve('fragment.CreateFragmentLiveList');
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {

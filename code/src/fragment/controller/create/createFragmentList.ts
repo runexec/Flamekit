@@ -2,12 +2,15 @@ import 'reflect-metadata';
 import {singleton, container} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Fragment from '../../fragment';
-import * as File from '../file';
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
+const FragmentListFiles : { 
+    asArray: ({file_name} : {file_name:string}) => string[]
+} = container.resolve('fragment.FragmentListFiles');
+
 export async function createFragment(F: Fragment.FragmentList): Promise<void> {
-	const new_files = File.FragmentListFiles.asArray({ file_name: F.line }),
+	const new_files = FragmentListFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x})}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EEX')));
 	uris.forEach((uri, idx) => {

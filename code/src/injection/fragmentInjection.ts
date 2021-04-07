@@ -1,24 +1,53 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+import * as FragmentLiveListFiles from '../fragment/controller/file/fragmentLiveListFiles';
+container.register('fragment.FragmentLiveListFiles', FragmentLiveListFiles.Injection);
+
+import * as FragmentLiveArrayFiles from '../fragment/controller/file/fragmentLiveArrayFiles';
+container.register('fragment.FragmentLiveArrayFiles', FragmentLiveArrayFiles.Injection);
+
+import * as FragmentListFiles from '../fragment/controller/file/fragmentListFiles';
+container.register('fragment.FragmentListFiles', FragmentListFiles.Injection);
+
+import * as FragmentArrayFiles from '../fragment/controller/file/fragmentArrayFiles';
+container.register('fragment.FragmentArrayFiles', FragmentArrayFiles.Injection);
+
+import * as FragmentLiveListGroup from '../fragment/controller/group/fragmentLiveListGroup';
+container.register('fragment.FragmentLiveListGroup', FragmentLiveListGroup.Injection);
+
+import * as FragmentLiveArrayGroup from '../fragment/controller/group/fragmentLiveArrayGroup';
+container.register('fragment.FragmentLiveArrayGroup', FragmentLiveArrayGroup.Injection);
+
+import * as FragmentLiveGroup from '../fragment/controller/group/fragmentLiveGroup';
+container.register('fragment.FragmentLiveGroup', FragmentLiveGroup.Injection);
+
+import * as FragmentListGroup from '../fragment/controller/group/fragmentListGroup';
+container.register('fragment.FragmentListGroup', FragmentListGroup.Injection);
+
+import * as FragmentArrayGroup from '../fragment/controller/group/fragmentArrayGroup';
+container.register('fragment.FragmentArrayGroup', FragmentArrayGroup.Injection);
+
+import * as FragmentGroup from '../fragment/controller/group/fragmentGroup';
+container.register('fragment.FragmentGroup', FragmentGroup.Injection);
 
 import * as CreateFragment from '../fragment/controller/create/createFragment';
-container.register('fragment.createFragment', CreateFragment.Injection);
+container.register('fragment.CreateFragment', CreateFragment.Injection);
 
 import * as CreateFragmentArray from '../fragment/controller/create/createFragmentArray';
-container.register('fragment.createFragmentArray', CreateFragmentArray.Injection);
+container.register('fragment.CreateFragmentArray', CreateFragmentArray.Injection);
 
 import * as CreateFragmentList from '../fragment/controller/create/createFragmentList';
-container.register('fragment.createFragmentList', CreateFragmentList.Injection);
+container.register('fragment.CreateFragmentList', CreateFragmentList.Injection);
 
 import * as CreateFragmentLive from '../fragment/controller/create/createFragmentLive';
-container.register('fragment.createFragmentLive', CreateFragmentLive.Injection);
+container.register('fragment.CreateFragmentLive', CreateFragmentLive.Injection);
 
 import * as CreateFragmentLiveArray from '../fragment/controller/create/createFragmentLiveArray';
-container.register('fragment.createFragmentLiveArray', CreateFragmentLiveArray.Injection);
+container.register('fragment.CreateFragmentLiveArray', CreateFragmentLiveArray.Injection);
 
 import * as CreateFragmentLiveList from '../fragment/controller/create/createFragmentLiveList';
-container.register('fragment.createFragmentLiveList', CreateFragmentLiveList.Injection);
+container.register('fragment.CreateFragmentLiveList', CreateFragmentLiveList.Injection);
 
 import * as FragmentLiveListTag from '../fragment/controller/tag/fragmentLiveListTag';
 container.register('fragment.FragmentLiveListTag', FragmentLiveListTag.Injection);
@@ -56,33 +85,8 @@ container.register('fragment.FragmentArrayMatch', FragmentArrayMatch.Injection);
 import * as FragmentMatch from '../fragment/controller/match/fragmentMatch';
 container.register('fragment.FragmentMatch', FragmentMatch.Injection);
 
-import * as FragmentLiveListGroup from '../fragment/controller/group/fragmentLiveListGroup';
-container.register('fragment.FragmentLiveListGroup', FragmentLiveListGroup.Injection);
-
-import * as FragmentLiveArrayGroup from '../fragment/controller/group/fragmentLiveArrayGroup';
-container.register('fragment.FragmentLiveArrayGroup', FragmentLiveArrayGroup.Injection);
-
-import * as FragmentListGroup from '../fragment/controller/group/fragmentListGroup';
-container.register('fragment.FragmentListGroup', FragmentListGroup.Injection);
-
-import * as FragmentArrayGroup from '../fragment/controller/group/fragmentArrayGroup';
-container.register('fragment.FragmentArrayGroup', FragmentArrayGroup.Injection);
-
 import * as CreateTextReplacement from '../fragment/controller/enitity/createTextReplacement';
 container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
 
-import * as FragmentLiveListFiles from '../fragment/controller/file/fragmentLiveListFiles';
-container.register('fragment.FragmentLiveListFiles', FragmentLiveListFiles.Injection);
-
-import * as FragmentLiveArrayFiles from '../fragment/controller/file/fragmentLiveArrayFiles';
-container.register('fragment.FragmentLiveArrayFiles', FragmentLiveArrayFiles.Injection);
-
-import * as FragmentListFiles from '../fragment/controller/file/fragmentListFiles';
-container.register('fragment.FragmentListFiles', FragmentListFiles.Injection);
-
-import * as FragmentArrayFiles from '../fragment/controller/file/fragmentArrayFiles';
-container.register('fragment.FragmentArrayFiles', FragmentArrayFiles.Injection);
-
 import * as FragmentI from '../fragment/injectable';
-import { Fragment } from "../fragment/view/fragment/template";
 container.register('FragmentInstance', FragmentI.Fragment);
