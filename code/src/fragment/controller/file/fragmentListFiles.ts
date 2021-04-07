@@ -1,5 +1,7 @@
 import * as Tag from '../tag';
 import * as FileName from '../../view/fragment/fileName';
+import 'reflect-metadata';
+import {singleton} from 'tsyringe';
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
     const group = Tag.FragmentListTag.getTag(file_name);
@@ -10,3 +12,8 @@ export const asArray = ({ file_name }: { file_name: string }): string[] => {
     }
     return fragments ? fragments.map(file_name => FileName.fragmentListFileName(file_name)) : [];
 };
+
+@singleton()
+export class Injection {
+    asArray: ({ file_name }: { file_name: string }) => string[] = asArray;
+}

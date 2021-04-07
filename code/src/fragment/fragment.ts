@@ -11,7 +11,7 @@ export class Fragment {
 	directory: string;
 	document: undefined | vscode.TextDocument;
 	static save : Function = CreateFragment.initFragment;
-	static getTag : (file_name:string) => string = Tag.FragmentTag.geTag;
+	static getTag : (file_name:string) => string = Tag.FragmentTag.getTag;
 	static getNewFragment : (file_name:string) => string = (x) => new View.Fragment.View({fragment_string: x}).toString();
 	static Base: any = Fragment;
 	constructor(directory: string = '', fs_path: string = '', line: string = '') {

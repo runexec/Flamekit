@@ -3,6 +3,8 @@ import * as Enums from '../../../enum';
 import * as Is from '../is';
 import * as Store from '../../store/store';
 import * as LineTypeObject from '../lineTypeObject';
+import 'reflect-metadata';
+import {singleton} from 'tsyringe';
 
 export const create = ({ line, line_type, line_number }: { line: string, line_type: Enums.LineType, line_number: number }) => {
 	const LTO = LineTypeObject.getLineTypeObject(line_type),
@@ -34,3 +36,10 @@ export const create = ({ line, line_type, line_number }: { line: string, line_ty
 		}
 	};
 };
+
+@singleton()
+export class Injection {
+	create: ({ line, line_type, line_number }: { 
+		line: string, line_type: Enums.LineType, line_number: number 
+	}) => void = create;
+}

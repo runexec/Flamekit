@@ -8,20 +8,15 @@ import * as Util from '../../util';
 import * as LineTypeObject from './lineTypeObject';
 import * as Fragment from '../fragment';
 import * as Entity from './entity';
-import * as CreateFragment from './create/createFragment';
-export * as CreateFragment from './create/createFragment';
-import * as CreateFragmentArray from './create/createFragmentArray';
-export * as CreateFragmentArray from './create/createFragmentArray';
-import * as CreateFragmentList from './create/createFragmentList';
-export * as CreateFragmentList from './create/createFragmentList';
-import * as CreateFragmentLive from './create/createFragmentLive';
-export * as CreateFragmentLive from './create/createFragmentLive';
-import * as CreateFragmentLiveArray from './create/createFragmentLiveArray';
-export * as CreateFragmentLiveArray from './create/createFragmentLiveArray';
-import * as CreateFragmentLiveList from './create/createFragmentLiveList';
-export * as CreateFragmentLiveList from './create/createFragmentLiveList';
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
+
+const CreateFragment : {createFragment: Function} = container.resolve('fragment.createFragment');
+const CreateFragmentArray : {createFragment: Function} = container.resolve('fragment.createFragmentArray');
+const CreateFragmentList : {createFragment: Function} = container.resolve('fragment.createFragmentList');
+const CreateFragmentLive : {createFragment: Function} = container.resolve('fragment.createFragmentLive');
+const CreateFragmentLiveArray : {createFragment: Function} = container.resolve('fragment.createFragmentLiveArray');
+const CreateFragmentLiveList : {createFragment: Function} = container.resolve('fragment.createFragmentLiveList');
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {

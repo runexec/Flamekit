@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {container} from 'tsyringe';
+import {singleton, container} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Fragment from '../../fragment';
 import * as FileName from '../../view/fragment/fileName';
@@ -15,4 +15,9 @@ export async function createFragment(F: Fragment.Fragment): Promise<void> {
         vscode.window.showInformationMessage(`Creating file: ${path}`);
         vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
     }).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
+}
+
+@singleton()
+export class Injection {
+    createFragment: (F: Fragment.Fragment) => Promise<void> = createFragment;
 }

@@ -3,7 +3,7 @@ import * as Fragment from '../../fragment';
 import * as File from '../file';
 
 import 'reflect-metadata';
-import {container} from 'tsyringe';
+import {container, singleton} from 'tsyringe';
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
@@ -18,4 +18,9 @@ export async function createFragment(F: Fragment.FragmentLiveList): Promise<void
 			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
 		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
+}
+
+@singleton()
+export class Injection {
+    createFragment: (F: Fragment.FragmentLiveList) => Promise<void> = createFragment;
 }
