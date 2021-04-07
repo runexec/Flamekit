@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { singleton } from 'tsyringe';
 import * as Enums from '../../enum';
 import * as Match from './match';
 
@@ -32,3 +33,16 @@ export const isValidCreateFragment = (x: Enums.LineType) => {
         Enums.LineType.FragmentLiveList
     ].some(y => y === x);
 };
+
+@singleton()
+export class Injection {
+    isValidFragment = isValidFragment;
+    isValidCreateFragment = isValidCreateFragment;
+    isFragment = isFragment;
+    isFragmentLive = isFragmentLive;
+    isFragmentArray = isFragmentArray;
+    isFragmentLiveArray = isFragmentLiveArray;
+    isFragmentList = isFragmentList;
+    isFragmentLiveList = isFragmentLiveList;
+    isFragmentListLineType = isFragmentListLineType;
+}

@@ -270,3 +270,6 @@ and finally adds `ts-loader` for `.ts` files.
 // ? Each fragment file is opened in a pane after creation; bottom or side depending on user config.
 // ? auto convert style tag into css file
 // ? warn when corresponding css is missing eex || leex
+// ???? key across ????
+?? before: =x{[one, two, three, four]} 
+?? after: {one: one, two: two, three: three, four: four}

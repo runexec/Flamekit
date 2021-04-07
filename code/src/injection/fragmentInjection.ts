@@ -1,6 +1,12 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+import * as Is from '../fragment/controller/is';
+container.register('fragment.Is', Is.Injection);
+
+import * as Store from '../fragment/store/store';
+container.register('fragment.Store', Store.Injection);
+
 import * as FragmentFileName from '../fragment/view/fragment/fileName';
 container.register('fragment.FragmentFileName', FragmentFileName.Injection);
 
@@ -70,6 +76,12 @@ container.register('fragment.FragmentArrayTag', FragmentArrayTag.Injection);
 import * as FragmentTag from '../fragment/controller/tag/fragmentTag';
 container.register('fragment.FragmentTag', FragmentTag.Injection);
 
+import * as LineTypeObject from '../fragment/controller/lineTypeObject';
+container.register('fragment.LineTypeObject', LineTypeObject.Injection);
+
+import * as CreateTextReplacement from '../fragment/controller/enitity/createTextReplacement';
+container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
+
 import * as FragmentLiveListMatch from '../fragment/controller/match/fragmentLiveListMatch';
 container.register('fragment.FragmentLiveListMatch', FragmentLiveListMatch.Injection);
 
@@ -87,9 +99,6 @@ container.register('fragment.FragmentArrayMatch', FragmentArrayMatch.Injection);
 
 import * as FragmentMatch from '../fragment/controller/match/fragmentMatch';
 container.register('fragment.FragmentMatch', FragmentMatch.Injection);
-
-import * as CreateTextReplacement from '../fragment/controller/enitity/createTextReplacement';
-container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
 
 import * as FragmentI from '../fragment/injectable';
 container.register('FragmentInstance', FragmentI.Fragment);

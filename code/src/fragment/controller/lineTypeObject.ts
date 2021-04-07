@@ -1,7 +1,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as Is from './is';
 import * as Enums from '../../enum';
 import * as Fragment_ from '../fragment';
+import 'reflect-metadata';
+import { singleton, container } from 'tsyringe';
+
+const Is: { 
+	isFragmentListLineType: (x: Enums.LineType) => boolean, 
+	isFragmentLiveList: (x:string) => boolean,
+	isFragmentLiveArray: (x:string) => boolean,
+	isFragmentLive: (x:string) => boolean,
+	isFragment: (x:string) => boolean,
+	isFragmentArray: (x:string) => boolean,
+	isFragmentList: (x:string) => boolean
+	isValidFragment: (x:string) => boolean
+} = container.resolve('fragment.Is');
 
 export const getFragmentData = ({ content }: { content: string[] }): {
 	line: string | undefined,
@@ -38,3 +50,8 @@ export const getLineTypeObject = (line_type: Enums.LineType) => {
 	}
 };
 
+@singleton()
+export class Injection {
+	getFragmentData = getFragmentData;
+	getLineTypeObject = getLineTypeObject;
+}

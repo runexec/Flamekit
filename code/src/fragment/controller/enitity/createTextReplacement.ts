@@ -1,12 +1,26 @@
 import * as vscode from 'vscode';
 import * as Enums from '../../../enum';
-import * as Is from '../is';
-import * as Store from '../../store/store';
-import * as LineTypeObject from '../lineTypeObject';
 import 'reflect-metadata';
-import {singleton} from 'tsyringe';
+import { singleton, container } from 'tsyringe';
 
-export const create = ({ line, line_type, line_number }: { line: string, line_type: Enums.LineType, line_number: number }) => {
+const Is: {
+	isFragmentListLineType: (x: Enums.LineType) => boolean
+} = container.resolve('fragment.Is');
+
+const LineTypeObject: {
+	getFragmentData: Function, getLineTypeObject: Function
+} = container.resolve('fragment.LineTypeObject');
+
+type StorageItem = [tagStart: string, tagEnd: string];
+type StoreCollection = StorageItem[];
+type Storage<T extends StoreCollection> = { push: Function, pop: Function, shift: Function };
+type Store = Storage<StoreCollection> & { FragmentStore: any, StoreType: any };
+
+const Store: Store = container.resolve('fragment.Store');
+
+export const create = ({ line, line_type, line_number }: {
+	line: string, line_type: Enums.LineType, line_number: number
+}) => {
 	const LTO = LineTypeObject.getLineTypeObject(line_type),
 		is_list = Is.isFragmentListLineType(line_type),
 		// `tag_start` and `tag_end` only used if List
@@ -39,7 +53,7 @@ export const create = ({ line, line_type, line_number }: { line: string, line_ty
 
 @singleton()
 export class Injection {
-	create: ({ line, line_type, line_number }: { 
-		line: string, line_type: Enums.LineType, line_number: number 
+	create: ({ line, line_type, line_number }: {
+		line: string, line_type: Enums.LineType, line_number: number
 	}) => void = create;
 }

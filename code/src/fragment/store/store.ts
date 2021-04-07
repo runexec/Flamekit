@@ -1,4 +1,7 @@
-import * as Message from '../../util/message';
+import 'reflect-metadata';
+import { singleton, container } from 'tsyringe';
+
+const Message : {debugInfo: (x:string) => void} = container.resolve('Util.Message.debugInfo');
 
 type FragmentStorageItem = [tagStart: string, tagEnd: string];
 
@@ -18,3 +21,9 @@ class Store {
 }
 
 export const FragmentStore: Store = new Store();
+
+@singleton()
+export class Injection {
+    StoreType = typeof Store;
+    FragmentStore : Store = FragmentStore;
+}
