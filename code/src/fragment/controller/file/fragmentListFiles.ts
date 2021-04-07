@@ -1,10 +1,14 @@
-import * as Tag from '../tag';
-import * as FileName from '../../view/fragment/fileName';
+
 import 'reflect-metadata';
-import {singleton} from 'tsyringe';
+import { singleton, container } from 'tsyringe';
+
+let FragmentListTag: { getTag: (x: string) => string };
+let FileName: { fragmentListFileName: (x: string) => string };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
-    const group = Tag.FragmentListTag.getTag(file_name);
+    FileName = container.resolve('fragment.FragmentFileName');
+    FragmentListTag = container.resolve('fragment.FragmentListTag');
+    const group = FragmentListTag.getTag(file_name);
     let fragments: string[] | undefined;
     if (group) {
         const m = group.match(/\[(.*)\]/);

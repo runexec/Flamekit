@@ -7,9 +7,6 @@ container.register('fragment.Is', Is.Injection);
 import * as Store from '../fragment/store/store';
 container.register('fragment.Store', Store.Injection);
 
-import * as FragmentFileName from '../fragment/view/fragment/fileName';
-container.register('fragment.FragmentFileName', FragmentFileName.Injection);
-
 import * as FragmentLiveListFiles from '../fragment/controller/file/fragmentLiveListFiles';
 container.register('fragment.FragmentLiveListFiles', FragmentLiveListFiles.Injection);
 
@@ -40,23 +37,8 @@ container.register('fragment.FragmentArrayGroup', FragmentArrayGroup.Injection);
 import * as FragmentGroup from '../fragment/controller/group/fragmentGroup';
 container.register('fragment.FragmentGroup', FragmentGroup.Injection);
 
-import * as CreateFragment from '../fragment/controller/create/createFragment';
-container.register('fragment.CreateFragment', CreateFragment.Injection);
-
-import * as CreateFragmentArray from '../fragment/controller/create/createFragmentArray';
-container.register('fragment.CreateFragmentArray', CreateFragmentArray.Injection);
-
-import * as CreateFragmentLiveArray from '../fragment/controller/create/createFragmentLiveArray';
-container.register('fragment.CreateFragmentLiveArray', CreateFragmentLiveArray.Injection);
-
-import * as CreateFragmentList from '../fragment/controller/create/createFragmentList';
-container.register('fragment.CreateFragmentList', CreateFragmentList.Injection);
-
-import * as CreateFragmentLive from '../fragment/controller/create/createFragmentLive';
-container.register('fragment.CreateFragmentLive', CreateFragmentLive.Injection);
-
-import * as CreateFragmentLiveList from '../fragment/controller/create/createFragmentLiveList';
-container.register('fragment.CreateFragmentLiveList', CreateFragmentLiveList.Injection);
+import * as FragmentFileName from '../fragment/view/fragment/fileName';
+container.register('fragment.FragmentFileName', FragmentFileName.Injection);
 
 import * as FragmentLiveListTag from '../fragment/controller/tag/fragmentLiveListTag';
 container.register('fragment.FragmentLiveListTag', FragmentLiveListTag.Injection);
@@ -75,6 +57,24 @@ container.register('fragment.FragmentArrayTag', FragmentArrayTag.Injection);
 
 import * as FragmentTag from '../fragment/controller/tag/fragmentTag';
 container.register('fragment.FragmentTag', FragmentTag.Injection);
+
+import * as CreateFragment from '../fragment/controller/create/createFragment';
+container.register('fragment.CreateFragment', CreateFragment.Injection);
+
+import * as CreateFragmentArray from '../fragment/controller/create/createFragmentArray';
+container.register('fragment.CreateFragmentArray', CreateFragmentArray.Injection);
+
+import * as CreateFragmentLiveArray from '../fragment/controller/create/createFragmentLiveArray';
+container.register('fragment.CreateFragmentLiveArray', CreateFragmentLiveArray.Injection);
+
+import * as CreateFragmentList from '../fragment/controller/create/createFragmentList';
+container.register('fragment.CreateFragmentList', CreateFragmentList.Injection);
+
+import * as CreateFragmentLive from '../fragment/controller/create/createFragmentLive';
+container.register('fragment.CreateFragmentLive', CreateFragmentLive.Injection);
+
+import * as CreateFragmentLiveList from '../fragment/controller/create/createFragmentLiveList';
+container.register('fragment.CreateFragmentLiveList', CreateFragmentLiveList.Injection);
 
 import * as LineTypeObject from '../fragment/controller/lineTypeObject';
 container.register('fragment.LineTypeObject', LineTypeObject.Injection);
