@@ -8,19 +8,21 @@ import * as Fragment from '../fragment';
 import * as Entity from './entity';
 
 let Constant: Map<string, any>;
+
 let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
+
 let Util: {
 	getDirectory: ({ active_document, fs }: {
 		active_document: vscode.TextDocument, fs?: boolean
 	}) => string,
 };
 
-const CreateFragment: { createFragment: Function } = container.resolve('fragment.CreateFragment');
-const CreateFragmentArray: { createFragment: Function } = container.resolve('fragment.CreateFragmentArray');
-const CreateFragmentList: { createFragment: Function } = container.resolve('fragment.CreateFragmentList');
-const CreateFragmentLive: { createFragment: Function } = container.resolve('fragment.CreateFragmentLive');
-const CreateFragmentLiveArray: { createFragment: Function } = container.resolve('fragment.CreateFragmentLiveArray');
-const CreateFragmentLiveList: { createFragment: Function } = container.resolve('fragment.CreateFragmentLiveList');
+let CreateFragment: { createFragment: Function };
+let CreateFragmentArray: { createFragment: Function };
+let CreateFragmentList: { createFragment: Function };
+let CreateFragmentLive: { createFragment: Function };
+let CreateFragmentLiveArray: { createFragment: Function };
+let CreateFragmentLiveList: { createFragment: Function };
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
 	if (context) {
@@ -44,6 +46,12 @@ export async function initFragment(F: Fragment.FragmentLiveList): Promise<void>;
 export async function initFragment(F: Fragment.FragmentLiveArray): Promise<void>;
 export async function initFragment(F: Fragment.FragmentList): Promise<void>;
 export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
+	CreateFragment = container.resolve('fragment.CreateFragment');
+	CreateFragmentArray = container.resolve('fragment.CreateFragmentArray');
+	CreateFragmentList = container.resolve('fragment.CreateFragmentList');
+	CreateFragmentLive = container.resolve('fragment.CreateFragmentLive');
+	CreateFragmentLiveArray = container.resolve('fragment.CreateFragmentLiveArray');
+	CreateFragmentLiveList = container.resolve('fragment.CreateFragmentLiveList');
 	switch (true) {
 		case F instanceof Fragment.FragmentUnknown: null; break;
 		case F instanceof Fragment.FragmentLiveList: CreateFragmentLiveList.createFragment(F); break;
@@ -65,7 +73,7 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 			lines = active_document.getText().toString().split("\n");
 		let fragment: Fragment.Fragment;
 		directory && fs_path && LineTypeObject.getFragmentData({ content: lines })
-			.filter((x:any) => x.line_type !== Enums.LineType.FragmentUnknown)
+			.filter((x: any) => x.line_type !== Enums.LineType.FragmentUnknown)
 			.forEach(async (entity: any) => {
 				const new_edit = Entity.create({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
