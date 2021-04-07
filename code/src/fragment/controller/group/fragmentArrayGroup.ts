@@ -1,9 +1,12 @@
 import 'reflect-metadata';
-import {singleton, container} from 'tsyringe';
+import { singleton, container } from 'tsyringe';
 
-const Constant : Map<string, any> = container.resolve('ConstantInstance');
+let Constant: Map<string, any>;
 
-export const getGroup = (x: string) => (x.match(Constant.get('FRAGMENT_ARRAY_GROUP_REGEX')) || [])[1];
+export const getGroup = (x: string) => {
+    Constant = container.resolve('ConstantInstance');
+    return (x.match(Constant.get('FRAGMENT_ARRAY_GROUP_REGEX')) || [])[1]
+};
 
 @singleton()
-export class Injection { getGroup: (x:string) => string = getGroup }
+export class Injection { getGroup: (x: string) => string = getGroup }
