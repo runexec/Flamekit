@@ -3,13 +3,12 @@ import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Fragment from '../../fragment';
 
-const Constant: Map<string, any> = container.resolve('ConstantInstance');
-
-const FragmentArrayFiles: {
-	asArray: ({ file_name }: { file_name: string }) => string[]
-} = container.resolve('fragment.FragmentArrayFiles');
+let Constant: Map<string, any>;
+let FragmentArrayFiles: { asArray: ({ file_name }: { file_name: string }) => string[]};
 
 export async function createFragment(F: Fragment.FragmentArray): Promise<void> {
+	Constant = container.resolve('ConstantInstance');
+	FragmentArrayFiles = container.resolve('fragment.FragmentArrayFiles');
 	const new_files = FragmentArrayFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EEX')));
