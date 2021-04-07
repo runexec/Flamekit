@@ -3,13 +3,8 @@ import * as Enums from '../../../enum';
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
-const Is: {
-	isFragmentListLineType: (x: Enums.LineType) => boolean
-} = container.resolve('fragment.Is');
-
-const LineTypeObject: {
-	getFragmentData: Function, getLineTypeObject: Function
-} = container.resolve('fragment.LineTypeObject');
+let Is: {isFragmentListLineType: (x: Enums.LineType) => boolean};
+let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function};
 
 type StorageItem = [tagStart: string, tagEnd: string];
 type StoreCollection = StorageItem[];
@@ -21,6 +16,8 @@ const Store: Store = container.resolve('fragment.Store');
 export const create = ({ line, line_type, line_number }: {
 	line: string, line_type: Enums.LineType, line_number: number
 }) => {
+	Is = container.resolve('fragment.Is');
+	LineTypeObject = container.resolve('fragment.LineTypeObject');
 	const LTO = LineTypeObject.getLineTypeObject(line_type),
 		is_list = Is.isFragmentListLineType(line_type),
 		// `tag_start` and `tag_end` only used if List
