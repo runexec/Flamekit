@@ -1,10 +1,12 @@
 import 'reflect-metadata';
-import { singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 
 let FragmentLiveListTag: { getTag: (x: string) => string };
 let FileName: { fragmentLiveListFileName: (x: string) => string };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
+    FileName = container.resolve('fragment.FileName');
+    FragmentLiveListTag = container.resolve('fragment.FragmentLiveListTag');
     const group = FragmentLiveListTag.getTag(file_name);
     let fragments: string[] | undefined;
     if (group) {
