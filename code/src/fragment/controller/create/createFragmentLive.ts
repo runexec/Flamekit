@@ -3,17 +3,14 @@ import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Fragment from '../../fragment';
 
-const Constant: Map<string, any> = container.resolve('ConstantInstance');
-
-const FileName: {
-	fragmentLiveFileName: (x: string) => string
-} = container.resolve('fragment.FragmentFileName');
-
-const FragmentLiveGroup: {
-	getGroup: (x: string) => string
-} = container.resolve('fragment.FragmentLiveGroup');
+let Constant: Map<string, any>;
+let FileName: { fragmentLiveFileName: (x: string) => string };
+let FragmentLiveGroup: { getGroup: (x: string) => string };
 
 export async function createFragment(F: Fragment.FragmentLive): Promise<void> {
+	Constant = container.resolve('ConstantInstance');
+	FileName = container.resolve('fragment.FragmentFileName');
+	FragmentLiveGroup = container.resolve('fragment.FragmentLiveGroup');
 	const new_file = FileName.fragmentLiveFileName(FragmentLiveGroup.getGroup(F.line)),
 		path = `${F.directory}${new_file}`,
 		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.get('EXTENSION_EX'));
