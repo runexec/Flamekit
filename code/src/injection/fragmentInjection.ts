@@ -1,6 +1,24 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+import * as FragmentLiveArrayMatch from '../fragment/controller/match/fragmentLiveArrayMatch';
+container.register('fragment.FragmentLiveArrayMatch', FragmentLiveArrayMatch.Injection);
+
+import * as FragmentLiveListMatch from '../fragment/controller/match/fragmentLiveListMatch';
+container.register('fragment.FragmentLiveListMatch', FragmentLiveListMatch.Injection);
+
+import * as FragmentLiveMatch from '../fragment/controller/match/fragmentLiveMatch';
+container.register('fragment.FragmentLiveMatch', FragmentLiveMatch.Injection);
+
+import * as FragmentListMatch from '../fragment/controller/match/fragmentListMatch';
+container.register('fragment.FragmentListMatch', FragmentListMatch.Injection);
+
+import * as FragmentArrayMatch from '../fragment/controller/match/fragmentArrayMatch';
+container.register('fragment.FragmentArrayMatch', FragmentArrayMatch.Injection);
+
+import * as FragmentMatch from '../fragment/controller/match/fragmentMatch';
+container.register('fragment.FragmentMatch', FragmentMatch.Injection);
+
 import * as Is from '../fragment/controller/is';
 container.register('fragment.Is', Is.Injection);
 
@@ -84,24 +102,6 @@ container.register('fragment.LineTypeObject', LineTypeObject.Injection);
 
 import * as CreateTextReplacement from '../fragment/controller/enitity/createTextReplacement';
 container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
-
-import * as FragmentLiveListMatch from '../fragment/controller/match/fragmentLiveListMatch';
-container.register('fragment.FragmentLiveListMatch', FragmentLiveListMatch.Injection);
-
-import * as FragmentLiveArrayMatch from '../fragment/controller/match/fragmentLiveArrayMatch';
-container.register('fragment.FragmentArrayMatch', FragmentLiveArrayMatch.Injection);
-
-import * as FragmentLiveMatch from '../fragment/controller/match/fragmentLiveMatch';
-container.register('fragment.FragmentLiveMatch', FragmentLiveMatch.Injection);
-
-import * as FragmentListMatch from '../fragment/controller/match/fragmentListMatch';
-container.register('fragment.FragmentListMatch', FragmentListMatch.Injection);
-
-import * as FragmentArrayMatch from '../fragment/controller/match/fragmentArrayMatch';
-container.register('fragment.FragmentArrayMatch', FragmentArrayMatch.Injection);
-
-import * as FragmentMatch from '../fragment/controller/match/fragmentMatch';
-container.register('fragment.FragmentMatch', FragmentMatch.Injection);
 
 import * as Fragment from '../fragment/fragment';
 container.register('Fragment', Fragment.Fragment);
