@@ -1,12 +1,12 @@
 import 'reflect-metadata';
-import {singleton, container} from 'tsyringe';
+import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Fragment from '../../fragment';
 
-const Constant : Map<string, any> = container.resolve('ConstantInstance');
+const Constant: Map<string, any> = container.resolve('ConstantInstance');
 
-const FragmentArrayFiles : { 
-    asArray: ({file_name} : {file_name:string}) => string[]
+const FragmentArrayFiles: {
+	asArray: ({ file_name }: { file_name: string }) => string[]
 } = container.resolve('fragment.FragmentArrayFiles');
 
 export async function createFragment(F: Fragment.FragmentArray): Promise<void> {

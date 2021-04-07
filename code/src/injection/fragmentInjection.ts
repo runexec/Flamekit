@@ -1,6 +1,9 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+import * as FragmentFileName from '../fragment/view/fragment/fileName';
+container.register('fragment.FragmentFileName', FragmentFileName.Injection);
+
 import * as FragmentLiveListFiles from '../fragment/controller/file/fragmentLiveListFiles';
 container.register('fragment.FragmentLiveListFiles', FragmentLiveListFiles.Injection);
 
@@ -37,14 +40,14 @@ container.register('fragment.CreateFragment', CreateFragment.Injection);
 import * as CreateFragmentArray from '../fragment/controller/create/createFragmentArray';
 container.register('fragment.CreateFragmentArray', CreateFragmentArray.Injection);
 
+import * as CreateFragmentLiveArray from '../fragment/controller/create/createFragmentLiveArray';
+container.register('fragment.CreateFragmentLiveArray', CreateFragmentLiveArray.Injection);
+
 import * as CreateFragmentList from '../fragment/controller/create/createFragmentList';
 container.register('fragment.CreateFragmentList', CreateFragmentList.Injection);
 
 import * as CreateFragmentLive from '../fragment/controller/create/createFragmentLive';
 container.register('fragment.CreateFragmentLive', CreateFragmentLive.Injection);
-
-import * as CreateFragmentLiveArray from '../fragment/controller/create/createFragmentLiveArray';
-container.register('fragment.CreateFragmentLiveArray', CreateFragmentLiveArray.Injection);
 
 import * as CreateFragmentLiveList from '../fragment/controller/create/createFragmentLiveList';
 container.register('fragment.CreateFragmentLiveList', CreateFragmentLiveList.Injection);

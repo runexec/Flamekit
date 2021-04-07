@@ -5,7 +5,7 @@ import * as TagHandler from './controller/tag';
 import * as View from '../view';
 
 import 'reflect-metadata';
-import { container } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 
 const CreateFragment: { initFragment: Function } = container.resolve('fragment.CreateFragment');
 
@@ -102,3 +102,13 @@ export class FragmentUnknown extends Fragment {
 		return this;
 	};
 };
+
+@singleton()
+export class Injection {
+	fragmentType = typeof Fragment;
+	fragmentListType = typeof FragmentList;
+	fragmentArrayType = typeof FragmentArray;
+	fragmentLiveType = typeof FragmentLive;
+	fragmentLiveListType = typeof FragmentLiveList;
+	fragmentLiveArrayType = typeof FragmentLiveArray;
+}
