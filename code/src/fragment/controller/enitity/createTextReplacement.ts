@@ -10,12 +10,12 @@ type StorageItem = [tagStart: string, tagEnd: string];
 type StoreCollection = StorageItem[];
 type Storage<T extends StoreCollection> = { push: Function, pop: Function, shift: Function };
 type Store = Storage<StoreCollection> & { FragmentStore: any, StoreType: any };
-
-const Store: Store = container.resolve('fragment.Store');
+let Store: Store;
 
 export const create = ({ line, line_type, line_number }: {
 	line: string, line_type: Enums.LineType, line_number: number
 }) => {
+	Store = container.resolve('fragment.Store');
 	Is = container.resolve('fragment.Is');
 	LineTypeObject = container.resolve('fragment.LineTypeObject');
 	const LTO = LineTypeObject.getLineTypeObject(line_type),

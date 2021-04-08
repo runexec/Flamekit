@@ -2,18 +2,18 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as TemplateClass from './templateClass';
 
-let FileName: { fragmentLiveListFileName: (x: string) => string };
-
 type StorageItem = [tagStart: string, tagEnd: string];
 type StoreCollection = StorageItem[];
 type Storage<T extends StoreCollection> = { push: Function, pop: Function, shift: Function };
 type Store = Storage<StoreCollection> & { FragmentStore: any, StoreType: any };
+let Store: Store; 
 
-const Store: Store = container.resolve('fragment.Store');
+let FileName: { fragmentLiveListFileName: (x: string) => string };
 
 export class Template extends TemplateClass.Template {
     constructor({ file_name, tag }: { file_name: string, tag: string }) {
         super({ file_name: file_name });
+        Store = container.resolve('fragment.Store');
         FileName = container.resolve('fragment.FileName');
         this.toString = () => {
             const tag_start = '<' + tag + '>',
