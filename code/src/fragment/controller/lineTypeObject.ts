@@ -11,7 +11,7 @@ const Is: {
 	isFragmentLive: (x:string) => boolean,
 	isFragment: (x:string) => boolean,
 	isFragmentArray: (x:string) => boolean,
-	isFragmentList: (x:string) => boolean
+	isFragmentList: (x:string) => boolean,
 	isValidFragment: (x:string) => boolean
 } = container.resolve('fragment.Is');
 

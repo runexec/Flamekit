@@ -3,8 +3,8 @@ import { singleton, container } from 'tsyringe';
 import * as Enums from '../../enum';
 import * as Interface_ from '../../interface'
 
-let Message: {info: (message: string) => void};
 let Is: { isValidCreateFragment: (x: Enums.LineType) => boolean };
+let Message: {info: (message: string) => void};
 let CreateTextReplacement: {create: Function};
 
 export const create = ({ input_line }: { input_line: Interface_.ICreateFragmentLine }) => {

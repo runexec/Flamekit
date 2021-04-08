@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {container} from 'tsyringe';
+import {singleton, container} from 'tsyringe';
 import * as TemplateClass from './templateClass';
 
 let FileName : { fragmentFileName: (x: string) => string };
@@ -14,3 +14,6 @@ export class Template extends TemplateClass.Template {
         return this;
     }
 }
+
+@singleton()
+export class Injection { Template = Template }
