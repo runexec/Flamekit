@@ -12,3 +12,9 @@ export class Template extends TemplateClass.Template {
         return this;
     }
 }
+
+
+@singleton()
+export class Injection {
+    Template = Template
+}

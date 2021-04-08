@@ -1,25 +1,33 @@
 import * as ViewClass from './view';
-import * as Template from './fragment/template'
-import * as Group from './../controller/group'
 import 'reflect-metadata';
-import {container} from 'tsyringe';
+import {singleton, container} from 'tsyringe';
+
+let FragmentListTemplate : {Template: any};
+let FragmentListGroup : {getGroup: (x:string) => string | undefined};
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {
         super({ fragment_string: fragment_string });
-        const group = Group.FragmentListGroup.getGroup(fragment_string),
+        FragmentListGroup = container.resolve('fragment.FragmentListGroup');
+        FragmentListTemplate = container.resolve('fragment.FragmentListTemplate');
+        const group = FragmentListGroup.getGroup(fragment_string),
             remove_brackets = (x: string) => x.replace(Constant.get('FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX'), ''),
             fragments = group ? remove_brackets(group).split(', ') : false;
         this.toString = () => {
             if (fragments) {
                 const tag = (fragment_string.match(Constant.get('FRAGMENT_LISTSTRING_REGEX')) || ['', ''])[1].split('>')[0];
                 return fragments
-                    .map(x => new Template.FragmentList.Template({ file_name: x, tag: tag }))
+                    .map(x => new FragmentListTemplate.Template({ file_name: x, tag: tag }))
                     .join('\n');
             } else { return 'fragmentListView<Failed>'; }
         }
         return this;
     }
+}
+
+@singleton()
+export class Injection {
+    View = View;
 }
