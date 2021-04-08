@@ -1,10 +1,13 @@
+import 'reflect-metadata';
+import { singleton, container } from 'tsyringe';
 import * as TemplateClass from './templateClass';
-import * as FragmentFileName from './fileName';
+
+let FileName: { fragmentFileName: (x: string) => string };
 
 export class Template extends TemplateClass.Template {
     constructor({ file_name }: { file_name: string }) {
         super({ file_name: file_name });
-        this.toString = () => { return `<%= render "${FragmentFileName.fragmentFileName(file_name)}" %>`; }
+        this.toString = () => { return `<%= render "${FileName.fragmentFileName(file_name)}" %>`; }
         return this;
     }
 }
