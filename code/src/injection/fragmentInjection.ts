@@ -7,6 +7,9 @@ container.register('fragment.FragmentLiveListTemplate', FragmentLiveListTemplate
 import * as FragmentLiveArrayTemplate from '../fragment/view/fragment/fragmentLiveArrayTemplate';
 container.register('fragment.FragmentLiveArrayTemplate', FragmentLiveArrayTemplate.Injection);
 
+import * as FragmentLiveTemplate from '../fragment/view/fragment/fragmentLiveTemplate';
+container.register('fragment.FragmentLiveTemplate', FragmentLiveTemplate.Injection);
+
 import * as FragmentListTemplate from '../fragment/view/fragment/fragmentListTemplate';
 container.register('fragment.FragmentListTemplate', FragmentListTemplate.Injection);
 
