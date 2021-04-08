@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { container } from 'tsyringe';
+import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
@@ -49,3 +49,9 @@ const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionCont
         }
     });
 };
+
+
+@singleton()
+export class Injection {
+    init = init;
+}

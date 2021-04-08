@@ -3,21 +3,29 @@ import { container } from 'tsyringe';
 import * as vscode from 'vscode';
 
 type Instance = {
-    init: ({ context }: { context: vscode.ExtensionContext; }) => void
+    init: ({ context }: { 
+        context: vscode.ExtensionContext; 
+    }) => void
 };
 
-const AlpineInstance: Instance = container.resolve('AlpineInstance');
-const CSSInstance: Instance = container.resolve('CSSInstance');
-const FragmentInstance: Instance = container.resolve('FragmentInstance');
-const PETALInstance: Instance = container.resolve('PETALInstance');
-const TailwindCSSInstance: Instance = container.resolve('TailwindCSSInstance');
-const TypeScriptInstance: Instance = container.resolve('TypeScriptInstance');
+let AlpineInstance: Instance;
+let CSSInstance: Instance;
+let FragmentInstance: Instance;
+let PETALInstance: Instance;
+let TailwindCSSInstance: Instance;
+let TypeScriptInstance: Instance;
 
 export function init({ context }: { context: vscode.ExtensionContext }) {
+    AlpineInstance = container.resolve('AlpineInstance');
     AlpineInstance.init({ context: context });
+    CSSInstance = container.resolve('CSSInstance');
     CSSInstance.init({ context: context });
+    FragmentInstance = container.resolve('FragmentInstance');
     FragmentInstance.init({ context: context });
+    PETALInstance = container.resolve('PETALInstance');
     PETALInstance.init({ context: context });
+    TailwindCSSInstance = container.resolve('TailwindCSSInstance');
     TailwindCSSInstance.init({ context: context });
+    TypeScriptInstance = container.resolve('TypeScriptInstance');
     TypeScriptInstance.init({ context: context });
 }
