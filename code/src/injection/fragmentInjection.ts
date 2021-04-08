@@ -1,6 +1,9 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+import * as FragmentLiveListTemplate from '../fragment/view/fragment/fragmentLiveListTemplate';
+container.register('fragment.FragmentLiveListTemplate', FragmentLiveListTemplate.Injection);
+
 import * as FragmentLiveArrayTemplate from '../fragment/view/fragment/fragmentLiveArrayTemplate';
 container.register('fragment.FragmentLiveArrayTemplate', FragmentLiveArrayTemplate.Injection);
 

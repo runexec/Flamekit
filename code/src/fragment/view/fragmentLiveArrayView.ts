@@ -20,3 +20,8 @@ export class View extends ViewClass.View {
         return this;
     }
 }
+
+@singleton()
+export class Injection {
+    View = View;
+}
