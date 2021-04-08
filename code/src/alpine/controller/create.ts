@@ -9,14 +9,13 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     }
 };
 
-const Message: {
-    info: (message: string) => void
-} = container.resolve('Util.Message.info');
-const Util: { getWorkingPaths: Function } = container.resolve('Util');
-const view: string = container.resolve('Alpine.LiveSocketView');
-const import_view: string = container.resolve('Alpine.AlpineImportView');
-
 const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+    const Message: {
+        info: (message: string) => void
+    } = container.resolve('Util.Message.info');
+    const Util: { getWorkingPaths: Function } = container.resolve('Util');
+    const view: string = container.resolve('Alpine.LiveSocketView');
+    const import_view: string = container.resolve('Alpine.AlpineImportView');
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
         let terminal_home: string | null = null,
             terminal: vscode.Terminal | null;
