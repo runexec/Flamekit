@@ -1,10 +1,14 @@
 import "reflect-metadata";
+
 import './injection/constantInjection';
 import './injection/utilInjection';
 import './injection/util/messageInjection';
+
 import './injection/cssInjection';
-import './injection/alpineInjection';
 import './injection/fragmentInjection';
-import './injection/petalInjection';
-import './injection/tailwindInjection';
+
 import './injection/typescriptInjection';
+import './injection/alpineInjection';
+import './injection/tailwindInjection';
+
+import './injection/petalInjection';

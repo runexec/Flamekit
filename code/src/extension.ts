@@ -1,7 +1,6 @@
 /* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
-import './injection';
 import * as vscode from 'vscode';
 import * as Service from './service';
 

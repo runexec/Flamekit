@@ -1,11 +1,17 @@
+import { container } from 'tsyringe';
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
-import * as Util from '../../util';
-import * as Message from '../../util/message';
-import * as ConfigView from '../view/configView';
-import * as ImportView from '../view/importView';
-import * as PostCSSLoaderView from '../view/postCSSLoaderView';
-import * as PostCSSConfigView from '../view/postCSSConfigView';
+
+let Util: { getWorkingPaths: Function }; // TODO
+let Message : {info: (x:string) => void};
+
+type Viewable = new () => {};
+interface View { View: Viewable }
+
+let ConfigView : View;
+let ImportView : View;
+let PostCSSConfigView : View;
+let PostCSSLoaderView : View;
 
 export const init = ({ context }: { context: vscode.ExtensionContext }) => {
     let disposable = newCreateTailwindCSSDisposable({ context: context });
@@ -14,19 +20,27 @@ export const init = ({ context }: { context: vscode.ExtensionContext }) => {
 
 const Decoder = new TextDecoder('utf-8');
 
-const import_view = new ImportView.View().toString();
-const config_view = new ConfigView.View().toString();
-const postcss_config_view = new PostCSSConfigView.View().toString();
-const postcss_loader_view = new PostCSSLoaderView.View().toString();
-
 const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.ExtensionContext }) => {
+    Util = container.resolve('Util');
+    Message = container.resolve('Util.Message.info');
+    ConfigView = container.resolve('tailwind.ConfigView');
+    ImportView = container.resolve('tailwind.ImportView');
+    PostCSSConfigView = container.resolve('tailwind.PostCSSConfigView');
+    PostCSSLoaderView = container.resolve('tailwind.PostCSSLoaderView');
+
+    const import_view = new ImportView.View().toString();
+    const config_view = new ConfigView.View().toString();
+    const postcss_config_view = new PostCSSConfigView.View().toString();
+    const postcss_loader_view = new PostCSSLoaderView.View().toString();
+
     let terminal_home: string | null = null,
         terminal: vscode.Terminal | null = null,
         tailwind_config_path: string | null = null,
         postcss_config_path: string | null = null,
         webpack_config_path: string | null = null;
     return vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
-        if (document.fileName.match(/\.(s)css$/)) {
+        if (document.fileName.match(/\.(css|scss)$/)) {
+            Message.info('XXXXXXXX');
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
                 const start = document.getText().match(/=setupTW/)?.index;
