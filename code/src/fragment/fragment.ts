@@ -1,7 +1,6 @@
 /* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
-import * as TagHandler from './controller/tag';
 import * as View from '../view';
 
 import 'reflect-metadata';
