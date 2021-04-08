@@ -3,7 +3,6 @@ import { container } from 'tsyringe';
 import './injection';
 import * as vscode from 'vscode';
 
-
 type Instance = {
     init: ({ context }: { 
         context: vscode.ExtensionContext; 

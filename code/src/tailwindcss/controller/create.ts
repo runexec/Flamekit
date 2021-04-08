@@ -40,7 +40,6 @@ const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.Extension
         webpack_config_path: string | null = null;
     return vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
         if (document.fileName.match(/\.(css|scss)$/)) {
-            Message.info('XXXXXXXX');
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
                 const start = document.getText().match(/=setupTW/)?.index;
