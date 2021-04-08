@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 
-const Util: { 
+let Util: { 
     showNoWorkspaceError: Function,
     showInvalidPathError: Function,
     showImproperFileError: Function,
@@ -12,7 +12,7 @@ const Util: {
     getActivePath: Function,
     getWorkingPaths: Function,
     getFlamekitCSSIndex: Function
-} = container.resolve('Util');
+};
 
 const newCreateCSSDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
@@ -35,6 +35,7 @@ const createCSSFiles = () => {
     const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
     const active_document = vscode.window.activeTextEditor?.document;
     if (active_document)
+        Util = container.resolve('Util');
         if (wsf === undefined) {
             Util.showNoWorkspaceError();
         } else {
@@ -58,6 +59,7 @@ const _createCSSFiles = async ({ wsf, active_document }: {
     wsf = vscode.workspace.workspaceFolders;
     active_document = vscode.window.activeTextEditor?.document;
     if (wsf && active_document) {
+        Util = container.resolve('Util');
         const { assets_path, active_path, css_path } = Util.getWorkingPaths({ wsf: wsf, active_document: active_document });
         if (active_path) {
             createCSSPath({ css_path: css_path });
