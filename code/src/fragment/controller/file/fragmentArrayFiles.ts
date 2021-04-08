@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
 let FileName: { fragmentFileName: (x: string) => string };
-let FragmentArrayGroup: { getGroup: (x: string) => string | undefined };
+let FragmentArrayGroup: { getGroup: (x: string) => string | undefined | null };
 
 export const asArray = ({ file_name }: { file_name: string }): string[] => {
     FileName = container.resolve('fragment.FileName');
