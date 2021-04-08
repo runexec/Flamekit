@@ -16,6 +16,9 @@ container.register('fragment.FragmentListTemplate', FragmentListTemplate.Injecti
 import * as FragmentArrayTemplate from '../fragment/view/fragment/fragmentArrayTemplate';
 container.register('fragment.FragmentArrayTemplate', FragmentArrayTemplate.Injection);
 
+import * as FragmentTemplate from '../fragment/view/fragment/fragmentTemplate';
+container.register('fragment.FragmentTemplate', FragmentTemplate.Injection);
+
 import * as TemplateClass from '../fragment/view/fragment/templateClass';
 container.register('fragment.TemplateClass', TemplateClass.Injection);
 

@@ -1,17 +1,27 @@
+import 'reflect-metadata';
+import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
-import * as Template from './fragment/template'
-import * as Group from './../controller/group'
+
+let FragmentTemplate : {Template: any};
+let FragmentGroup : {getGroup: (x:string) => string | undefined};
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {
         super({ fragment_string: fragment_string });
+        FragmentTemplate = container.resolve('fragment.FragmentTemplate');
+        FragmentGroup = container.resolve('fragment.FragmentGroup');
         this.toString = () => {
             const template =
-                new Template.Fragment.Template({
-                    file_name: Group.FragmentGroup.getGroup(fragment_string)
+                new FragmentTemplate.Template({
+                    file_name: FragmentGroup.getGroup(fragment_string)
                 }).toString();
             return template;
         }
         return this;
     }
+}
+
+@singleton()
+export class Injection {
+    View = View;
 }
