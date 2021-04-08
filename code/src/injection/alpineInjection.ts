@@ -3,22 +3,14 @@ import {singleton, container} from "tsyringe";
 import * as AlpineImportView from '../alpine/view/alpineImportView';
 
 @singleton()
-class AlpineImportViewInstance extends AlpineImportView.View {
-    constructor() {
-        super();
-    }
-};
+class AlpineImportViewInstance extends AlpineImportView.View {}
 
 container.register('Alpine.AlpineImportView', AlpineImportViewInstance);
 
 import * as LiveSocketView from '../alpine/view/liveSocketView';
 
 @singleton()
-class LiveSocketViewInstance extends LiveSocketView.View {
-    constructor() {
-        super();
-    }
-};
+class LiveSocketViewInstance extends LiveSocketView.View {}
 
 container.register('Alpine.LiveSocketView', LiveSocketViewInstance);
 
