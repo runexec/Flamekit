@@ -8,7 +8,7 @@ export const asArray = ({ file_name }: { file_name: string }): string[] => {
 	FileName = container.resolve('fragment.FileName');
 	FragmentLiveArrayGroup = container.resolve('fragment.FragmentLiveArrayGroup');
 	const group = FragmentLiveArrayGroup.getGroup(file_name),
-		fragments = group ? group.split(', ') : false;
+		fragments = group ? group.split(',') : false;
 	return fragments ? fragments.map(file_name => FileName.fragmentLiveFileName(file_name)) : [];
 };
 

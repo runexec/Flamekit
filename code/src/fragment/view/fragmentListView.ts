@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import {singleton, container} from 'tsyringe';
 
 let FragmentListTemplate : {Template: any};
-let FragmentListGroup : {getGroup: (x:string) => string | undefined};
+let FragmentListGroup : {getGroup: (x:string) => string | undefined | null };
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
@@ -14,7 +14,7 @@ export class View extends ViewClass.View {
         FragmentListTemplate = container.resolve('fragment.FragmentListTemplate');
         const group = FragmentListGroup.getGroup(fragment_string),
             remove_brackets = (x: string) => x.replace(Constant.get('FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX'), ''),
-            fragments = group ? remove_brackets(group).split(', ') : false;
+            fragments = group ? remove_brackets(group).split(',') : false;
         this.toString = () => {
             if (fragments) {
                 const tag = (fragment_string.match(Constant.get('FRAGMENT_LISTSTRING_REGEX')) || ['', ''])[1].split('>')[0];

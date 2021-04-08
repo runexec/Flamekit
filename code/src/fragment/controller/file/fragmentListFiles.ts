@@ -11,7 +11,7 @@ export const asArray = ({ file_name }: { file_name: string }): string[] => {
     let fragments: string[] | undefined;
     if (group) {
         const m = group.match(/\[(.*)\]/);
-        m && (fragments = m[1].split(', '));
+        m && (fragments = m[1].split(','));
     }
     return fragments
         ? fragments.map(file_name => FileName.fragmentListFileName(file_name))

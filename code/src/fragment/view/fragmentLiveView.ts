@@ -3,7 +3,7 @@ import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
 
 let FragmentLiveTemplate : {Template: any};
-let FragmentLiveGroup : {getGroup: (x:string) => string | undefined};
+let FragmentLiveGroup : {getGroup: (x:string) => string | undefined | null };
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {

@@ -3,7 +3,7 @@ import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
 
 let FragmentArrayTemplate : {Template: any};
-let FragmentArrayGroup : {getGroup: (x:string) => string | undefined};
+let FragmentArrayGroup : {getGroup: (x:string) => string | undefined | null };
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {
@@ -11,7 +11,7 @@ export class View extends ViewClass.View {
         FragmentArrayGroup = container.resolve('fragment.FragmentArrayGroup');
         FragmentArrayTemplate = container.resolve('fragment.FragmentArrayTemplate');
         const group = FragmentArrayGroup.getGroup(fragment_string);
-        const fragments = group ? group.split(', ') : false;
+        const fragments = group ? group.split(',') : false;
         this.toString = () => {
             return fragments ?
                 fragments.map(x => new FragmentArrayTemplate.Template({ file_name: x })).join("\n")
