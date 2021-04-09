@@ -78,7 +78,6 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
     });
 };
 
-
 const writeImports = ({ terminal, uri, view }: {
     terminal: vscode.Terminal,
     uri: vscode.Uri,
@@ -127,9 +126,10 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const tailwind_config_path = assets_path + '/tailwind.config.js';
     const postcss_config_path = assets_path + '/postcss.config.js';
     const webpack_config_path = assets_path + '/webpack.config.js';
+    const ts_config_uri = vscode.Uri.parse(assets_path + '/tsconfig.json');
     return {
         ts_uri: appts_uri,
-        ts_config_uri: vscode.Uri.parse(assets_path + '/tsconfig.json'),
+        ts_config_uri: ts_config_uri,
         ts: ts,
         css: css,
         assets_path: assets_path,
