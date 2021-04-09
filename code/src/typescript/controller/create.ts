@@ -1,9 +1,16 @@
-import * as Util from '../../util';
-import * as Message from '../../util/message';
 import * as vscode from 'vscode';
-import * as WebpackConfigView from '../view/webpackConfigView';
-import * as TSConfigConfigView from '../view/tsconfigConfigView';
 import { TextDecoder } from 'util';
+import { container } from 'tsyringe';
+
+let Util : { getWorkingPaths: Function }; // todo
+let Message: { info: (message: string) => void };
+
+type Viewable = new () => any;
+type View = { View: Viewable };
+
+let TSConfigConfigView: View;
+let TSWebpackConfigView: View & { getReplace: () => [string, string][] };
+
 
 export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     if (context) {
@@ -12,10 +19,11 @@ export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
     }
 };
 
-const webpack_config_view = new WebpackConfigView.View();
-const tsconfig_config_view = new TSConfigConfigView.View().toString();
-
 const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+    TSConfigConfigView = container.resolve('typescript.TSConfigConfigView');
+    TSWebpackConfigView = container.resolve('typescript.WebpackConfigView');
+    const webpack_config_view = new TSWebpackConfigView.View();
+    const tsconfig_config_view = new TSConfigConfigView.View().toString();
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
         let terminal_home: string,
             terminal: vscode.Terminal,
@@ -23,7 +31,7 @@ const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.Extension
             webpack_uri: vscode.Uri,
             webpack_config: string,
             tsconfig: string,
-            tsconfig_uri : vscode.Uri;
+            tsconfig_uri: vscode.Uri;
         if (document.fileName.match(/\.(js|ts)$/)) {
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
@@ -51,8 +59,8 @@ const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.Extension
                         webpack_uri = vscode.Uri.parse(webpack);
                         vscode.workspace.fs.readFile(webpack_uri).then((config) => {
                             webpack_config = new TextDecoder('utf-8').decode(config);
-                            webpack_config_view.getReplace().forEach(([old, now]) => {
-                                webpack_config = webpack_config.replace(old,now);
+                            webpack_config_view.getReplace().forEach(([old, now]:[string,string]) => {
+                                webpack_config = webpack_config.replace(old, now);
                             });
                             webpack_uri && vscode.workspace.fs.writeFile(webpack_uri, Buffer.from(webpack_config));
                         })
