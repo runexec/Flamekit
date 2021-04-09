@@ -12,14 +12,9 @@ let TSConfigConfigView: View;
 let TSWebpackConfigView: View & { getReplace: () => [string, string][] };
 
 
-export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
-    if (context) {
-        let disposable = newCreateTypeScriptDisposable({ context: context });
-        context.subscriptions.push(disposable);
-    }
-};
+export const init = () => newCreateTypeScriptDisposable();
 
-const newCreateTypeScriptDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+const newCreateTypeScriptDisposable = () => {
     TSConfigConfigView = container.resolve('typescript.TSConfigConfigView');
     TSWebpackConfigView = container.resolve('typescript.WebpackConfigView');
     const webpack_config_view = new TSWebpackConfigView.View();

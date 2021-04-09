@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {container, singleton} from 'tsyringe';
+import {singleton} from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Create from './controller/create';
 

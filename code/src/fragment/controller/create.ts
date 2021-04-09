@@ -30,14 +30,9 @@ let CreateFragmentLive: { createFragment: Function };
 let CreateFragmentLiveArray: { createFragment: Function };
 let CreateFragmentLiveList: { createFragment: Function };
 
-export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
-	if (context) {
-		const disposable = newCreateFragmentDisposable({ context: context });
-		context.subscriptions.push(disposable);
-	}
-};
+export const init = () => newCreateFragmentDisposable();
 
-const newCreateFragmentDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+const newCreateFragmentDisposable = () => {
 	Constant = container.resolve('ConstantInstance');
 	return vscode.workspace.onDidSaveTextDocument((d: vscode.TextDocument) => {
 		const m = d.fileName.match(Constant.get('EXTENSION_REGEX'));

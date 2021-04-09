@@ -18,9 +18,11 @@ let LiveSocketView: View;
 let TSConfigConfigView: View;
 let TSWebpackConfigView: View & { getReplace: () => [string, string][] };
 
+export const init = () => newCreatePETALDisposable();
+
 const Decoder = new TextDecoder('utf-8');
 
-const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+const newCreatePETALDisposable = () => {
     Message = container.resolve('Util.Message.info');
     TWConfigView = container.resolve('tailwind.ConfigView');
     TWImportView = container.resolve('tailwind.ImportView');
@@ -141,11 +143,4 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
         postcss_config_path: postcss_config_path,
         webpack_config_path: webpack_config_path
     };
-};
-
-export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
-    if (context) {
-        let disposable = newCreatePETALDisposable({ context: context });
-        context.subscriptions.push(disposable);
-    }
 };

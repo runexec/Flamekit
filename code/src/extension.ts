@@ -4,10 +4,12 @@ import "reflect-metadata";
 import * as vscode from 'vscode';
 import * as Service from './service';
 
+const disposing : vscode.Disposable[] = [];
 
-export function activate(context: vscode.ExtensionContext) {
-	Service.init({ context: context });
+export function activate(context: vscode.ExtensionContext) { 
+    Service.init().forEach((d:vscode.Disposable) => {
+        context.subscriptions.push(d);
+    }) 
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() { disposing.forEach(d => d.dispose()); }

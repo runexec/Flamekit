@@ -2,14 +2,9 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 
-export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
-    if (context) {
-        let disposable = newCreateAlpineDisposable({ context: context });
-        context.subscriptions.push(disposable);
-    }
-};
+export const init = () => newCreateAlpineDisposable();
 
-const newCreateAlpineDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+const newCreateAlpineDisposable = () => {
     const Message: {
         info: (message: string) => void
     } = container.resolve('Util.Message.info');

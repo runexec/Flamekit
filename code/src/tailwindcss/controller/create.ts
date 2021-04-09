@@ -13,14 +13,11 @@ let ImportView : View;
 let PostCSSConfigView : View;
 let PostCSSLoaderView : View;
 
-export const init = ({ context }: { context: vscode.ExtensionContext }) => {
-    let disposable = newCreateTailwindCSSDisposable({ context: context });
-    context.subscriptions.push(disposable);
-};
+export const init = () => newCreateTailwindCSSDisposable();
 
 const Decoder = new TextDecoder('utf-8');
 
-const newCreateTailwindCSSDisposable = ({ context }: { context: vscode.ExtensionContext }) => {
+const newCreateTailwindCSSDisposable = () => {
     Util = container.resolve('Util');
     Message = container.resolve('Util.Message.info');
     ConfigView = container.resolve('tailwind.ConfigView');

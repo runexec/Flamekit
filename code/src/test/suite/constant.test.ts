@@ -1,12 +1,13 @@
+import * as vscode from 'vscode';
 import * as assert from 'assert';
 import 'reflect-metadata';
 import {container} from 'tsyringe';
-import '../../injection';
 
-//const Constant : Map<string, any> = container.resolve('ConstantInstance');
-const Constant = {get: (x:string) :string  => x};
+import * as Service from '../../service';
+Service.init();
 
 describe('Constant', () => {
+	const Constant : Map<string, any> = container.resolve('ConstantInstance');
 	describe('Elixir Extension Patterns', () => {
 		it('EXTENSION_EEX', () => assert.strictEqual(Constant.get('EXTENSION_EEX'), 'eex'));
 		it('EXTENSION_EEX != leex', () => assert.notStrictEqual(Constant.get('EXTENSION_EEX'), 'leex'));

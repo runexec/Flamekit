@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 
-let Util: { 
+let Util: {
     showNoWorkspaceError: Function,
     showInvalidPathError: Function,
     showImproperFileError: Function,
@@ -14,15 +14,11 @@ let Util: {
     getFlamekitCSSIndex: Function
 };
 
-const newCreateCSSDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
-    return vscode.commands.registerCommand('runexecFlamekit.createCSS', () => createCSSFiles());
-};
+export const init = () => newCreateCSSDisposable();
 
-export const init = ({ context }: { context?: vscode.ExtensionContext }) => {
-    if (context) {
-        let disposable = newCreateCSSDisposable({ context: context });
-        context.subscriptions.push(disposable);
-    }
+const newCreateCSSDisposable = () => {
+    return vscode.commands
+        .registerCommand('runexecFlamekit.createCSS', () => createCSSFiles())
 };
 
 /*
@@ -36,20 +32,20 @@ const createCSSFiles = () => {
     const active_document = vscode.window.activeTextEditor?.document;
     if (active_document)
         Util = container.resolve('Util');
-        if (wsf === undefined) {
-            Util.showNoWorkspaceError();
-        } else {
-            switch (true) {
-                case !Util.getActivePath({ active_document: active_document }):
-                    Util.showInvalidPathError({ active_document: active_document });
-                    break;
-                case !Util.getActiveFileName({ active_document: active_document }):
-                    Util.showImproperFileError({ active_document: active_document });
-                    break;
-                default:
-                    _createCSSFiles({ wsf: wsf, active_document: active_document });
-            }
+    if (wsf === undefined) {
+        Util.showNoWorkspaceError();
+    } else {
+        switch (true) {
+            case !Util.getActivePath({ active_document: active_document }):
+                Util.showInvalidPathError({ active_document: active_document });
+                break;
+            case !Util.getActiveFileName({ active_document: active_document }):
+                Util.showImproperFileError({ active_document: active_document });
+                break;
+            default:
+                _createCSSFiles({ wsf: wsf, active_document: active_document });
         }
+    }
 };
 
 const _createCSSFiles = async ({ wsf, active_document }: {
