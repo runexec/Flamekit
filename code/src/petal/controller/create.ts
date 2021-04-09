@@ -1,20 +1,13 @@
+import 'reflect-metadata';
+import { container } from 'tsyringe'; 
 import * as vscode from 'vscode';
-/*
-import * as Message from '../../util/message';
-import * as TWConfigView from '../../tailwindcss/view/configView';
-import * as TWImportView from '../../tailwindcss/view/importView';
-import * as TWPostCSSLoaderView from '../../tailwindcss/view/postCSSLoaderView';
-import * as TWPostCSSConfigView from '../../tailwindcss/view/postCSSConfigView';
-import * as AlpineImportView from '../../alpine/view/alpineImportView';
-import * as LiveSocketView from '../../alpine/view/liveSocketView';
-import * as AppView from '../view/view';
-import * as TSConfigConfigView from '../../typescript/view/tsconfigConfigView';
-import * as TSWebpackConfigView from '../../typescript/view/webpackConfigView';*/
+import { TextDecoder } from 'util';
 
 let Message: { info: (message: string) => void };
 
 type Viewable = new () => any;
 type View = { View: Viewable };
+
 let AppView: View;
 let TWConfigView: View;
 let TWImportView: View;
@@ -24,9 +17,6 @@ let AlpineImportView: View;
 let LiveSocketView: View;
 let TSConfigConfigView: View;
 let TSWebpackConfigView: View;
-
-import { TextDecoder } from 'util';
-import { container } from 'tsyringe';
 
 const Decoder = new TextDecoder('utf-8');
 
