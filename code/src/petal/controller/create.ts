@@ -16,7 +16,7 @@ let TWPostCSSLoaderView: View;
 let AlpineImportView: View;
 let LiveSocketView: View;
 let TSConfigConfigView: View;
-let TSWebpackConfigView: View;
+let TSWebpackConfigView: View & {getReplace: () => [string, string][]};
 
 const Decoder = new TextDecoder('utf-8');
 
