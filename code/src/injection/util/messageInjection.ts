@@ -8,18 +8,18 @@ class Injection {
     debugInfo: (message: string) => void = Message.debugInfo;
 }
 
-container.register('Util.Message', Injection);
-
 @singleton()
 class InfoInjection {
     info: (message: string) => void = Message.info;
 }
 
-container.register('Util.Message.info', InfoInjection);
-
 @singleton()
 class DebugInfoInjection {
     debugInfo: (message: string) => void = Message.debugInfo;
 }
+
+container.register('Util.Message', Injection);
+
+container.register('Util.Message.info', InfoInjection);
 
 container.register('Util.Message.debugInfo', DebugInfoInjection);
