@@ -1,18 +1,11 @@
 import "reflect-metadata";
-import {singleton, container} from "tsyringe";
+import {container} from "tsyringe";
+
 import * as AlpineImportView from '../alpine/view/alpineImportView';
-
-@singleton()
-class AlpineImportViewInstance extends AlpineImportView.View {}
-
-container.register('Alpine.AlpineImportView', AlpineImportViewInstance);
+container.register('alpine.AlpineImportView', AlpineImportView.Injection);
 
 import * as LiveSocketView from '../alpine/view/liveSocketView';
-
-@singleton()
-class LiveSocketViewInstance extends LiveSocketView.View {}
-
-container.register('Alpine.LiveSocketView', LiveSocketViewInstance);
+container.register('alpine.LiveSocketView', LiveSocketView.Injection);
 
 import * as AlpineI from '../alpine/injectable';
 container.register('AlpineInstance', AlpineI.Alpine);

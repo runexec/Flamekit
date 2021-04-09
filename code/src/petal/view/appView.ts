@@ -1,3 +1,4 @@
+import { singleton } from 'tsyringe';
 import * as ViewClass from './viewClass';
 export class View extends ViewClass.View {
     constructor() {
@@ -15,3 +16,6 @@ window.addEventListener("phx:page-loading-stop", info => topbar.hide());
         };
     }
 }
+
+@singleton()
+export class Injection { View = View }

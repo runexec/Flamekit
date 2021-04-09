@@ -1,3 +1,4 @@
+import { singleton } from "tsyringe";
 import * as ViewClass from "./viewClass";
 
 export class View extends ViewClass.View {
@@ -27,3 +28,6 @@ live_socket.connect() && ((window as any).live_socket = live_socket);
         return this;
     }
 }
+
+@singleton()
+export class Injection { View = View };

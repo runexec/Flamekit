@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+/*
 import * as Message from '../../util/message';
 import * as TWConfigView from '../../tailwindcss/view/configView';
 import * as TWImportView from '../../tailwindcss/view/importView';
@@ -8,25 +9,42 @@ import * as AlpineImportView from '../../alpine/view/alpineImportView';
 import * as LiveSocketView from '../../alpine/view/liveSocketView';
 import * as AppView from '../view/view';
 import * as TSConfigConfigView from '../../typescript/view/tsconfigConfigView';
-import * as TSWebpackConfigView from '../../typescript/view/webpackConfigView';
+import * as TSWebpackConfigView from '../../typescript/view/webpackConfigView';*/
+
+let Message: { info: (message: string) => void };
+
+type Viewable = new () => any;
+type View = { View: Viewable };
+let AppView: View;
+let TWConfigView: View;
+let TWImportView: View;
+let TWPostCSSConfigView: View;
+let TWPostCSSLoaderView: View;
+let AlpineImportView: View;
+let LiveSocketView: View;
+let TSConfigConfigView: View;
+let TSWebpackConfigView: View;
 
 import { TextDecoder } from 'util';
-
-const app_view = new AppView.View().toString();
-const tw_import_view = new TWImportView.View().toString();
-const tw_config_view = new TWConfigView.View().toString();
-const tw_postcss_config_view = new TWPostCSSConfigView.View().toString();
-const tw_postcss_loader_view = new TWPostCSSLoaderView.View().toString();
-const alpine_import_view = (new AlpineImportView.View()).toString();
-const live_socket_view = (new LiveSocketView.View()).toString();
-const ts_config_view = new TSConfigConfigView.View().toString();
-const ts_webpack_config_view = new TSWebpackConfigView.View();
+import { container } from 'tsyringe';
 
 const Decoder = new TextDecoder('utf-8');
 
 const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
+    Message = container.resolve('Util.Message.info');
+    TWConfigView = container.resolve('tailwind.ConfigView');
+    TWImportView = container.resolve('tailwind.ImportView'); 
+    TWPostCSSConfigView = container.resolve('tailwind.PostCSSConfigView');
+    TWPostCSSLoaderView = container.resolve('tailwind.PostCSSLoaderView');
+    TSConfigConfigView = container.resolve('typescript.TSConfigConfigView');
+    TSWebpackConfigView = container.resolve('typescript.WebpackConfigView');
+    const tw_config_view = new TWConfigView.View().toString();
+    const tw_postcss_config_view = new TWPostCSSConfigView.View().toString();
+    const tw_postcss_loader_view = new TWPostCSSLoaderView.View().toString();
+    const ts_config_view = new TSConfigConfigView.View().toString();
+    const ts_webpack_config_view = new TSWebpackConfigView.View();
     return vscode.commands.registerCommand('runexecFlamekit.setupPETAL', () => {
-        Message.info('Attempting to instal TypeScript, AlpineJS, and TailwindCSS');
+        Message.info('Attempting to install TypeScript, AlpineJS, and TailwindCSS');
         const folders = vscode.workspace.workspaceFolders;
         if (folders) {
             const terminal = vscode.window.createTerminal('Flamekit PETAL');
@@ -63,7 +81,7 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
                 const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
                 config = !isPostcss ? config : config.replace("'css-loader',\n", tw_postcss_loader_view);
                 terminal.sendText('# Updating ' + uri.toString());
-                ts_webpack_config_view.getReplace().forEach((r) => config = config.replace(r[0], r[1]));
+                ts_webpack_config_view.getReplace().forEach((r:string[]) => config = config.replace(r[0], r[1]));
                 vscode.workspace.fs.writeFile(uri, Buffer.from(config, 'utf-8'));
             });
         }
@@ -96,6 +114,14 @@ const backupConfig = ({ terminal, uri }: {
 };
 
 const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) => {
+    AppView = container.resolve('petal.AppView');
+    TWImportView = container.resolve('tailwind.ImportView');
+    AlpineImportView = container.resolve('alpine.AlpineImportView');
+    LiveSocketView = container.resolve('alpine.LiveSocketView');
+    const app_view = new AppView.View().toString();
+    const tw_import_view = new TWImportView.View().toString();
+    const alpine_import_view = (new AlpineImportView.View()).toString();
+    const live_socket_view = (new LiveSocketView.View()).toString();
     const folder = folders[0].uri.toString() + '/assets';
     const assets_path = folder.replace('file://', '');
     const js_path = assets_path + '/js';

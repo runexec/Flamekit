@@ -1,3 +1,4 @@
+import { singleton } from "tsyringe";
 import * as ViewClass from "./viewClass";
 
 export class View extends ViewClass.View {
@@ -30,3 +31,6 @@ export class View extends ViewClass.View {
 
     getReplace() { return this.replaces; }
 }
+
+@singleton()
+export class Injection { View = View }

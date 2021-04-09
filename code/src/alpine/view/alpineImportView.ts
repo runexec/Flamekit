@@ -1,3 +1,4 @@
+import { singleton } from "tsyringe";
 import * as ViewClass from "./viewClass";
 
 export class View extends ViewClass.View {
@@ -13,3 +14,6 @@ import LiveSocket from "phoenix_live_view";
         return this;
     }
 }
+
+@singleton()
+export class Injection { View = View };

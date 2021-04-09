@@ -1,3 +1,4 @@
+import { singleton } from "tsyringe";
 import * as ViewClass from "./viewClass";
 
 export class View extends ViewClass.View {
@@ -11,3 +12,6 @@ export class View extends ViewClass.View {
         return this;
     }
 }
+
+@singleton()
+export class Injection { View = View }
