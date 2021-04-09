@@ -71,13 +71,13 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
                                 const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
                                 config = !isPostcss ? config : config.replace("'css-loader',\n", tw_postcss_loader_view);
                                 terminal.sendText('# Updating ' + uri.toString());
-                                ts_webpack_config_view.getReplace().forEach((r: string[]) => config = config.replace(r[0], r[1]));
+                                ts_webpack_config_view.getReplace().forEach((r:[string,string]) => config = config.replace(r[0], r[1]));
                                 vscode.workspace.fs.writeFile(uri, Buffer.from(config, 'utf-8'));
                             });
                         });
                     });
                 });
-            })
+            });
         }
     });
 };
