@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { container } from 'tsyringe'; 
+import { container } from 'tsyringe';
 import * as vscode from 'vscode';
 import { TextDecoder } from 'util';
 
@@ -16,14 +16,14 @@ let TWPostCSSLoaderView: View;
 let AlpineImportView: View;
 let LiveSocketView: View;
 let TSConfigConfigView: View;
-let TSWebpackConfigView: View & {getReplace: () => [string, string][]};
+let TSWebpackConfigView: View & { getReplace: () => [string, string][] };
 
 const Decoder = new TextDecoder('utf-8');
 
 const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionContext }) => {
     Message = container.resolve('Util.Message.info');
     TWConfigView = container.resolve('tailwind.ConfigView');
-    TWImportView = container.resolve('tailwind.ImportView'); 
+    TWImportView = container.resolve('tailwind.ImportView');
     TWPostCSSConfigView = container.resolve('tailwind.PostCSSConfigView');
     TWPostCSSLoaderView = container.resolve('tailwind.PostCSSLoaderView');
     TSConfigConfigView = container.resolve('typescript.TSConfigConfigView');
@@ -52,28 +52,32 @@ const newCreatePETALDisposable = ({ context }: { context?: vscode.ExtensionConte
             css.forEach(x => writeImports({ terminal: terminal, uri: x[0], view: x[1] }));
             backupConfig({ terminal: terminal, uri: ts_config_uri })
             terminal.sendText(`# Creating ${ts_config_uri}`);
-            vscode.workspace.fs.writeFile(ts_config_uri, Buffer.from(ts_config_view, 'utf-8'));
-            backupConfig({ terminal: terminal, uri: ts_uri });
-            terminal.sendText(`# Creating ${ts_uri}`);
-            vscode.workspace.fs.writeFile(ts_uri, Buffer.from(ts, 'utf-8'));
-            let uri = vscode.Uri.parse(tailwind_config_path);
-            backupConfig({ terminal: terminal, uri: uri });
-            terminal.sendText('# Creating ' + uri.toString());
-            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8'));
-            uri = vscode.Uri.parse(postcss_config_path);
-            backupConfig({ terminal: terminal, uri: uri });
-            terminal.sendText('# Creating ' + uri.toString());
-            vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8'));
-            uri = vscode.Uri.parse(webpack_config_path);
-            backupConfig({ terminal: terminal, uri: uri });
-            vscode.workspace.fs.readFile(uri).then(data => {
-                let config = Decoder.decode(data);
-                const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
-                config = !isPostcss ? config : config.replace("'css-loader',\n", tw_postcss_loader_view);
-                terminal.sendText('# Updating ' + uri.toString());
-                ts_webpack_config_view.getReplace().forEach((r:string[]) => config = config.replace(r[0], r[1]));
-                vscode.workspace.fs.writeFile(uri, Buffer.from(config, 'utf-8'));
-            });
+            vscode.workspace.fs.writeFile(ts_config_uri, Buffer.from(ts_config_view, 'utf-8')).then(() => {
+                backupConfig({ terminal: terminal, uri: ts_uri });
+                terminal.sendText(`# Creating ${ts_uri}`);
+                vscode.workspace.fs.writeFile(ts_uri, Buffer.from(ts, 'utf-8')).then(() => {
+                    let uri = vscode.Uri.parse(tailwind_config_path);
+                    backupConfig({ terminal: terminal, uri: uri });
+                    terminal.sendText('# Creating ' + uri.toString());
+                    vscode.workspace.fs.writeFile(uri, Buffer.from(tw_config_view, 'utf-8')).then(() => {
+                        uri = vscode.Uri.parse(postcss_config_path);
+                        backupConfig({ terminal: terminal, uri: uri });
+                        terminal.sendText('# Creating ' + uri.toString());
+                        vscode.workspace.fs.writeFile(uri, Buffer.from(tw_postcss_config_view, 'utf-8')).then(() => {
+                            uri = vscode.Uri.parse(webpack_config_path);
+                            backupConfig({ terminal: terminal, uri: uri });
+                            vscode.workspace.fs.readFile(uri).then(data => {
+                                let config = Decoder.decode(data);
+                                const isPostcss = config.indexOf(`'postcss-loader'`) === -1;
+                                config = !isPostcss ? config : config.replace("'css-loader',\n", tw_postcss_loader_view);
+                                terminal.sendText('# Updating ' + uri.toString());
+                                ts_webpack_config_view.getReplace().forEach((r: string[]) => config = config.replace(r[0], r[1]));
+                                vscode.workspace.fs.writeFile(uri, Buffer.from(config, 'utf-8'));
+                            });
+                        });
+                    });
+                });
+            })
         }
     });
 };
@@ -98,8 +102,8 @@ const backupConfig = ({ terminal, uri }: {
     terminal: vscode.Terminal,
     uri: vscode.Uri
 }) => {
-    terminal.sendText(`# Backing up ${uri}`);
     vscode.workspace.fs.copy(uri, vscode.Uri.parse(uri.toString() + '.bak'));
+    terminal.sendText(`# Backed up ${uri}`);
 };
 
 const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) => {
