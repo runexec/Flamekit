@@ -2,6 +2,9 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 
+type View<T extends string> = { View: new () => {toString: () => string} }
+type Viewable = View<string>;
+
 export const init = () => newCreateAlpineDisposable();
 
 const newCreateAlpineDisposable = () => {
@@ -9,8 +12,10 @@ const newCreateAlpineDisposable = () => {
         info: (message: string) => void
     } = container.resolve('Util.Message.info');
     const Util: { getWorkingPaths: Function } = container.resolve('Util');
-    const view: string = container.resolve('alpine.LiveSocketView');
-    const import_view: string = container.resolve('alpine.AlpineImportView');
+    const LiveSocketView: Viewable = container.resolve('alpine.LiveSocketView');
+    const view = (new LiveSocketView.View()).toString();
+    const ImportView : Viewable = container.resolve('alpine.AlpineImportView'); 
+    const import_view = (new ImportView.View()).toString();
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
         let terminal_home: string | null = null,
             terminal: vscode.Terminal | null;
@@ -19,7 +24,7 @@ const newCreateAlpineDisposable = () => {
             editor && editor.edit((edit) => {
                 const text = document.getText();
                 const start = text.match(/=setupAlpine/)?.index;
-                if (start && start !== -1) {
+                if (start !== undefined && start !== -1) {
                     Message.info(`Found Alpine Install Line`);
                     const start_pos = document.positionAt(start);
                     const end_pos = document.positionAt(start + view.length);
