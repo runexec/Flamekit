@@ -11,7 +11,7 @@ Using VSCode Marketplace or Github
 ### Command: `Phoenix Setup PETAL`
 
 Automatically installs and configures PETAL stack. Will either update existing files after making
-a backup (ie. `original.js.bak`), or create new ones.
+a backup (ie. `/\.(js|ts|css|scss)\.bak$/`), or create new ones.
 
 -----
 
@@ -90,16 +90,16 @@ Without tags
 
 With tags
 
-<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
+<!-- Phoenix Create CSS Command: created assets/css/example_web/hello/_hello.html.eex.css -->
 <!-- created example_web/hello/_hello.html.eex -->
 <a abc="123"><%= render "_hello.html" %></a>
-<!-- created assets/css/example_web/hello/_world.html.eex.css -->
+<!-- Phoenix Create CSS Command: created assets/css/example_web/hello/_world.html.eex.css -->
 <!-- created example_web/hello/_world.html.eex -->
 <a abc="123"><%= render "_world.html" %></a>
 
 Live
 
-<!-- created assets/css/example_web/live/one_component.ex.css -->
+<!-- Phoenix Craete CSS Command: created assets/css/example_web/live/one_component.ex.css -->
 <!-- created example_web/live/one_component.ex -->
 <div class="number"><%= live_component @socket, OneComponent %></div>
 ```
@@ -161,7 +161,7 @@ AlpineJS triggers are applied within `JS` and `TS` documents.
 An `import` for AlpineJS is added to the document, along with `LiveView` compatability code.
 A terminal is then opened, and the `alpinejs` `npm` package is installed.
 
-*NOTE: Places `imports` at top of active document, and deletes the input of `=setupAlpine`*
+*NOTE: Places `imports` at top of active document, and deletes the input of `=setupAlpine`. Place at bottom.*
 
  * Creates Files
  * Creates Code
@@ -173,8 +173,30 @@ A terminal is then opened, and the `alpinejs` `npm` package is installed.
 ###### Example Document content:
 
 ```js
-// example line
+// We need to import the CSS so that webpack will load it.
+// The MiniCssExtractPlugin is used to separate it out into
+// its own CSS file.
+import "../css/app.scss";
+
+// webpack automatically bundles all modules in your
+// entry points. Those entry points can be configured
+// in "webpack.config.js".
+//
+// Import deps with the dep name or local files with a relative path, for example:
+//
+//     import {Socket} from "phoenix"
+//     import socket from "./socket"
+//
+import "phoenix_html";
+import topbar from "topbar";
+
+// Show progress bar on live navigation and form submits
+topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"});
+window.addEventListener("phx:page-loading-start", info => topbar.show());
+window.addEventListener("phx:page-loading-stop", info => topbar.hide());
+
 =setupAlpine
+
 ```
 
 ###### Example Document content after save:
@@ -183,8 +205,28 @@ A terminal is then opened, and the `alpinejs` `npm` package is installed.
 import Alpine from 'alpinejs';
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
+// We need to import the CSS so that webpack will load it.
+// The MiniCssExtractPlugin is used to separate it out into
+// its own CSS file.
+import "../css/app.scss";
 
-// example line 
+// webpack automatically bundles all modules in your
+// entry points. Those entry points can be configured
+// in "webpack.config.js".
+//
+// Import deps with the dep name or local files with a relative path, for example:
+//
+//     import {Socket} from "phoenix"
+//     import socket from "./socket"
+//
+import "phoenix_html";
+import topbar from "topbar";
+
+// Show progress bar on live navigation and form submits
+topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"});
+window.addEventListener("phx:page-loading-start", info => topbar.show());
+window.addEventListener("phx:page-loading-stop", info => topbar.hide());
+
 const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content"),
     live_socket = new live_socket("/live", Socket, {
         params: { _csrf_token: csrf_token },
