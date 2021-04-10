@@ -1,10 +1,14 @@
 import 'reflect-metadata';
 import { singleton } from "tsyringe";
 
+const treatment = (x:string) => {
+    return x.trim().replace(/[\],\[,\},\{]/, '').toLowerCase();
+}
+
 export const
-    fragmentFileName = (x: string) => `_${x.trim().replace(/[\],\[,\},\{]/, '')}.html`,
-    fragmentListFileName = (x: string) => `_${x.trim().replace(/[\],\[,\},\{]/, '')}.html`,
-    fragmentLiveFileName = (x: string) => `_${x.trim().replace(/[\],\[,\},\{]/, '')}_live.html`,
+    fragmentFileName = (x: string) => `_${treatment(x)}.html`,
+    fragmentListFileName = (x: string) => `_${treatment(x)}.html`,
+    fragmentLiveFileName = (x: string) => `_${treatment(x)}_live.html`,
     fragmentLiveListFileName = (x: string) => {
         const name = x.trim();
         const splitter = /[A-Z][a-z]+/g;
