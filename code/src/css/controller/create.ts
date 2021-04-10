@@ -8,14 +8,18 @@ type ActivePathing<T> = ({active_document, fs}:{
     active_document: vscode.TextDocument,
     fs?:boolean
 }) => T;
+
 type ActivePathStrings = {assets_path:string, active_path:string, css_path:string};
+
 type ActiveWorkingPath<T> = ({wsf, active_document}:{ 
-    wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument 
+    wsf: readonly vscode.WorkspaceFolder[], 
+    active_document: vscode.TextDocument 
 }) => ActivePathStrings;
 
 type FlamekitIndexPath = ({ assets_path }: { assets_path: string }) => vscode.Uri;
 
 type Voiding = () => void;
+
 let Util: {
     showNoWorkspaceError: Voiding,
     showInvalidPathError: Voiding,
