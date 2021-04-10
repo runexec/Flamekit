@@ -4,14 +4,24 @@ import * as vscode from 'vscode';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 
+type Active<T> = ({active_document}:{ active_document: vscode.TextDocument }) => T;
+type ActivePathing<T> = Active<T> & {fs:boolean};
+type ActivePathStrings = {assets_path:string, active_path:string, css_path:string};
+type ActiveWorkingPath<T> = ({wsf, active_document}:{ 
+    wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument 
+}) => ActivePathStrings;
+
+type FlamekitIndexPath = ({ assets_path }: { assets_path: string }) => vscode.Uri;
+
+type Voiding = () => void;
 let Util: {
-    showNoWorkspaceError: Function,
-    showInvalidPathError: Function,
-    showImproperFileError: Function,
-    getActiveFileName: Function,
-    getActivePath: Function,
-    getWorkingPaths: Function,
-    getFlamekitCSSIndex: Function
+    showNoWorkspaceError: Voiding,
+    showInvalidPathError: Voiding,
+    showImproperFileError: Voiding,
+    getActiveFileName: ActivePathing<string | null>,
+    getActivePath: ActivePathing<string | null>,
+    getWorkingPaths: ActiveWorkingPath<string | null>,
+    getFlamekitCSSIndex: FlamekitIndexPath
 };
 
 export const init = () => newCreateCSSDisposable();
@@ -28,19 +38,18 @@ const newCreateCSSDisposable = () => {
 * in `assets/css/flamekit.css`
 */
 const createCSSFiles = () => {
+    Util = container.resolve('Util');
     const wsf: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
     const active_document = vscode.window.activeTextEditor?.document;
-    if (active_document)
-        Util = container.resolve('Util');
-    if (wsf === undefined) {
+    if (wsf === undefined || active_document === undefined) {
         Util.showNoWorkspaceError();
     } else {
         switch (true) {
             case !Util.getActivePath({ active_document: active_document }):
-                Util.showInvalidPathError({ active_document: active_document });
+                Util.showInvalidPathError();
                 break;
             case !Util.getActiveFileName({ active_document: active_document }):
-                Util.showImproperFileError({ active_document: active_document });
+                Util.showImproperFileError();
                 break;
             default:
                 _createCSSFiles({ wsf: wsf, active_document: active_document });
