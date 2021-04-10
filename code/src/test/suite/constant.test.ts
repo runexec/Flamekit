@@ -4,9 +4,9 @@ import 'reflect-metadata';
 import {container} from 'tsyringe';
 
 import * as Service from '../../service';
-Service.init();
 
 describe('Constant', () => {
+	Service.init();
 	const Constant : Map<string, any> = container.resolve('ConstantInstance');
 	describe('Elixir Extension Patterns', () => {
 		it('EXTENSION_EEX', () => assert.strictEqual(Constant.get('EXTENSION_EEX'), 'eex'));
