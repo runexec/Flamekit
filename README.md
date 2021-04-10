@@ -8,26 +8,26 @@ Using VSCode Marketplace or Github
 
 ### Tutorial
 
-#### Create a Phoenix project:
+##### Create a Phoenix project:
 
 `$ mix phx.new example --live --no-ecto --no-dashboard`
 
-#### Open in VSCode / VSCodium:
+##### Open in VSCode / VSCodium:
 
 `$ code ./example/`
 
-#### Create a new file:
+##### Create a new file:
 
 *Workspace Filepath:* `lib/example_web/live/helloworld.html.leex`;
 
-#### Add a Fragment to new file**
+##### Add a Fragment to new file
 
 *File content:* 
 ```
 <div class="p-2 m-2">=ll{[Hello, World, MyExample]}</div>
 ```
 
-#### Save
+##### Save
 
 Files are created and the active document contents are changed *after* the document has been saved.
 
