@@ -4,8 +4,10 @@ import * as vscode from 'vscode';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 
-type Active<T> = ({active_document}:{ active_document: vscode.TextDocument }) => T;
-type ActivePathing<T> = Active<T> & {fs:boolean};
+type ActivePathing<T> = ({active_document, fs}:{ 
+    active_document: vscode.TextDocument,
+    fs?:boolean
+}) => T;
 type ActivePathStrings = {assets_path:string, active_path:string, css_path:string};
 type ActiveWorkingPath<T> = ({wsf, active_document}:{ 
     wsf: readonly vscode.WorkspaceFolder[], active_document: vscode.TextDocument 
