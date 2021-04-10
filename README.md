@@ -11,12 +11,12 @@ Developed from scratch and tested on Linux.
 
 * [Install](https://github.com/runexec/Flamekit#install)
 * [Tutorial](https://github.com/runexec/Flamekit#tutorial)
-* [Commands](https://github.com/runexec/Flamekit#commands)
-  * [Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
-  * [Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
 * [Fragments](https://github.com/runexec/Flamekit#fragments)
   * [AlpineJS](https://github.com/runexec/Flamekit#alpinejs)
   * [TailwindCSS](https://github.com/runexec/Flamekit#tailwindcss)
+* [Commands](https://github.com/runexec/Flamekit#commands)
+  * [Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
+  * [Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
   
 
 ### Install
