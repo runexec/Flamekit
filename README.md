@@ -68,7 +68,7 @@ Save the document again to keep the changes.
 
 ---
 
-### Comamnds
+### Commands
 
 #### Command: `Phoenix Setup PETAL`
 
