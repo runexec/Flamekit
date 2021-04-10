@@ -2,8 +2,13 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
 
-let FragmentTemplate : {Template: any};
-let FragmentGroup : {getGroup: (x:string) => string | undefined | null };
+let FragmentTemplate : {
+    Template: new ({ file_name }: {
+        file_name: string,
+    }) => { toString: () => string }
+};
+
+let FragmentGroup : {getGroup: (x:string) => string };
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {

@@ -2,7 +2,13 @@ import * as ViewClass from './view';
 import 'reflect-metadata';
 import {singleton, container} from 'tsyringe';
 
-let FragmentListTemplate : {Template: any};
+let FragmentListTemplate : {
+    Template: new ({ file_name, tag }: {
+        file_name: string, 
+        tag: string
+    }) => { toString: () => string }
+};
+
 let FragmentListGroup : {getGroup: (x:string) => string | undefined | null };
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
