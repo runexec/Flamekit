@@ -81,10 +81,10 @@ Live
 ```html
 Without tags
 
-<!-- created assets/css/example_web/hello/_hello.html.eex.css -->
+<!-- Phoenix Create CSS Command: created assets/css/example_web/hello/_hello.html.eex.css -->
 <!-- created example_web/hello/_hello.html.eex -->
 <%= render "_hello.html" %>
-<!-- created assets/css/example_web/hello/_world.html.eex.css -->
+<!-- Phoenix Create CSS Command: created assets/css/example_web/hello/_world.html.eex.css -->
 <!-- created example_web/hello/_world.html.eex -->
 <%= render "_world.html" %>
 
