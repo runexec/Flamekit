@@ -11,9 +11,9 @@ Developed from scratch and tested on Linux.
 
 * [Install](https://github.com/runexec/Flamekit#install)
 * [Tutorial](https://github.com/runexec/Flamekit#tutorial)
-* Commands
-  * [Command: Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
-  * [Command: Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
+* [Commands](https://github.com/runexec/Flamekit#commands)
+  * [Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
+  * [Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
 * [Fragments](https://github.com/runexec/Flamekit#fragments)
   * [AlpineJS](https://github.com/runexec/Flamekit#alpinejs)
   * [TailwindCSS](https://github.com/runexec/Flamekit#tailwindcss)
@@ -65,6 +65,37 @@ Files are created and the active document contents are changed *after* the docum
 ```
 
 Save the document again to keep the changes.
+
+---
+
+### Comamnds
+
+#### Command: `Phoenix Setup PETAL`
+
+Automatically installs and configures PETAL stack. Will either update existing files after making
+a backup (ie. `/\.(js|ts|css|scss)\.bak$/`), or create new ones.
+
+-----
+
+#### Command: `Phoenix Create CSS`
+
+Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
+command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
+css file will be created in `assets/css/`. All imports are automatically deduplicated and stored
+in `assets/css/flamekit.css`.
+
+###### Example Document:
+                
+```
+/tmp/project/lib/mysite_web/live/page_live.html.leex
+```
+
+###### Run Command Results:
+
+```
+New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
+New/Updated file: /tmp/project/assets/css/flamekit.css
+```
 
 ### Fragments
 
@@ -172,40 +203,12 @@ Live
 ##### Fragment Live Array: `=lf{[]}`
 ##### Fragment Live List: `=ll{[]}`
 
----
-
-### Command: `Phoenix Setup PETAL`
-
-Automatically installs and configures PETAL stack. Will either update existing files after making
-a backup (ie. `/\.(js|ts|css|scss)\.bak$/`), or create new ones.
-
------
-
-### Command: `Phoenix Create CSS`
-
-Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
-command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
-css file will be created in `assets/css/`. All imports are automatically deduplicated and stored
-in `assets/css/flamekit.css`.
-
-###### Example Document:
-                
-```
-/tmp/project/lib/mysite_web/live/page_live.html.leex
-```
-
-###### Run Command Results:
-
-```
-New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
-New/Updated file: /tmp/project/assets/css/flamekit.css
-```
-
 ------
 
 ### AlpineJS
 
-AlpineJS triggers are applied within `JS` and `TS` documents.
+AlpineJS triggers are appl* [Command: Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
+* [Command: Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)ied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
