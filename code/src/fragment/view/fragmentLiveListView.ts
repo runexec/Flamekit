@@ -5,11 +5,13 @@ import * as ViewClass from './view';
 let FragmentLiveListTemplate : {Template: any};
 let FragmentLiveListGroup : {getGroup: (x:string) => string | undefined | null };
 
-const Constant : Map<string, any> = container.resolve('ConstantInstance');
+let Constant : Map<string, any>;
 
 export class View extends ViewClass.View {
     constructor({ fragment_string }: { fragment_string: string }) {
         super({ fragment_string: fragment_string });
+        Constant = container.resolve('ConstantInstance');
+        FragmentLiveListGroup = container.resolve('fragment.FragmentLiveListGroup');
         const group = FragmentLiveListGroup.getGroup(fragment_string),
             remove_brackets = (x: string) => x.replace(Constant.get('FRAGMENT_LIVE_LISTSTRING_REMOVE_BRACKETS_REGEX'), ''),
             fragments = group ? remove_brackets(group).split(',') : false;
