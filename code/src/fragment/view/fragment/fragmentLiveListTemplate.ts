@@ -24,7 +24,7 @@ export class Template extends TemplateClass.Template {
             return file_name
                 .split(',')
                 .map(x => {
-                    const name = x;
+                    const name = x.trim();
                     return `${tag_start}<%= live_component ${name} %>${tag_end}`;
                 }).join("\n");
         };
