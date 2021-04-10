@@ -17,7 +17,7 @@ export const
             component += x.toLowerCase() + '_';
         })
         component = component.slice(0,-1);
-        return component === '' ? name : component ;
+        return component === '' ? name : component;
     };
 
 @singleton()
