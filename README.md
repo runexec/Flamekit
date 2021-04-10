@@ -6,9 +6,52 @@
 Developed from scratch and tested on Linux.
 Using VSCode Marketplace or Github
 
+### Tutorial
+
+**Create a Phoenix project:**
+
+`$ mix phx.new example --live --no-ecto --no-dashboard`
+
+**Open in VSCode / VSCodium:**
+
+`$ code ./example/`
+
+**Create a new file:**
+
+*Workspace Filepath:* `lib/example_web/live/helloworld.html.leex`;
+
+**Add a Fragment to new file**
+
+*File content:* 
+```
+<div class="p-2 m-2">=ll{[Hello, World, MyExample]}</div>
+```
+
+**Save**
+
+Files are created and the active document contents are changed *after* the document has been saved.
+
+*Files Created:*
+```
+        new file:   assets/css/example_web/live/hellworld.html.leex.css
+        new file:   assets/css/flamekit.index.css
+        new file:   lib/example_web/live/hello.ex
+        new file:   lib/example_web/live/my_example.ex
+        new file:   lib/example_web/live/world.ex
+```
+
+*File contents:*
+```
+<div class="p-2 m-2"><%= live_component Hello %></div>
+<div class="p-2 m-2"><%= live_component World %></div>
+<div class="p-2 m-2"><%= live_component MyExample %></div>
+```
+
+Save the document again to keep the changes.
+
 ### Fragments
 
-<video controls width="800" height="600">
+<video controls width="800" height="600" autoplay="false">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true" type="video/webm">
 
 [Fragments Video](https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true)
@@ -149,7 +192,7 @@ AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
-<video controls width="800" height="600">
+<video controls width="800" height="600" autoplay="false">
     <source src="https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true" type="video/webm">
 
 [setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
