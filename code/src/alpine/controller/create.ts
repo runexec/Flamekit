@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
 
-type View<T extends string> = { View: new () => {toString: () => string} }
+type View<T extends string> = { View: new () => { toString: () => string } }
 type Viewable = View<string>;
 
 export const init = () => newCreateAlpineDisposable();
@@ -14,7 +14,7 @@ const newCreateAlpineDisposable = () => {
     const Util: { getWorkingPaths: Function } = container.resolve('Util');
     const LiveSocketView: Viewable = container.resolve('alpine.LiveSocketView');
     const view = (new LiveSocketView.View()).toString();
-    const ImportView : Viewable = container.resolve('alpine.AlpineImportView'); 
+    const ImportView: Viewable = container.resolve('alpine.AlpineImportView');
     const import_view = (new ImportView.View()).toString();
     return vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
         let terminal_home: string | null = null,
