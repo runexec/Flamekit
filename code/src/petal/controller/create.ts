@@ -104,8 +104,11 @@ const backupConfig = ({ terminal, uri }: {
     terminal: vscode.Terminal,
     uri: vscode.Uri
 }) => {
-    vscode.workspace.fs.copy(uri, vscode.Uri.parse(uri.toString() + '.bak'));
-    terminal.sendText(`# Backed up ${uri}`);
+    // skips if not there
+    vscode.workspace.fs.stat(uri).then(() => {
+        vscode.workspace.fs.copy(uri, vscode.Uri.parse(uri.toString() + '.bak'));
+        terminal.sendText(`# Backed up ${uri}`);
+    });
 };
 
 const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) => {
