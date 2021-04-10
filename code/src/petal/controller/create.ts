@@ -122,8 +122,8 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     TWImportView = container.resolve('tailwind.ImportView');
     AlpineImportView = container.resolve('alpine.AlpineImportView');
     LiveSocketView = container.resolve('alpine.LiveSocketView');
-    const app_view = new AppView.View().toString();
-    const tw_import_view = new TWImportView.View().toString();
+    const app_view = (new AppView.View()).toString();
+    const tw_import_view = (new TWImportView.View()).toString();
     const alpine_import_view = (new AlpineImportView.View()).toString();
     const live_socket_view = (new LiveSocketView.View()).toString();
     const folder = folders[0].uri.toString() + '/assets';
