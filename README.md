@@ -68,35 +68,6 @@ Save the document again to keep the changes.
 
 ---
 
-### Commands
-
-#### Command: `Phoenix Setup PETAL`
-
-Automatically installs and configures PETAL stack. Will either update existing files after making
-a backup (ie. `/\.(js|ts|css|scss)\.bak$/`), or create new ones.
-
------
-
-#### Command: `Phoenix Create CSS`
-
-Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
-command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
-css file will be created in `assets/css/`. All imports are automatically deduplicated and stored
-in `assets/css/flamekit.css`.
-
-###### Example Document:
-                
-```
-/tmp/project/lib/mysite_web/live/page_live.html.leex
-```
-
-###### Run Command Results:
-
-```
-New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
-New/Updated file: /tmp/project/assets/css/flamekit.css
-```
-
 ### Fragments
 
 <video controls width="800" height="600" autoplay="false">
@@ -366,6 +337,37 @@ and finally adds `ts-loader` for `.ts` files.
  * Creates Code
   
 -----
+
+### Commands
+
+#### Command: `Phoenix Setup PETAL`
+
+Automatically installs and configures PETAL stack. Will either update existing files after making
+a backup (ie. `/\.(js|ts|css|scss)\.bak$/`), or create new ones.
+
+
+#### Command: `Phoenix Create CSS`
+
+Automatically creates and imports CSS files for standard and LiveView Phoenix projects. If this
+command is called while working on a file ending with `.html.eex` or `.html.leex`, a corresponding
+css file will be created in `assets/css/`. All imports are automatically deduplicated and stored
+in `assets/css/flamekit.css`.
+
+###### Example Document:
+                
+```
+/tmp/project/lib/mysite_web/live/page_live.html.leex
+```
+
+###### Run Command Results:
+
+```
+New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
+New/Updated file: /tmp/project/assets/css/flamekit.css
+```
+
+-----
+
 // ? TODO: check for mix project file and add to activation check
 // ? !=f{[a, b, c, d]} // create tags but not files
 // ? =f{[a, b, c, d]}[exe] // custom file extension
@@ -376,3 +378,4 @@ and finally adds `ts-loader` for `.ts` files.
 // ???? key across ????
 ?? before: =x{[one, two, three, four]} 
 ?? after: {one: one, two: two, three: three, four: four}
+
