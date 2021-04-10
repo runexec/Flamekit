@@ -3,7 +3,7 @@
 ---- 
 
 
-Flamekit is a VSCode extension that provides PETAL stack with Phoenix aware code and file generation. 
+Flamekit is a VSCode extension that provides PETAL stack setup with Phoenix aware code and file generation. 
 
 *Developed from scratch and tested on Linux.*
 
