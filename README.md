@@ -18,7 +18,7 @@ Using VSCode Marketplace or Github
 
 ##### Create a new file:
 
-*Workspace Filepath:* `lib/example_web/live/helloworld.html.leex`;
+*Workspace Filepath:* `lib/example_web/live/helloworld.html.leex`
 
 ##### Add a Fragment to new file
 
