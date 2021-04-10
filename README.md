@@ -2,15 +2,22 @@
 ##### *Build websites faster with Flamekit Phoenix Framework Development extension for VSCode.*
 ---- 
 
+
 Flamekit is a VSCode extension that provides PETAL stack with Phoenix aware code and file generation. 
 
 Developed from scratch and tested on Linux. 
 
 ----
 
-* Install
-* Tutorial
-* 
+* [Install](https://github.com/runexec/Flamekit#install)
+* [Tutorial](https://github.com/runexec/Flamekit#tutorial)
+* Commands
+  * [Command: Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
+  * [Command: Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
+* [Fragments](https://github.com/runexec/Flamekit#fragments)
+  * [AlpineJS](https://github.com/runexec/Flamekit#alpinejs)
+  * [TailwindCSS](https://github.com/runexec/Flamekit#tailwindcss)
+  
 
 ### Install
 
