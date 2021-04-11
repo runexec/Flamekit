@@ -65,10 +65,7 @@ describe('Constant', () => {
 
 		test = '=l{[a,b]}'.match(Constant.get('FRAGMENT_LISTSTRING_REMOVE_BRACKETS_REGEX'));
 		it('Fragment ListString Remove Brackets Match',
-			// Our three brackets `=l, {[, ]}`
-			// Done this way because the standard way doesn't work for some reason.
-			// Still investigating.
-			() => assert.ok(test?.length === 3));
+			() => assert.ok(test && test.every(x => x === '=ll' || x === '{[' || x === ']}')));
 
 		test = ('=lf{abc}'.match(Constant.get('FRAGMENT_LIVE_REGEX')) || []);
 		it('Fragment Live Line Match',
