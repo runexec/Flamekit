@@ -15,9 +15,8 @@ describe('Constant', () => {
 		it('Not undefined', () => assert.ok(Constant != undefined));
 	});
 
-	// Note: not strict checking by design	
 	describe('Elixir Extension Patterns', () => {
-		it('EXTENSION_EEX', () => { assert.equal(Constant.get('EXTENSION_EEX'), 'eex'); });
+		it('EXTENSION_EEX', () => { assert.ok(Constant.get('EXTENSION_EEX'), 'eex'); });
 		it('EXTENSION_EEX != leex', () => assert.ok(Constant.get('EXTENSION_EEX') !== 'leex'));
 		it('EXTENSION_LEEX', () => assert.ok(Constant.get('EXTENSION_LEEX') === 'leex'));
 		it('EXTENSION_LEEX != eex', () => assert.ok(Constant.get('EXTENSION_LEEX') != 'eex'));
