@@ -1,53 +1,73 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as Enums from '../../enum';
-import * as Fragment_ from '../fragment';
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
+
+type Fragmenting = new (directory: string, fs_path: string, line: string) => {
+	save: Function,
+	getTag: (file_name: string) => string,
+	getNewFragment: (file_name: string) => string,
+	Base: any
+};
+
+type LineType = number;
 
 interface FragmentLine {
     line: string | undefined,
     line_number: number,
-    line_type: Enums.LineType
+    line_type: LineType
 }
 
-const Is: { 
-	isFragmentListLineType: (x: Enums.LineType) => boolean, 
-	isFragmentLiveList: (x:string) => boolean,
-	isFragmentLiveArray: (x:string) => boolean,
-	isFragmentLive: (x:string) => boolean,
-	isFragment: (x:string) => boolean,
-	isFragmentArray: (x:string) => boolean,
-	isFragmentList: (x:string) => boolean,
-	isValidFragment: (x:string) => boolean
-} = container.resolve('fragment.Is');
+let LineTypeInjection: { LineType: { [k: string]: number } };
 
 export const getFragmentData = ({ content }: { content: string[] }): FragmentLine[] => {
-	let line_type = Enums.LineType.FragmentUnknown;
+	LineTypeInjection = container.resolve('type.LineType');
+	const Is: { 
+		isFragmentListLineType: (x: LineType) => boolean, 
+		isFragmentLiveList: (x:string) => boolean,
+		isFragmentLiveArray: (x:string) => boolean,
+		isFragmentLive: (x:string) => boolean,
+		isFragment: (x:string) => boolean,
+		isFragmentArray: (x:string) => boolean,
+		isFragmentList: (x:string) => boolean,
+		isValidFragment: (x:string) => boolean
+	} = container.resolve('fragment.Is');	
+	let line_type = LineTypeInjection.LineType.FragmentUnknown;
 	return content.map((line, line_number) => {
 		switch (true) {
-			case (!Is.isValidFragment(line)): line_type = Enums.LineType.FragmentUnknown; break;
+			case (!Is.isValidFragment(line)): line_type =  LineTypeInjection.LineType.FragmentUnknown; break;
 			// List must come before Array because similar regular expression
-			case Is.isFragmentLiveList(line): line_type = Enums.LineType.FragmentLiveList; break;
-			case Is.isFragmentLiveArray(line): line_type = Enums.LineType.FragmentLiveArray; break;
-			case Is.isFragmentLive(line): line_type = Enums.LineType.FragmentLive; break;
-			case Is.isFragmentList(line): line_type = Enums.LineType.FragmentList; break;
-			case Is.isFragmentArray(line): line_type = Enums.LineType.FragmentArray; break;
-			case Is.isFragment(line): line_type = Enums.LineType.Fragment; break;
-			default: line_type = Enums.LineType.FragmentUnknown;
+			case Is.isFragmentLiveList(line): line_type = LineTypeInjection.LineType.FragmentLiveList; break;
+			case Is.isFragmentLiveArray(line): line_type = LineTypeInjection.LineType.FragmentLiveArray; break;
+			case Is.isFragmentLive(line): line_type = LineTypeInjection.LineType.FragmentLive; break;
+			case Is.isFragmentList(line): line_type = LineTypeInjection.LineType.FragmentList; break;
+			case Is.isFragmentArray(line): line_type = LineTypeInjection.LineType.FragmentArray; break;
+			case Is.isFragment(line): line_type = LineTypeInjection.LineType.Fragment; break;
+			default: line_type = LineTypeInjection.LineType.FragmentUnknown;
 		}
 		return { line: line, line_number: line_number, line_type: line_type };
-	}).filter(x => x.line_type !== Enums.LineType.FragmentUnknown);
+	}).filter(x => x.line_type !== LineTypeInjection.LineType.FragmentUnknown);
 };
 
-export const getLineTypeObject = (line_type: Enums.LineType) => {
+export const getLineTypeObject = (line_type: LineType) => {
+	LineTypeInjection = container.resolve('type.LineType');
+	const FragmentTypes = container.resolve('Fragment') as {
+		Fragment: Fragmenting,
+		FragmentList: Fragmenting,
+		FragmentArray: Fragmenting,
+		FragmentLive: Fragmenting,
+		FragmentLiveList: Fragmenting,
+		FragmentLiveArray: Fragmenting,
+		FragmentUnknown: Fragmenting
+	};
+	
 	switch (line_type) {
-		case Enums.LineType.Fragment: return Fragment_.Fragment; break;
-		case Enums.LineType.FragmentList: return Fragment_.FragmentList; break;
-		case Enums.LineType.FragmentArray: return Fragment_.FragmentArray; break;
-		case Enums.LineType.FragmentLive: return Fragment_.FragmentLive; break;
-		case Enums.LineType.FragmentLiveArray: return Fragment_.FragmentLiveArray; break;
-		case Enums.LineType.FragmentLiveList: return Fragment_.FragmentLiveList; break;
-		default: return Fragment_.FragmentUnknown;
+		case LineTypeInjection.LineType.Fragment: return FragmentTypes.Fragment;
+		case LineTypeInjection.LineType.FragmentList: return FragmentTypes.FragmentList;
+		case LineTypeInjection.LineType.FragmentArray: return FragmentTypes.FragmentArray;
+		case LineTypeInjection.LineType.FragmentLive: return FragmentTypes.FragmentLive;
+		case LineTypeInjection.LineType.FragmentLiveArray: return FragmentTypes.FragmentLiveArray;
+		case LineTypeInjection.LineType.FragmentLiveList: return FragmentTypes.FragmentLiveList;
+		default: return FragmentTypes.FragmentUnknown;
 	}
 };
 

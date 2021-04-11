@@ -1,11 +1,7 @@
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
-let LineTypeInjection = container.resolve('type.LineType') as {
-	LineType: { [k: string]: number },
-};
-
-type LineType = typeof LineTypeInjection.LineType;
+type LineType = number;
 
 interface FragmentLine {
 	line: string | undefined,

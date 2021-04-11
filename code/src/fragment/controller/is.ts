@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { container, singleton } from 'tsyringe';
 
-let LineTypeInjection = container.resolve('type.LineType') as {
+const LineTypeInjection = container.resolve('type.LineType') as {
     LineType: { [k: string]: number },
 };
 

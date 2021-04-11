@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import {container} from "tsyringe";
 
+
 import * as FragmentLiveListTemplate from '../fragment/view/fragment/fragmentLiveListTemplate';
 container.register('fragment.FragmentLiveListTemplate', FragmentLiveListTemplate.Injection);
 
@@ -124,8 +125,8 @@ container.register('fragment.LineTypeObject', LineTypeObject.Injection);
 import * as CreateTextReplacement from '../fragment/controller/enitity/createTextReplacement';
 container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
 
-import * as Fragment from '../fragment/fragment';
-container.register('Fragment', Fragment.Injection);
-
 import * as FragmentI from '../fragment/injectable';
 container.register('FragmentInstance', FragmentI.Fragment);
+
+import * as Fragment from '../fragment/fragment';
+container.register('Fragment', Fragment.Injection);

@@ -6,37 +6,6 @@ import * as vscode from 'vscode';
 
 let Constant: Map<string, any>;
 
-type Fragmenting = new (directory: string, fs_path: string, line: string) => {
-	save: Function,
-	getTag: (file_name: string) => string,
-	getNewFragment: (file_name: string) => string,
-	Base: any
-};
-
-const FragmentTypes = container.resolve('Fragment') as {
-	Fragment: Fragmenting,
-	FragmentList: Fragmenting,
-	FragmentArray: Fragmenting,
-	FragmentLive: Fragmenting,
-	FragmentLiveList: Fragmenting,
-	FragmentLiveArray: Fragmenting,
-	FragmentUnknown: Fragmenting
-};
-
-type Fragment = typeof FragmentTypes.Fragment;
-type FragmentList = typeof FragmentTypes.FragmentList;
-type FragmentArray = typeof FragmentTypes.FragmentArray;
-type FragmentLive = typeof FragmentTypes.FragmentLive;
-type FragmentLiveList = typeof FragmentTypes.FragmentLiveList;
-type FragmentLiveArray = typeof FragmentTypes.FragmentLiveArray;
-// type FragmentUnknown = typeof FragmentTypes.FragmentUnknown;
-
-let LineTypeInjection = container.resolve('type.LineType') as {
-	LineType: { [k: string]: number },
-};
-
-type LineType = typeof LineTypeInjection.LineType;
-
 export interface FragmentLine {
 	line: string | undefined,
 	line_number: number,
@@ -54,13 +23,42 @@ export interface WorkingPaths extends Paths {
 	js_path: string;
 }
 
+type Fragmenting = new (directory: string, fs_path: string, line: string) => {
+	save: Function,
+	getTag: (file_name: string) => string,
+	getNewFragment: (file_name: string) => string,
+	Base: any
+};
+
+type Fragment = typeof FragmentTypes.Fragment;
+type FragmentList = typeof FragmentTypes.FragmentList;
+type FragmentArray = typeof FragmentTypes.FragmentArray;
+type FragmentLive = typeof FragmentTypes.FragmentLive;
+type FragmentLiveList = typeof FragmentTypes.FragmentLiveList;
+type FragmentLiveArray = typeof FragmentTypes.FragmentLiveArray;
+// type FragmentUnknown = typeof FragmentTypes.FragmentUnknown;
+
+type LineType = number;
+
+
+let LineTypeInjection : {LineType: { [k: string]: number }};
+let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
+
+let FragmentTypes : {
+	Fragment: Fragmenting,
+	FragmentList: Fragmenting,
+	FragmentArray: Fragmenting,
+	FragmentLive: Fragmenting,
+	FragmentLiveList: Fragmenting,
+	FragmentLiveArray: Fragmenting,
+	FragmentUnknown: Fragmenting
+};
+
 let Entity: {
 	create: ({ input_line }: {
 		input_line: FragmentLine
 	}) => any
 }
-
-let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
 
 let Util: {
 	getDirectory: ({ active_document, fs }: {
@@ -92,6 +90,7 @@ export async function initFragment(F: FragmentLiveList): Promise<void>;
 export async function initFragment(F: FragmentLiveArray): Promise<void>;
 export async function initFragment(F: FragmentList): Promise<void>;
 export async function initFragment(F: FragmentArray): Promise<void> {
+	FragmentTypes = container.resolve('Fragment');
 	CreateFragment = container.resolve('fragment.CreateFragment');
 	CreateFragmentArray = container.resolve('fragment.CreateFragmentArray');
 	CreateFragmentList = container.resolve('fragment.CreateFragmentList');
@@ -115,12 +114,13 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 		Util = container.resolve('Util');
 		Entity = container.resolve('fragment.Entity');
 		LineTypeObject = container.resolve('fragment.LineTypeObject');
+		LineTypeInjection = container.resolve('type.LineType');
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
 			lines = active_document.getText().toString().split("\n");
 		let fragment: Fragment;
 		directory && fs_path && LineTypeObject.getFragmentData({ content: lines })
-			.filter((x: any) => x.line_type !== LineTypeInjection.LineType['FragmentUnknown'])
+			.filter((x: any) => x.line_type !== LineTypeInjection.LineType.FragmentUnknown)
 			.forEach(async (entity: any) => {
 				const new_edit = Entity.create({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {
