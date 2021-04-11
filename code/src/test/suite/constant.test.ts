@@ -19,11 +19,11 @@ describe('Constant', () => {
 		it('EXTENSION_EEX', () => { assert.ok(Constant.get('EXTENSION_EEX'), 'eex'); });
 		it('EXTENSION_EEX != leex', () => assert.ok(Constant.get('EXTENSION_EEX') !== 'leex'));
 		it('EXTENSION_LEEX', () => assert.ok(Constant.get('EXTENSION_LEEX') === 'leex'));
-		it('EXTENSION_LEEX != eex', () => assert.ok(Constant.get('EXTENSION_LEEX') != 'eex'));
+		it('EXTENSION_LEEX != eex', () => assert.ok(Constant.get('EXTENSION_LEEX') !== 'eex'));
 		it('EXTENSION_EEX_REGEX', () => assert.ok('file.eex'.match(Constant.get('EXTENSION_EEX_REGEX'))));
-		it('EXTENSION_EEX_REGEX != leex', () => assert.ok('file.leex'.match(Constant.get('EXTENSION_EEX_REGEX')) == null));
+		it('EXTENSION_EEX_REGEX != leex', () => assert.ok('file.leex'.match(Constant.get('EXTENSION_EEX_REGEX')) === null));
 		it('EXTENSION_LEEX_REGEX', () => assert.ok('file.leex'.match(Constant.get('EXTENSION_LEEX_REGEX'))));
-		it('EXTENSION_LEEX_REGEX != eex', () => assert.ok('file.eex'.match(Constant.get('EXTENSION_LEEX_REGEX')) == null));
+		it('EXTENSION_LEEX_REGEX != eex', () => assert.ok('file.eex'.match(Constant.get('EXTENSION_LEEX_REGEX')) === null));
 		it('EXTENSION_REGEX', () => assert.ok(['file.eex', 'file.leex'].every(x => x.match(Constant.get('EXTENSION_REGEX')))));
 	});
 
