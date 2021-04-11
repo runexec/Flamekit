@@ -7,7 +7,12 @@ import * as Service from '../../service';
 
 describe('Constant', () => {
 	Service.init();
-	const Constant : Map<string, any> = container.resolve('ConstantInstance');
+	const Constant : Map<string, any> = container.resolve('ConstantInstance');	
+	
+	describe('Constant Injection', () => {
+		it('Not undefined', () => assert.ok(Constant != undefined)); 
+	});
+
 	describe('Elixir Extension Patterns', () => {
 		it('EXTENSION_EEX', () => assert.strictEqual(Constant.get('EXTENSION_EEX'), 'eex'));
 		it('EXTENSION_EEX != leex', () => assert.notStrictEqual(Constant.get('EXTENSION_EEX'), 'leex'));
