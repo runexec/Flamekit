@@ -11,7 +11,7 @@ export const
     fragmentLiveFileName = (x: string) => `_${treatment(x)}_live.html`,
     fragmentLiveListFileName = (x: string) => {
         const name = x.trim();
-        const splitter = /[A-Z][a-z]+/g;
+        const splitter = /[A-Z][a-z0-9]+/g;
         let component : string = '';
         name.match(splitter)?.forEach((x:string) => {
             component += x.toLowerCase() + '_';
