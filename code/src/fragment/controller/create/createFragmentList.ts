@@ -1,12 +1,26 @@
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Fragment from '../../fragment';
 
 let Constant: Map<string, any>;
+
+type Fragmenting = new (directory: string, fs_path: string, line: string) => {
+	save: Function,
+	getTag: (file_name: string) => string,
+	getNewFragment: (file_name: string) => string,
+	Base: any
+};
+
+interface FragmentList extends Fragmenting {
+    line: string,
+	fs_path: string,
+	directory: string,
+    document: undefined | vscode.TextDocument
+};
+
 let FragmentListFiles: { asArray: ({ file_name }: { file_name: string }) => string[] };
 
-export async function createFragment(F: Fragment.FragmentList): Promise<void> {
+export async function createFragment(F:FragmentList): Promise<void> {
 	Constant = container.resolve('ConstantInstance');
 	FragmentListFiles = container.resolve('fragment.FragmentListFiles');
 	const new_files = FragmentListFiles.asArray({ file_name: F.line }),
@@ -23,5 +37,5 @@ export async function createFragment(F: Fragment.FragmentList): Promise<void> {
 
 @singleton()
 export class Injection {
-	createFragment: (F: Fragment.FragmentList) => Promise<void> = createFragment;
+	createFragment: (F: FragmentList) => Promise<void> = createFragment;
 }

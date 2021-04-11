@@ -3,9 +3,33 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Fragment from '../fragment';
 
 let Constant: Map<string, any>;
+
+type Fragmenting = new (directory: string, fs_path: string, line: string) => {
+	save: Function,
+	getTag: (file_name: string) => string,
+	getNewFragment: (file_name: string) => string,
+	Base: any
+};
+
+const FragmentTypes = container.resolve('Fragment') as {
+	Fragment: Fragmenting,
+	FragmentList: Fragmenting,
+	FragmentArray: Fragmenting,
+	FragmentLive: Fragmenting,
+	FragmentLiveList: Fragmenting,
+	FragmentLiveArray: Fragmenting,
+	FragmentUnknown: Fragmenting
+};
+
+type Fragment = typeof FragmentTypes.Fragment;
+type FragmentList = typeof FragmentTypes.FragmentList;
+type FragmentArray = typeof FragmentTypes.FragmentArray;
+type FragmentLive = typeof FragmentTypes.FragmentLive;
+type FragmentLiveList = typeof FragmentTypes.FragmentLiveList;
+type FragmentLiveArray = typeof FragmentTypes.FragmentLiveArray;
+// type FragmentUnknown = typeof FragmentTypes.FragmentUnknown;
 
 let LineTypeInjection = container.resolve('type.LineType') as {
 	LineType: { [k: string]: number },
@@ -14,20 +38,20 @@ let LineTypeInjection = container.resolve('type.LineType') as {
 type LineType = typeof LineTypeInjection.LineType;
 
 export interface FragmentLine {
-    line: string | undefined,
-    line_number: number,
-    line_type: LineType
+	line: string | undefined,
+	line_number: number,
+	line_type: LineType
 }
 
 export interface Paths {
-    calling_path: string;
-    active_path: string | undefined;
+	calling_path: string;
+	active_path: string | undefined;
 }
 
 export interface WorkingPaths extends Paths {
-    assets_path: string;
-    css_path: string;
-    js_path: string;
+	assets_path: string;
+	css_path: string;
+	js_path: string;
 }
 
 let Entity: {
@@ -62,12 +86,12 @@ const newCreateFragmentDisposable = () => {
 	});
 };
 
-export async function initFragment(F: Fragment.Fragment): Promise<void>;
-export async function initFragment(F: Fragment.FragmentLive): Promise<void>;
-export async function initFragment(F: Fragment.FragmentLiveList): Promise<void>;
-export async function initFragment(F: Fragment.FragmentLiveArray): Promise<void>;
-export async function initFragment(F: Fragment.FragmentList): Promise<void>;
-export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
+export async function initFragment(F: Fragment): Promise<void>;
+export async function initFragment(F: FragmentLive): Promise<void>;
+export async function initFragment(F: FragmentLiveList): Promise<void>;
+export async function initFragment(F: FragmentLiveArray): Promise<void>;
+export async function initFragment(F: FragmentList): Promise<void>;
+export async function initFragment(F: FragmentArray): Promise<void> {
 	CreateFragment = container.resolve('fragment.CreateFragment');
 	CreateFragmentArray = container.resolve('fragment.CreateFragmentArray');
 	CreateFragmentList = container.resolve('fragment.CreateFragmentList');
@@ -75,13 +99,13 @@ export async function initFragment(F: Fragment.FragmentArray): Promise<void> {
 	CreateFragmentLiveArray = container.resolve('fragment.CreateFragmentLiveArray');
 	CreateFragmentLiveList = container.resolve('fragment.CreateFragmentLiveList');
 	switch (true) {
-		case F instanceof Fragment.FragmentUnknown: null; break;
-		case F instanceof Fragment.FragmentLiveList: CreateFragmentLiveList.createFragment(F); break;
-		case F instanceof Fragment.FragmentLiveArray: CreateFragmentLiveArray.createFragment(F); break;
-		case F instanceof Fragment.FragmentLive: CreateFragmentLive.createFragment(F); break;
-		case F instanceof Fragment.FragmentList: CreateFragmentList.createFragment(F); break;
-		case F instanceof Fragment.FragmentArray: CreateFragmentArray.createFragment(F); break;
-		case F instanceof Fragment.Fragment: CreateFragment.createFragment(F); break;
+		case F instanceof FragmentTypes.FragmentUnknown: null; break;
+		case F instanceof FragmentTypes.FragmentLiveList: CreateFragmentLiveList.createFragment(F); break;
+		case F instanceof FragmentTypes.FragmentLiveArray: CreateFragmentLiveArray.createFragment(F); break;
+		case F instanceof FragmentTypes.FragmentLive: CreateFragmentLive.createFragment(F); break;
+		case F instanceof FragmentTypes.FragmentList: CreateFragmentList.createFragment(F); break;
+		case F instanceof FragmentTypes.FragmentArray: CreateFragmentArray.createFragment(F); break;
+		case F instanceof FragmentTypes.Fragment: CreateFragment.createFragment(F); break;
 		default: null;
 	}
 }
@@ -94,7 +118,7 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 		const directory = Util.getDirectory({ active_document: active_document }),
 			fs_path = Util.getDirectory({ active_document: active_document, fs: true }),
 			lines = active_document.getText().toString().split("\n");
-		let fragment: Fragment.Fragment;
+		let fragment: Fragment;
 		directory && fs_path && LineTypeObject.getFragmentData({ content: lines })
 			.filter((x: any) => x.line_type !== LineTypeInjection.LineType['FragmentUnknown'])
 			.forEach(async (entity: any) => {

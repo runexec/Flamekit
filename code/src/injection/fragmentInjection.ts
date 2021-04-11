@@ -125,7 +125,7 @@ import * as CreateTextReplacement from '../fragment/controller/enitity/createTex
 container.register('fragment.CreateTextReplacement', CreateTextReplacement.Injection);
 
 import * as Fragment from '../fragment/fragment';
-container.register('Fragment', Fragment.Fragment);
+container.register('Fragment', Fragment.Injection);
 
 import * as FragmentI from '../fragment/injectable';
 container.register('FragmentInstance', FragmentI.Fragment);
