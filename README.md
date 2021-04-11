@@ -68,12 +68,7 @@ Save the document again to keep the changes.
 
 ### Fragments
 
-<video controls width="800" height="600" autoplay="false">
-    <source src="https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true" type="video/webm">
-
-[Fragments Video](https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true)
-
-</video>
+[Play Fragments Video](https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true)
 
 Fragments are text patterns that trigger file or project altering events after a document has been saved. 
 Limitations being that only one Fragment per-line may exist.
@@ -181,12 +176,7 @@ AlpineJS triggers are appl* [Command: Phoenix Setup Petal](https://github.com/ru
 
 ##### Install: `=setupAlpine`
 
-<video controls width="800" height="600" autoplay="false">
-    <source src="https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true" type="video/webm">
-
-[setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
-
-</video>
+[Play setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
 
 An `import` for AlpineJS is added to the document, along with `LiveView` compatability code.
 A terminal is then opened, and the `alpinejs` `npm` package is installed.
