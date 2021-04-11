@@ -11,7 +11,7 @@ type Fragmenting = new (directory: string, fs_path: string, line: string) => {
 
 type LineType = number;
 
-interface FragmentLine {
+export interface FragmentLine {
 	line: string | undefined,
 	line_number: number,
 	line_type: LineType
