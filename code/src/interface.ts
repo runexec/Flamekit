@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { singleton } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Enums from './enum';
 
@@ -12,9 +13,3 @@ export interface IWorkingPaths extends IPaths {
     css_path: string;
     js_path: string;
 }
-
-export interface ICreateFragmentLine {
-    line: string | undefined, 
-    line_number: number, 
-    line_type: Enums.LineType
-};

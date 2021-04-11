@@ -1,13 +1,18 @@
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 import * as Enums from '../../enum';
-import * as Interface_ from '../../interface'
+
+interface FragmentLine {
+    line: string | undefined,
+    line_number: number,
+    line_type: Enums.LineType
+}
 
 let Is: { isValidCreateFragment: (x: Enums.LineType) => boolean };
 let Message: {info: (message: string) => void};
 let CreateTextReplacement: {create: Function};
 
-export const create = ({ input_line }: { input_line: Interface_.ICreateFragmentLine }) => {
+export const create = ({ input_line }: { input_line: FragmentLine }) => {
 	Is = container.resolve('fragment.Is');
 	Message = container.resolve('Util.Message.info');
 	CreateTextReplacement = container.resolve('fragment.CreateTextReplacement');
