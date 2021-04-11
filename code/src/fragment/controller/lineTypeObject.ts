@@ -4,6 +4,12 @@ import * as Fragment_ from '../fragment';
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
+interface FragmentLine {
+    line: string | undefined,
+    line_number: number,
+    line_type: Enums.LineType
+}
+
 const Is: { 
 	isFragmentListLineType: (x: Enums.LineType) => boolean, 
 	isFragmentLiveList: (x:string) => boolean,
@@ -15,11 +21,7 @@ const Is: {
 	isValidFragment: (x:string) => boolean
 } = container.resolve('fragment.Is');
 
-export const getFragmentData = ({ content }: { content: string[] }): {
-	line: string | undefined,
-	line_number: number,
-	line_type: Enums.LineType
-}[] => {
+export const getFragmentData = ({ content }: { content: string[] }): FragmentLine[] => {
 	let line_type = Enums.LineType.FragmentUnknown;
 	return content.map((line, line_number) => {
 		switch (true) {
