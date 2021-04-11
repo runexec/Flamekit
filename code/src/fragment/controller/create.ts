@@ -13,7 +13,7 @@ let LineTypeInjection = container.resolve('type.LineType') as {
 
 type LineType = typeof LineTypeInjection.LineType;
 
-interface FragmentLine {
+export interface FragmentLine {
     line: string | undefined,
     line_number: number,
     line_type: LineType
