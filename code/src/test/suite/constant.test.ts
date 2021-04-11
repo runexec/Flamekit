@@ -33,11 +33,13 @@ describe('Constant', () => {
 		// If you're confused, think in terms of `switch`, `case` statements, and how order matters.
 		// ** NOT JUST IN TESTING **
 		let test: RegExpMatchArray | null = '=f{abc}'.match(Constant.get('FRAGMENT_REGEX'))
-		it('Fragment Line Match', () => assert.ok(test !== undefined));
+		it('Fragment Line Match',
+			() => assert.ok(test !== undefined));
 
 		test = '=f{abc}'.match(Constant.get('FRAGMENT_GROUP_REGEX'));
 		test = test && test[1].match(/^abc$/);
-		it('Fragment Group Match', () => assert.ok(test));
+		it('Fragment Group Match',
+			() => assert.ok(test));
 
 		test = ('=f{[a,b]}'.match(Constant.get('FRAGMENT_ARRAY_REGEX')) || []);
 		it('Fragment Array Line Match',
