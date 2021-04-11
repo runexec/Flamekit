@@ -3,6 +3,12 @@ import * as Enums from '../../../enum';
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
+interface FragmentLine {
+    line: string | undefined,
+    line_number: number,
+    line_type: Enums.LineType
+}
+
 let Is: {isFragmentListLineType: (x: Enums.LineType) => boolean};
 let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function};
 
@@ -12,9 +18,7 @@ type Storage<T extends StoreCollection> = { push: Function, pop: Function, shift
 type Store = Storage<StoreCollection> & { FragmentStore: any, StoreType: any };
 let Store: Store;
 
-export const create = ({ line, line_type, line_number }: {
-	line: string, line_type: Enums.LineType, line_number: number
-}) => {
+export const create = ({ line, line_type, line_number }: FragmentLine) => {
 	Store = container.resolve('fragment.Store');
 	Is = container.resolve('fragment.Is');
 	LineTypeObject = container.resolve('fragment.LineTypeObject');
@@ -50,7 +54,5 @@ export const create = ({ line, line_type, line_number }: {
 
 @singleton()
 export class Injection {
-	create: ({ line, line_type, line_number }: {
-		line: string, line_type: Enums.LineType, line_number: number
-	}) => void = create;
+	create: ({ line, line_type, line_number }: FragmentLine) => void = create;
 }
