@@ -4,13 +4,13 @@ import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
 
 interface FragmentLine {
-    line: string | undefined,
-    line_number: number,
-    line_type: Enums.LineType
+	line: string | undefined,
+	line_number: number,
+	line_type: Enums.LineType
 }
 
-let Is: {isFragmentListLineType: (x: Enums.LineType) => boolean};
-let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function};
+let Is: { isFragmentListLineType: (x: Enums.LineType) => boolean };
+let LineTypeObject: { getFragmentData: Function, getLineTypeObject: Function };
 
 type StorageItem = [tagStart: string, tagEnd: string];
 type StoreCollection = StorageItem[];
@@ -19,6 +19,7 @@ type Store = Storage<StoreCollection> & { FragmentStore: any, StoreType: any };
 let Store: Store;
 
 export const create = ({ line, line_type, line_number }: FragmentLine) => {
+	if (line === undefined) throw ' :::: >> Line can\'t be undefined ';
 	Store = container.resolve('fragment.Store');
 	Is = container.resolve('fragment.Is');
 	LineTypeObject = container.resolve('fragment.LineTypeObject');

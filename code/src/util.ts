@@ -2,7 +2,17 @@
 import 'reflect-metadata';
 import {container} from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Interface_ from './interface';
+
+export interface Paths {
+    calling_path: string;
+    active_path: string | undefined;
+}
+
+export interface WorkingPaths extends Paths {
+    assets_path: string;
+    css_path: string;
+    js_path: string;
+}
 
 const Constant : Map<string, any> = container.resolve('ConstantInstance');
 
@@ -47,7 +57,7 @@ export const getFullActivePath = ({ active_document }: {
 
 export const getPaths = ({ active_document }: {
 	active_document: vscode.TextDocument
-}): Interface_.IPaths => {
+}): Paths => {
 	return {
 		calling_path: getCallingPath({ active_document: active_document }),
 		active_path: getActivePath({ active_document: active_document })
@@ -89,7 +99,7 @@ export const getDirectory = ({ active_document, fs = false }: {
 export const getWorkingPaths = ({ wsf, active_document }: {
 	wsf: readonly vscode.WorkspaceFolder[],
 	active_document: vscode.TextDocument
-}): Interface_.IWorkingPaths => {
+}): WorkingPaths => {
 	const root_uri = wsf[0].uri,
 		assets_path = `${root_uri.toString()}/assets`,
 		directory = getDirectory({ active_document: active_document }) || '',

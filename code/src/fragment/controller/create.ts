@@ -5,13 +5,29 @@ import { container } from 'tsyringe';
 import * as vscode from 'vscode';
 import * as Enums from '../../enum';
 import * as Fragment from '../fragment';
-import * as Interface_ from '../../interface'
 
 let Constant: Map<string, any>;
 
+interface FragmentLine {
+    line: string | undefined,
+    line_number: number,
+    line_type: Enums.LineType
+}
+
+export interface Paths {
+    calling_path: string;
+    active_path: string | undefined;
+}
+
+export interface WorkingPaths extends Paths {
+    assets_path: string;
+    css_path: string;
+    js_path: string;
+}
+
 let Entity: {
 	create: ({ input_line }: {
-		input_line: Interface_.ICreateFragmentLine
+		input_line: FragmentLine
 	}) => any
 }
 
