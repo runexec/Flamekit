@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { container, singleton } from 'tsyringe';
-import * as Enums from '../../enum';
+
+let LineTypeInjection = container.resolve('type.LineType') as {
+    LineType: { [k: string]: number },
+};
+
+type LineTypeNumber = number;
 
 type Matching = { match: (x: string) => boolean };
+
 const FragmentMatch: Matching = container.resolve('fragment.FragmentMatch');
 const FragmentListMatch: Matching = container.resolve('fragment.FragmentListMatch');
 const FragmentArrayMatch: Matching = container.resolve('fragment.FragmentArrayMatch');
@@ -17,8 +23,9 @@ export const
     isFragmentLive = (x: string) => FragmentLiveMatch.match(x) !== null,
     isFragmentLiveArray = (x: string) => FragmentLiveArrayMatch.match(x) !== null,
     isFragmentLiveList = (x: string) => FragmentLiveListMatch.match(x) !== null,
-    isFragmentListLineType = (x: Enums.LineType) => {
-        return x === Enums.LineType.FragmentList || Enums.LineType.FragmentLiveList;
+    isFragmentListLineType = (x: LineTypeNumber) => {
+        return x === LineTypeInjection.LineType.FragmentList
+            || LineTypeInjection.LineType.FragmentLiveList;
     };
 
 export const isValidFragment = (x: string) => {
@@ -32,14 +39,14 @@ export const isValidFragment = (x: string) => {
     ].some(f => f(x));
 };
 
-export const isValidCreateFragment = (x: Enums.LineType) => {
+export const isValidCreateFragment = (x: LineTypeNumber) => {
     return [
-        Enums.LineType.Fragment,
-        Enums.LineType.FragmentArray,
-        Enums.LineType.FragmentLive,
-        Enums.LineType.FragmentLiveArray,
-        Enums.LineType.FragmentList,
-        Enums.LineType.FragmentLiveList
+        LineTypeInjection.LineType.Fragment,
+        LineTypeInjection.LineType.FragmentArray,
+        LineTypeInjection.LineType.FragmentLive,
+        LineTypeInjection.LineType.FragmentLiveArray,
+        LineTypeInjection.LineType.FragmentList,
+        LineTypeInjection.LineType.FragmentLiveList
     ].some(y => y === x);
 };
 

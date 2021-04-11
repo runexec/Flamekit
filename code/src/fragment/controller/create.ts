@@ -3,15 +3,20 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import * as vscode from 'vscode';
-import * as Enums from '../../enum';
 import * as Fragment from '../fragment';
 
 let Constant: Map<string, any>;
 
+let LineTypeInjection = container.resolve('type.LineType') as {
+	LineType: { [k: string]: number },
+};
+
+type LineType = typeof LineTypeInjection.LineType;
+
 interface FragmentLine {
     line: string | undefined,
     line_number: number,
-    line_type: Enums.LineType
+    line_type: LineType
 }
 
 export interface Paths {
@@ -91,7 +96,7 @@ export const createFragment = async ({ active_document }: { active_document: vsc
 			lines = active_document.getText().toString().split("\n");
 		let fragment: Fragment.Fragment;
 		directory && fs_path && LineTypeObject.getFragmentData({ content: lines })
-			.filter((x: any) => x.line_type !== Enums.LineType.FragmentUnknown)
+			.filter((x: any) => x.line_type !== LineTypeInjection.LineType['FragmentUnknown'])
 			.forEach(async (entity: any) => {
 				const new_edit = Entity.create({ input_line: entity });
 				vscode.window.activeTextEditor?.edit((edit: vscode.TextEditorEdit) => {

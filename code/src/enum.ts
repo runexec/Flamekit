@@ -1,3 +1,5 @@
+import { singleton } from "tsyringe";
+
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum LineType {
 	Fragment,
@@ -8,3 +10,8 @@ export enum LineType {
 	FragmentLiveList,
 	FragmentUnknown
 };
+
+@singleton()
+export class Injection {
+	LineType = LineType
+}

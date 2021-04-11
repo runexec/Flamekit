@@ -1,6 +1,7 @@
 import "reflect-metadata";
 
 import './injection/constantInjection';
+import './injection/enum';
 import './injection/utilInjection';
 import './injection/util/messageInjection';
 

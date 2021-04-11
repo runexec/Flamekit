@@ -1,16 +1,21 @@
 import 'reflect-metadata';
 import { singleton, container } from 'tsyringe';
-import * as Enums from '../../enum';
+
+let LineTypeInjection = container.resolve('type.LineType') as {
+	LineType: { [k: string]: number },
+};
+
+type LineType = typeof LineTypeInjection.LineType;
 
 interface FragmentLine {
-    line: string | undefined,
-    line_number: number,
-    line_type: Enums.LineType
+	line: string | undefined,
+	line_number: number,
+	line_type: LineType
 }
 
-let Is: { isValidCreateFragment: (x: Enums.LineType) => boolean };
-let Message: {info: (message: string) => void};
-let CreateTextReplacement: {create: Function};
+let Is: { isValidCreateFragment: (x: LineType) => boolean };
+let Message: { info: (message: string) => void };
+let CreateTextReplacement: { create: Function };
 
 export const create = ({ input_line }: { input_line: FragmentLine }) => {
 	Is = container.resolve('fragment.Is');
