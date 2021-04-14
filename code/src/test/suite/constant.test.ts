@@ -1,8 +1,6 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
-
 import * as Service from '../../service';
 
 Service.init();
