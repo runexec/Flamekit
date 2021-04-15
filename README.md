@@ -171,8 +171,7 @@ Live
 
 ### AlpineJS
 
-AlpineJS triggers are appl* [Command: Phoenix Setup Petal](https://github.com/runexec/Flamekit#command-phoenix-setup-petal)
-* [Command: Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)ied within `JS` and `TS` documents.
+AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
