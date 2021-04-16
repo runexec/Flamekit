@@ -1,3 +1,5 @@
+********** NOT DONE YET *************
+
 # Flamekit
 ##### *Build websites faster with Flamekit Phoenix Framework Development extension for VSCode.*
 ---- 
