@@ -13,7 +13,7 @@ const pascalToSnake = (x:string) => {
 };
 
 const treatment = (x:string) => {
-    return x.trim().replace(/[\],\[,\},\{]/, '').toLowerCase();
+    return x.trim().replace(/[\],\[,\},\{]/, '').toLocaleLowerCase();
 }
 
 const treated = (x: string) => `_${treatment(x)}.html`;

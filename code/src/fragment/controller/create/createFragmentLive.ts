@@ -36,13 +36,18 @@ export async function createFragment(F: FragmentLive): Promise<void> {
 }
 
 const contentTemplate = (name: string) => {
+	const module_name = name.split('_').map(x => {
+		let tmp = x.split('');
+		tmp[0] = tmp[0].toLocaleUpperCase();
+		return tmp.join('');
+	}).join('');
 	return `
-defmodule ${name} do
+defmodule ${module_name} do
   use Phoenix.LiveComponent
 
   def render(assigns) do
     ~L"""
-    ${name}
+    ${module_name}
     """
   end
 end
