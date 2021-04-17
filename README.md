@@ -10,6 +10,7 @@ Flamekit is a VSCode extension that provides PETAL stack setup with Phoenix awar
 *Developed from scratch and tested on Linux.*
 
 * [Install](https://github.com/runexec/Flamekit#install)
+* [Demonstration](https://github.com/runexec/Flamekit#demonstration)
 * [Tutorial](https://github.com/runexec/Flamekit#tutorial)
 * [Fragments](https://github.com/runexec/Flamekit#fragments)
   * [AlpineJS](https://github.com/runexec/Flamekit#alpinejs)
