@@ -40,7 +40,7 @@ Using VSCode Marketplace or Github
 ##### Add a Fragment to new file
 
 *File Content:* 
-```
+```leex
 <div class="p-2 m-2">=ll{[Hello, MyExample]}</div>
 ```
 
@@ -57,7 +57,7 @@ Files are created and the active document contents are changed *after* the docum
 ```
 
 *File Contents:*
-```
+```leex
 <div class="p-2 m-2"><%= live_component(@socket, Hello) %></div>
 <div class="p-2 m-2"><%= live_component(@socket, MyExample) %></div>
 ```
