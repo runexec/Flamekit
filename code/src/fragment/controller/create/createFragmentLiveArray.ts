@@ -25,7 +25,7 @@ export async function createFragment(F: FragmentLiveArray): Promise<void> {
 	Constant = container.resolve('ConstantInstance');
 	const new_files = FragmentLiveArrayFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
-		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_LEEX')));
+		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EX')));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
 		let component_name : string;
