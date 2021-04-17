@@ -19,9 +19,14 @@ Flamekit is a VSCode extension that provides PETAL stack setup with Phoenix awar
   * [Phoenix Create CSS](https://github.com/runexec/Flamekit#command-phoenix-create-css)
   
 
+
 ### Install
 
 Using VSCode Marketplace or Github
+
+### Demonstration
+
+[Play Demo Video](https://github.com/runexec/Flamekit/blob/main/media/demo.webm?raw=true)
 
 ### Tutorial
 
@@ -84,8 +89,6 @@ end
 ---
 
 ### Fragments
-
-[Play Fragments Video](https://github.com/runexec/Flamekit/blob/main/media/fragments.webm?raw=true)
 
 Fragments are text patterns that trigger file or project altering events after a document has been saved. 
 Limitations being that only one Fragment per-line may exist.
@@ -193,8 +196,6 @@ AlpineJS triggers are applied within `JS` and `TS` documents.
 
 ##### Install: `=setupAlpine`
 
-[Play setupAlpine Video](https://github.com/runexec/Flamekit/blob/main/media/setupAlpine.webm?raw=true)
-
 An `import` for AlpineJS is added to the document, along with `LiveView` compatability code.
 A terminal is then opened, and the `alpinejs` `npm` package is installed.
 
@@ -290,14 +291,6 @@ live_socket.connect() && (window.live_socket = live_socket);
 TailwindCSS triggers are applied within `CSS` and `SCSS` documents.
 
 ##### Install: `=setupTW`
-
-<video controls width="800" height="600">
-    <source src="https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true" type="video/webm">
-
-[setupTW Video](https://github.com/runexec/Flamekit/blob/main/media/setupTW.webm?raw=true)
-
-</video>
-
 
 An `import` for TailwindCSS is added to the document, and a terminal is then opened. The terminal will 
 execute commands to create (~ WARNING: overwrites ~) configurations for `postcss.config.js`, and 
