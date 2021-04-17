@@ -26,10 +26,9 @@ export async function createFragment(F: FragmentLiveList): Promise<void> {
 	const new_files = FragmentLiveListFiles.asArray({ file_name: F.line }),
 		paths = new_files.map(x => `${F.directory}${x.replace(/\.html/, '_live.html')}`),
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EX')));
-	let component_name : string;		
 	uris.forEach((uri, idx) => {
-		component_name = new_files[idx];
 		const fp = paths[idx];
+		const component_name = new_files[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from(contentTemplate(component_name), 'utf-8'));

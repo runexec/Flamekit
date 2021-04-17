@@ -28,12 +28,15 @@ export async function createFragment(F: FragmentArray): Promise<void> {
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EEX')));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
+		const fragment_name = new_files[idx];
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
-			vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+			vscode.workspace.fs.writeFile(uri, Buffer.from(contentTemplate(fragment_name), 'utf-8'));
 		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 	});
 }
+
+const contentTemplate = (name: string) =>  name;
 
 @singleton()
 export class Injection {

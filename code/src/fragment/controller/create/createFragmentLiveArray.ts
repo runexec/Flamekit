@@ -28,9 +28,8 @@ export async function createFragment(F: FragmentLiveArray): Promise<void> {
 		uris = new_files.map(x => vscode.Uri.parse(F.fs_path + x + '.' + Constant.get('EXTENSION_EX')));
 	uris.forEach((uri, idx) => {
 		const fp = paths[idx];
-		let component_name : string;
 		vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
-			component_name = new_files[idx];
+			const component_name = new_files[idx];
 			vscode.window.showInformationMessage(`Creating file: ${fp}`);
 			vscode.workspace.fs.writeFile(uri, Buffer.from(contentTemplate(component_name), 'utf-8'));
 		}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));

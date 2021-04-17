@@ -27,12 +27,15 @@ export async function createFragment(F: Fragment): Promise<void> {
     FileName = container.resolve('fragment.FileName')
     const new_file = FileName.fragmentFileName(FragmentGroup.getGroup(F.line)),
         path = `${F.directory}${new_file}`,
-        uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.get('EXTENSION_EEX'));
+        uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.get('EXTENSION_EEX')),
+        fragment_name = new_file;
     vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
         vscode.window.showInformationMessage(`Creating file: ${path}`);
-        vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+        vscode.workspace.fs.writeFile(uri, Buffer.from(contentTemplate(fragment_name), 'utf-8'));
     }).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 }
+
+const contentTemplate = (name: string) =>  name;
 
 @singleton()
 export class Injection {
