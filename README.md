@@ -39,7 +39,7 @@ Using VSCode Marketplace or Github
 
 ##### Add a Fragment to new file
 
-*File content:* 
+*File Content:* 
 ```
 <div class="p-2 m-2">=ll{[Hello, World, MyExample]}</div>
 ```
@@ -54,17 +54,32 @@ Files are created and the active document contents are changed *after* the docum
         new file:   assets/css/flamekit.index.css
         new file:   lib/example_web/live/hello.ex
         new file:   lib/example_web/live/my_example.ex
-        new file:   lib/example_web/live/world.ex
 ```
 
-*File contents:*
+*File Contents:*
 ```
 <div class="p-2 m-2"><%= live_component(@socket, Hello) %></div>
-<div class="p-2 m-2"><%= live_component(@socket, World) %></div>
 <div class="p-2 m-2"><%= live_component(@socket, MyExample) %></div>
 ```
+Save the document again to keep the changes. 
 
-Save the document again to keep the changes.
+##### Edit 
+
+You may now edit your components.
+
+*Default Generated Component Contents:*
+```elixir
+# my_example.ex
+defmodule MyExample do
+  use Phoenix.LiveComponent
+
+  def render(assigns) do
+    ~L"""
+    MyExmaple
+    """
+  end
+end
+```
 
 ---
 
