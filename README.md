@@ -2,8 +2,8 @@
 
 # Flamekit
 ##### *Build websites faster with Flamekit Phoenix Framework Development extension for VSCode.*
----- 
 
+---- 
 
 Flamekit is a VSCode extension that provides PETAL stack setup with Phoenix aware code and file generation. 
 
@@ -59,9 +59,9 @@ Files are created and the active document contents are changed *after* the docum
 
 *File contents:*
 ```
-<div class="p-2 m-2"><%= live_component Hello %></div>
-<div class="p-2 m-2"><%= live_component World %></div>
-<div class="p-2 m-2"><%= live_component MyExample %></div>
+<div class="p-2 m-2"><%= live_component(@socket, Hello) %></div>
+<div class="p-2 m-2"><%= live_component(@socket, World) %></div>
+<div class="p-2 m-2"><%= live_component(@socket, MyExample) %></div>
 ```
 
 Save the document again to keep the changes.
@@ -99,7 +99,7 @@ With tags
 
 Live
 
-<div class="number">=ll{[one_component]}</div>
+<div class="number">=ll{[OneComponent]}</div>
 ```
 
 ###### Example Document content after save: 
@@ -127,10 +127,11 @@ Live
 
 <!-- Phoenix Craete CSS Command: created assets/css/example_web/live/one_component.ex.css -->
 <!-- created example_web/live/one_component.ex -->
-<div class="number"><%= live_component @socket, OneComponent %></div>
+<div class="number"><%= live_component(@socket, OneComponent) %></div>
 ```
 
 ###### Usage Patterns:
+
 ```html
 # Fragment
 
@@ -354,17 +355,3 @@ in `assets/css/flamekit.css`.
 New file: /tmp/project/assets/css/mysite_web/live/page_live.html.leex.css
 New/Updated file: /tmp/project/assets/css/flamekit.css
 ```
-
------
-
-// ? TODO: check for mix project file and add to activation check
-// ? !=f{[a, b, c, d]} // create tags but not files
-// ? =f{[a, b, c, d]}[exe] // custom file extension
-// ? =of{[]} open fragment in pane for single fragment 
-// ? Each fragment file is opened in a pane after creation; bottom or side depending on user config.
-// ? auto convert style tag into css file
-// ? warn when corresponding css is missing eex || leex
-// ???? key across ????
-?? before: =x{[one, two, three, four]} 
-?? after: {one: one, two: two, three: three, four: four}
-

@@ -25,7 +25,7 @@ export class Template extends TemplateClass.Template {
                 .split(',')
                 .map(x => {
                     const name = x.trim();
-                    return `${tag_start}<%= live_component ${name} %>${tag_end}`;
+                    return `${tag_start}<%= live_component(@socket, ${name}) %>${tag_end}`;
                 }).join("\n");
         };
         return this;
