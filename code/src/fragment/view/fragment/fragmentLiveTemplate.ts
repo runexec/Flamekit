@@ -8,7 +8,7 @@ export class Template extends TemplateClass.Template {
     constructor({ file_name }: { file_name: string }) {
         FileName = container.resolve('fragment.FileName');
         super({ file_name: file_name });
-        this.toString = () => { return `<%= render "${FileName.fragmentLiveFileName(file_name)}" %>`; }
+        this.toString = () => { return `<%= live_component(@socket, ${FileName.fragmentLiveFileName(file_name)}) %>`; }
         return this;
     }
 }

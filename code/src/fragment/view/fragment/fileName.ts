@@ -8,7 +8,7 @@ const treatment = (x:string) => {
 export const
     fragmentFileName = (x: string) => `_${treatment(x)}.html`,
     fragmentListFileName = (x: string) => `_${treatment(x)}.html`,
-    fragmentLiveFileName = (x: string) => `_${treatment(x)}_live.html`,
+    fragmentLiveFileName = (x: string) => x.trim(),
     fragmentLiveListFileName = (x: string) => {
         const name = x.trim();
         const splitter = /[A-Z][a-z0-9]+/g;

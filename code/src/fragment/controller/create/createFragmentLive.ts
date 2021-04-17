@@ -12,10 +12,10 @@ type Fragmenting = new (directory: string, fs_path: string, line: string) => {
 };
 
 interface FragmentLive extends Fragmenting {
-    line: string,
+	line: string,
 	fs_path: string,
 	directory: string,
-    document: undefined | vscode.TextDocument
+	document: undefined | vscode.TextDocument
 };
 
 let FileName: { fragmentLiveFileName: (x: string) => string };
@@ -29,10 +29,25 @@ export async function createFragment(F: FragmentLive): Promise<void> {
 		path = `${F.directory}${new_file}`,
 		uri = vscode.Uri.parse(F.fs_path + new_file + '.' + Constant.get('EXTENSION_EX'));
 	vscode.workspace.fs.stat(uri).then((_) => { }, _ => {
+		const component_name = new_file;
 		vscode.window.showInformationMessage(`Creating file: ${path}`);
-		vscode.workspace.fs.writeFile(uri, Buffer.from('', 'utf-8'));
+		vscode.workspace.fs.writeFile(uri, Buffer.from(contentTemplate(component_name), 'utf-8'));
 	}).then(() => vscode.commands.executeCommand('runexecFlamekit.createCSS'));
 }
+
+const contentTemplate = (name: string) => {
+	return `
+defmodule ${name} do
+  use Phoenix.LiveComponent
+
+  def render(assigns) do
+    ~L"""
+    ${name}
+    """
+  end
+end
+`;
+};
 
 @singleton()
 export class Injection {
