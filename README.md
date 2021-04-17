@@ -41,7 +41,7 @@ Using VSCode Marketplace or Github
 
 *File Content:* 
 ```
-<div class="p-2 m-2">=ll{[Hello, World, MyExample]}</div>
+<div class="p-2 m-2">=ll{[Hello, MyExample]}</div>
 ```
 
 ##### Save
