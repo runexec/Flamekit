@@ -1,5 +1,3 @@
-********** NOT DONE YET *************
-
 # Flamekit
 ##### *Build websites faster with Flamekit Phoenix Framework Development extension for VSCode.*
 
@@ -23,7 +21,8 @@ Flamekit is a VSCode extension that provides PETAL stack setup with Phoenix awar
 
 ### Install
 
-Using VSCode Marketplace or Github
+Using VSCode Marketplace or Github.
+(project status: work-in-progress)
 
 ### Demonstration
 
