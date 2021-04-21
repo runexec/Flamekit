@@ -7,8 +7,8 @@ export class View extends ViewClass.View {
         this.toString = () => {
             return `
 import Alpine from 'alpinejs';
-import Socket from "phoenix";
-import LiveSocket from "phoenix_live_view";
+import {Socket} from "phoenix";
+import {LiveSocket} from "phoenix_live_view";
 `;
         }
         return this;

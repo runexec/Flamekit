@@ -22,7 +22,7 @@ const csrf_token = document.querySelector("meta[name='csrf-token']").getAttribut
 // >> live_socket.enableDebug()
 // >> live_socket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> live_socket.disableLatencySim()
-live_socket.connect() && ((window as any).live_socket = live_socket);
+live_socket.connect() && (window.live_socket = live_socket);
 `
         };
         return this;

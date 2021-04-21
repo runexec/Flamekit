@@ -63,6 +63,7 @@ const newCreatePETALDisposable = () => {
             terminal.sendText(`# Creating ${ts_config_uri}`);
             vscode.workspace.fs.writeFile(ts_config_uri, Buffer.from(ts_config_view, 'utf-8'));
             backupConfig({ terminal: terminal, uri: js_uri });
+            vscode.workspace.fs.writeFile(js_uri, Buffer.from(ts, 'utf-8'));
             terminal.sendText("# Renaming app.js to loadjs.js");
             vscode.workspace.fs.rename(js_uri, loadjs_uri);
             terminal.sendText('# Creating app.ts');
