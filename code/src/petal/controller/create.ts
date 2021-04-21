@@ -131,7 +131,7 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const js_path = assets_path + '/js';
     const appts_path = js_path + '/app.ts';
     const appjs_path = js_path + '/app.js';
-    const loadjs_path = js_path + '/loadjs.ts';
+    const loadjs_path = js_path + '/loadjs.js';
     const appts_uri = vscode.Uri.parse(appts_path);
     const appjs_uri = vscode.Uri.parse(appjs_path);
     const loadjs_uri = vscode.Uri.parse(loadjs_path);
