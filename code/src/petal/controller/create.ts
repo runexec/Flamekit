@@ -47,6 +47,7 @@ const newCreatePETALDisposable = () => {
             terminal.sendText(`cd ${assets_path}`);
             terminal.sendText('# Installing TypeScript');
             terminal.sendText(`npm install typescript ts-loader@8.1.0 --save-dev`);
+            terminal.sendText('npm install @types/phoenix --save');
             terminal.sendText('# Installing AlpineJS');
             terminal.sendText(`npm install alpinejs --save`);
             terminal.sendText(`# Installing TailwindCSS`)
