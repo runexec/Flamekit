@@ -11,10 +11,11 @@ type View = { View: Viewable };
 let TSConfigConfigView: View;
 let TSWebpackConfigView: View & { getReplace: () => [string, string][] };
 
-
 export const init = () => newCreateTypeScriptDisposable();
 
 const newCreateTypeScriptDisposable = () => {
+    Util = container.resolve('Util');
+    Message = container.resolve('Util.Message.info');
     TSConfigConfigView = container.resolve('typescript.TSConfigConfigView');
     TSWebpackConfigView = container.resolve('typescript.WebpackConfigView');
     const webpack_config_view = new TSWebpackConfigView.View();
@@ -32,7 +33,7 @@ const newCreateTypeScriptDisposable = () => {
             editor && editor.edit((edit) => {
                 const text = document.getText();
                 const start = text.match(/=setupTS/)?.index;
-                if (start && start !== -1) {
+                if (start !== undefined && start !== -1) {
                     Message.info(`Found Typescript Install Line`);
                     const start_pos = document.positionAt(start);
                     const end_pos = document.positionAt(start + 8);
