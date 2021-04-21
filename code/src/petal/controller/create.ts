@@ -41,10 +41,15 @@ const newCreatePETALDisposable = () => {
         if (folders) {
             const terminal = vscode.window.createTerminal('Flamekit PETAL');
             const {
-                ts_uri, ts_config_uri, ts, css, assets_path, tailwind_config_path, postcss_config_path, webpack_config_path
+                js_uri, loadjs_uri, ts_uri, ts_config_uri, ts, css, assets_path, 
+                tailwind_config_path, postcss_config_path, webpack_config_path
             } = getVars({ folders: folders });
             terminal.show();
             terminal.sendText(`cd ${assets_path}`);
+            terminal.sendText("# Renaming app.js to loadjs.js");
+            vscode.workspace.fs.rename(js_uri, loadjs_uri);
+            terminal.sendText('# Creating app.ts');
+            vscode.workspace.fs.writeFile(ts_uri, Buffer.from('import "./loadjs";'));
             terminal.sendText('# Installing TypeScript');
             terminal.sendText(`npm install typescript ts-loader@8.1.0 --save-dev`);
             terminal.sendText('npm install @types/phoenix --save');
@@ -125,7 +130,11 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const assets_path = folder.replace('file://', '');
     const js_path = assets_path + '/js';
     const appts_path = js_path + '/app.ts';
+    const appjs_path = js_path + '/app.js';
+    const loadjs_path = js_path + '/loadjs.ts';
     const appts_uri = vscode.Uri.parse(appts_path);
+    const appjs_uri = vscode.Uri.parse(appjs_path);
+    const loadjs_uri = vscode.Uri.parse(loadjs_path);
     const ts = [alpine_import_view, app_view, live_socket_view].join("\n");
     const css_path = assets_path + '/css';
     const appscss_path = css_path + '/app.scss';
@@ -138,6 +147,8 @@ const getVars = ({ folders }: { folders: readonly vscode.WorkspaceFolder[] }) =>
     const webpack_config_path = assets_path + '/webpack.config.js';
     const ts_config_uri = vscode.Uri.parse(assets_path + '/tsconfig.json');
     return {
+        loadjs_uri: loadjs_uri,
+        js_uri: appjs_uri,
         ts_uri: appts_uri,
         ts_config_uri: ts_config_uri,
         ts: ts,

@@ -27,7 +27,10 @@ const newCreateTypeScriptDisposable = () => {
             webpack_uri: vscode.Uri,
             webpack_config: string,
             tsconfig: string,
-            tsconfig_uri: vscode.Uri;
+            tsconfig_uri: vscode.Uri,
+            ts: vscode.Uri, 
+            js: vscode.Uri,
+            loadjs: vscode.Uri;
         if (document.fileName.match(/\.(js|ts)$/)) {
             const editor = vscode.window.activeTextEditor;
             editor && editor.edit((edit) => {
@@ -45,11 +48,18 @@ const newCreateTypeScriptDisposable = () => {
                     terminal_home = assets_path.replace('file://', '');
                     webpack = assets_path + '/webpack.config.js';
                     tsconfig = assets_path + '/tsconfig.json';
+                    ts = vscode.Uri.parse(assets_path + '/js/app.ts');
+                    js = vscode.Uri.parse(assets_path + '/js/app.js');
+                    loadjs = vscode.Uri.parse(assets_path + '/js/loadjs.js');
                 }
             }).then(() => {
                 if (terminal_home) {
                     terminal = vscode.window.createTerminal('Flamekit TypeScript Install');
                     terminal.show();
+                    terminal.sendText("# Renaming app.js to loadjs.js");
+                    vscode.workspace.fs.rename(js, loadjs);
+                    terminal.sendText('# Creating app.ts');                    
+                    vscode.workspace.fs.writeFile(ts, Buffer.from('import "./loadjs";'));
                     terminal.sendText('# Updating webpack.config.js');
                     if (webpack) {
                         webpack_uri = vscode.Uri.parse(webpack);
