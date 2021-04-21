@@ -8,10 +8,12 @@ export class View extends ViewClass.View {
             return `
 {
     "include": ["js/**/*"],
+    "exclude": ["js/loadjs.js"],
     "compilerOptions": {
         "allowJs": true,
         "sourceMap": true,
-        "moduleResolution": "node",        
+        "moduleResolution": "node",
+        "outDir": "/tmp/",
     },
     
 }`;
