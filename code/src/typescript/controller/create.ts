@@ -67,7 +67,7 @@ const newCreateTypeScriptDisposable = () => {
                     }
                     terminal.sendText('# Installing TypeScript');
                     terminal.sendText(`cd ${terminal_home}`);
-                    terminal.sendText(`npm install typescript ts-loader --save-dev`);
+                    terminal.sendText(`npm install typescript ts-loader@8.1.0 --save-dev`);
                 }
             });
         }
