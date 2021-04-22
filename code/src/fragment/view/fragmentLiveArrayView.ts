@@ -3,8 +3,8 @@ import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
 
 let FragmentLiveArrayTemplate: {
-    Template: new ({ file_name }: {
-        file_name: string,
+    Template: new ({ class_name }: {
+        class_name: string,
     }) => { toString: () => string }
 };
 
@@ -19,7 +19,7 @@ export class View extends ViewClass.View {
             fragments = group ? group.split(',') : false;
         this.toString = () => {
             return fragments ?
-                fragments.map(x => new FragmentLiveArrayTemplate.Template({ file_name: x })).join("\n")
+                fragments.map(x => new FragmentLiveArrayTemplate.Template({ class_name: x })).join("\n")
                 : 'fragmentArrayView<Failed>';
         };
         return this;

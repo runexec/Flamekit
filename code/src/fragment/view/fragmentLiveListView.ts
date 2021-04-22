@@ -3,8 +3,8 @@ import { singleton, container } from 'tsyringe';
 import * as ViewClass from './view';
 
 let FragmentLiveListTemplate: {
-    Template: new ({ file_name, tag }: {
-        file_name: string, 
+    Template: new ({ class_name, tag }: {
+        class_name: string, 
         tag: string
     }) => { toString: () => string }
 };
@@ -26,7 +26,7 @@ export class View extends ViewClass.View {
             if (fragments) {
                 const tag = (fragment_string.match(Constant.get('FRAGMENT_LIVE_LISTSTRING_REGEX')) || ['', ''])[1].split('>')[0];
                 return fragments
-                    .map(x => new FragmentLiveListTemplate.Template({ file_name: x, tag: tag })).join('\n');
+                    .map(x => new FragmentLiveListTemplate.Template({ class_name: x, tag: tag })).join('\n');
             }
             else { return 'fragmentListView<Failed>'; }
         }
