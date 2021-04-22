@@ -47,7 +47,8 @@ defmodule ${module_name} do
 
   def render(assigns) do
     ~L"""
-    ${module_name}
+    Inner block of ${module_name}
+	<%= render_block(@inner_block, module_name: module_name) %>
     """
   end
 end

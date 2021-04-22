@@ -36,7 +36,6 @@ export async function createFragment(F: FragmentLiveList): Promise<void> {
 	});
 }
 
-
 const contentTemplate = (name: string) => {
 	const module_name = name.split('_').map(x => {
 		let tmp = x.split('');
@@ -49,7 +48,8 @@ defmodule ${module_name} do
 
   def render(assigns) do
     ~L"""
-    ${module_name}
+    Inner block of ${module_name}
+	<%= render_block(@inner_block, module_name: module_name) %>
     """
   end
 end
